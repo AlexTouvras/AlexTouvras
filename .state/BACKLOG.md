@@ -7,6 +7,7 @@
 - [x] List other public markdown files in the archive
 - [x] Import Orbit and ravens `.cursor` rules, skills, and automations
 - [x] Categorise similar docs and leave the rest as docs
+- [ ] Publish `/studio/directives` on AlexTouvras/Orbit (local commit `149120d`; this agent cannot push)
 - [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo
 - [ ] Push an automation prompt to the live Cursor Automation

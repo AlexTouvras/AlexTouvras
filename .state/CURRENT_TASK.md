@@ -16,6 +16,8 @@ Directive archive for skills, rules, and automation prompts.
 - Similar docs grouped; leftovers stay kind doc
 - Local editor with filters, always-on budget, save, and version restore
 - Context-budget skill packaged as a Cursor plugin
+- Studio page and snapshot prepared in `governance/orbit-studio/`
+- Push to AlexTouvras/Orbit denied (HTTP 403). Live `/studio/directives` is not deployed.
 
 ## Out of scope
 

@@ -39,3 +39,13 @@ python3 governance/categorize.py
 ```
 
 `import_markdown.py` reads public GitHub repositories and adds markdown that is not already archived. The harvest directory for `import_harvest.py` is organized as `<repo>/<path-in-repo>`.
+
+## Orbit Studio
+
+`governance/orbit-studio/` is the private `/studio/directives` page for AlexTouvras/Orbit. It is a read-only snapshot. Refresh it with:
+
+```bash
+python3 governance/export_studio_snapshot.py
+```
+
+See `governance/orbit-studio/README.md`.
