@@ -1,0 +1,16 @@
+{
+  "id": "technology-delivery-field-card-data-judgment",
+  "title": "Summary",
+  "kind": "doc",
+  "repo": "AlexTouvras/technology-delivery-field-card",
+  "topics": [
+    "field-card"
+  ],
+  "activation": "manual",
+  "description": "Summary",
+  "source_path": "data/judgment.md",
+  "source_url": "https://github.com/AlexTouvras/technology-delivery-field-card/blob/main/data/judgment.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

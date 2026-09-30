@@ -1,0 +1,16 @@
+{
+  "id": "projectbrain-templates-project-kit-agent-log",
+  "title": "Agent build log",
+  "kind": "doc",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain"
+  ],
+  "activation": "manual",
+  "description": "Agent build log",
+  "source_path": "templates/project_kit/AGENT_LOG.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/templates/project_kit/AGENT_LOG.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

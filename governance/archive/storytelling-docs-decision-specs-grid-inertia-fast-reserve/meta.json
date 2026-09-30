@@ -1,0 +1,17 @@
+{
+  "id": "storytelling-docs-decision-specs-grid-inertia-fast-reserve",
+  "title": "Decision Spec \u2014 How much fast reserve should the grid hold?",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "decisions"
+  ],
+  "activation": "manual",
+  "description": "Decision Spec \u2014 How much fast reserve should the grid hold?",
+  "source_path": "docs/decision-specs/grid-inertia-fast-reserve.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/decision-specs/grid-inertia-fast-reserve.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

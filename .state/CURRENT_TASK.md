@@ -11,6 +11,8 @@ Directive archive for skills, rules, and automation prompts.
 ## Done
 
 - Public corpus imported into `governance/archive/`
+- Public markdown listed as kind `doc`
+- Orbit recorded as unreadable; known paths listed from public repos
 - Local editor with filters, always-on budget, save, and version restore
 - Context-budget skill packaged as a Cursor plugin
 

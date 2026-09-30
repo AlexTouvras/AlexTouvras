@@ -1,0 +1,18 @@
+{
+  "id": "storytelling-state-architecture",
+  "title": "Architecture (working log)",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "state",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "Architecture (working log)",
+  "source_path": ".state/ARCHITECTURE.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/.state/ARCHITECTURE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

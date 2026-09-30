@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-03-sales-executive-brief-report-spec",
+  "title": "Report Spec",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Report Spec",
+  "source_path": "03-sales-executive/_brief/report-spec.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/03-sales-executive/_brief/report-spec.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

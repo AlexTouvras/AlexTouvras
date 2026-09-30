@@ -1,0 +1,16 @@
+{
+  "id": "powerbi-portfolio-11-credit-risk-data-raw-source",
+  "title": "Credit risk \u2014 raw sources (scorecard)",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi"
+  ],
+  "activation": "manual",
+  "description": "Credit risk \u2014 raw sources (scorecard)",
+  "source_path": "11-credit-risk/data/raw/SOURCE.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/11-credit-risk/data/raw/SOURCE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

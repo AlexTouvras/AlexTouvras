@@ -1,0 +1,60 @@
+﻿# Architecture (working log)
+
+> Tracked in git. Living decisions for this repo — not a substitute for `docs/architecture/`.
+
+## Overview
+
+Ledger: research-first long-only liquid equity sleeve toolkit. Public repo + private companion (`ledger-private`) for live holdings. Cadence: Mar/Sep catalog gate → Apr/Oct holdings research.
+
+**Risk is an extra layer on Ledger, not Ledger 2.0.** Core loop stays: strategy family → change bar → holdings actions. Optimizer / VaR sit beside that (MCP + gold → Investing Desk Risk & Mandate). Same book, same cadence, you still click the trades. Do not version-bump or brand 2.0 until an October production screenshot shows those numbers on the desk.
+
+## Data shapes
+
+| Name | Shape / location | Notes |
+|------|------------------|-------|
+| Holdings | ledger-private `holdings_nordnet.yaml` | Never commit to public repo |
+| Research cycle | `reports/research_cycle.*` | Private full detail |
+| Public scrub | `dashboard/research/` | No brokers, no absolute € |
+| Catalog gate | `reports/catalog_gate.*` | Human approves CANDIDATES/policy |
+| Risk layer | `investing.risk` → gold CSV → `12-investing-desk` | Book vs min-vol vs max-Sharpe vs 95% VaR; weights % in public visuals |
+
+## Dependencies
+
+| Dependency | Why introduced | Date |
+|------------|----------------|------|
+| yfinance / pandas | Market data + backtests | 2026-07 |
+| rich | CLI tables | 2026-07 |
+| scipy | Long-only mean-variance (SLSQP) + parametric VaR (ndtri) | 2026-08 |
+| mcp>=2 (extra `mcp` / `dev`) | Cursor MCP server (`MCPServer`, formerly FastMCP) | 2026-08 |
+
+## File structure
+
+```text
+investing/
+├── configs/          # public policy + examples
+├── src/investing/    # CLI + research + review
+│   ├── risk/         # mean-variance + VaR (open math)
+│   └── mcp_server/   # Cursor tools wrapping risk/
+├── dashboard/research/  # public scrub
+├── reports/          # private (gitignored HTML/JSON)
+├── .cursor/mcp.json  # repo-bound investing-risk stdio server
+└── .state/
+```
+
+## Design patterns
+
+- Companion resolution via `companion.py` / `LEDGER_PRIVATE_ROOT`
+- Selection change bar in `research/selection.py`
+- Slack → ingest → commit private main → `invest research` → Orbit `public/ledger-research` (Cursor Automation)
+- Risk MCP is query-only (weights/VaR); it does not place orders or write holdings
+- A risk object is not shipped until it has pytest + gold table + one Risk & Mandate visual
+
+## Key decisions
+
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| 2026-07 | Apr+Oct review months | Calendar sweep Sharpe leader in-sample |
+| 2026-07 | Private companion for holdings | Keep public Orbit scrub safe |
+| 2026-08 | Risk MCP: scipy mean-variance + VaR, not Norway Analytics binary | Public math only; long-only; repo-bound MCP |
+| 2026-08-14 | Risk = extra layer, not Ledger 2.0 | User locked: keep v1 product; add optimizer/VaR beside the research cycle |
+| 2026-08-14 | Slack holdings run publishes Orbit snapshot | Live page should match the research scrub |

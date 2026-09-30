@@ -1,0 +1,35 @@
+﻿# Backlog
+
+> Tracked in git. Upcoming work and hard scope boundaries.
+
+## Now
+
+- [ ] Complete Oct 2026 dress rehearsal cloud path (Slack automations)
+- [ ] Catalog gate by 2026-09-24 (real)
+- [x] **Risk layer (first cycle)** — gold from MV weights + 95% VaR; Risk & Mandate clustered bar + VaR KPI (PBIR validate + Desktop screenshot 2026-08-14)
+- [ ] First prod research 2026-10-24 .. 2026-10-26 (risk numbers on the live sleeve)
+
+## Next
+
+- [x] Slack holdings automation publishes Orbit `public/ledger-research` (2026-08-14)
+
+## Later
+
+- [ ] Read-only broker adapters (Saxo/Nordnet) behind go-live gate
+
+## Done recently
+
+- [x] Long-only mean-variance + historical/parametric VaR as `investing-risk` MCP tools (2026-08-14)
+
+## Out of scope (strict)
+
+- Auto-trading / placing Nordnet or Saxo orders
+- OP ring-fenced ETFs
+- Short-term sleeve (live-blocked)
+- Auto-editing CANDIDATES without human approval
+- Committing holdings into the public ledger repo
+
+## Definition of done (current item)
+
+- [ ] Local: catalog-gate KEEP + invest research exit 0 + scrub pass
+- [ ] Cloud: catalog-gate Slack summary + holdings→research Slack thread + Orbit snapshot live

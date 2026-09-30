@@ -1,0 +1,17 @@
+{
+  "id": "evaluation-improvement-readme",
+  "title": "Model Evaluation & Improvement",
+  "kind": "doc",
+  "repo": "AlexTouvras/Evaluation-Improvement",
+  "topics": [
+    "evaluation-improvement",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Model Evaluation & Improvement",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/Evaluation-Improvement/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

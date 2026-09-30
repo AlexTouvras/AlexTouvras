@@ -1,0 +1,16 @@
+{
+  "id": "magicmirror-docs-runbook",
+  "title": "Smart Mirror Backed - Runbook",
+  "kind": "doc",
+  "repo": "AlexTouvras/MagicMirror",
+  "topics": [
+    "magicmirror"
+  ],
+  "activation": "manual",
+  "description": "Smart Mirror Backed - Runbook",
+  "source_path": "docs/runbook.md",
+  "source_url": "https://github.com/AlexTouvras/MagicMirror/blob/main/docs/runbook.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

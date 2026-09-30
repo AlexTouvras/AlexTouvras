@@ -1,0 +1,17 @@
+{
+  "id": "supervised-learning-readme",
+  "title": "supervised_learning",
+  "kind": "doc",
+  "repo": "AlexTouvras/supervised_learning",
+  "topics": [
+    "supervised-learning",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "supervised_learning",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/supervised_learning/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

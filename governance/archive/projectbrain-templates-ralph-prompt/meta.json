@@ -1,0 +1,18 @@
+{
+  "id": "projectbrain-templates-ralph-prompt",
+  "title": "Ralph agent instructions (Cursor)",
+  "kind": "contract",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "automation",
+    "governance"
+  ],
+  "activation": "on-run",
+  "description": "Ralph agent instructions (Cursor)",
+  "source_path": "templates/ralph/PROMPT.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/templates/ralph/PROMPT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

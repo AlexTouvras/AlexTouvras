@@ -1,0 +1,80 @@
+# Ledger
+
+Research-first Python toolkit for a long-only liquid equity sleeve: compare strategy families on one sample, apply an explicit change bar, then propose holdings moves with reasons.
+
+**Not regulated financial advice.** Past performance is not future returns.
+
+Public demo (scrubbed KPIs + history): [orbit-rho-rouge.vercel.app/ledger-research](https://orbit-rho-rouge.vercel.app/ledger-research)  
+Case study: [Ledger research cycle](https://orbit-rho-rouge.vercel.app/writes/ledger-research-cycle-strategy-selection)
+
+## What it does
+
+```powershell
+invest research --open
+```
+
+1. Backtests candidate families (ETF buy&hold opportunity cost, universe EW, momentum variants).
+2. Selects a **run** policy under documented rules (Sharpe rank, turnover tie-break, change bar).
+3. Compares current holdings to that policy and writes explained EXIT / ADD / TRIM / DEFER actions.
+4. Publishes a **public** snapshot under `dashboard/research/` (no broker names, no absolute € amounts).
+5. Copies that scrub into Orbit `public/ledger-research` (`invest publish-orbit`) so [alextouvras.com/ledger-research](https://alextouvras.com/ledger-research) updates after a Slack holdings run.
+
+Also: `invest sim`, `invest review`, `invest validate`, `invest compare`, `invest calendar`, `invest catalog-gate`, `invest holdings`.
+
+## Cadence
+
+| When | What |
+|------|------|
+| **Mar / Sep** (~1 month before) | `invest catalog-gate` — review research vs strategy catalog; human approves any CANDIDATES / policy tweaks |
+| **Apr / Oct** | Slack holdings → `invest research` → you approve trades |
+## Next production review
+
+First **real** production case: **October 2026** (Apr+Oct cadence).  
+Runbook: [`docs/OCTOBER_2026_PROD.md`](docs/OCTOBER_2026_PROD.md) · config: `configs/next_review.yaml`
+
+## Setup
+
+```powershell
+cd path\to\ledger
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+```
+
+### Private companion (live holdings)
+
+Live positions live in a **private** GitHub repo, not in this public tree:
+
+```powershell
+cd ..
+git clone https://github.com/AlexTouvras/ledger-private.git
+```
+
+Place the checkout beside this repo as `../ledger-private` (or set `LEDGER_PRIVATE_ROOT`, or copy `configs/companion.local.yaml.example` → `companion.local.yaml`).
+
+```powershell
+invest status          # shows companion path
+invest holdings ingest # writes holdings_nordnet.yaml into the companion
+invest research --publish-orbit
+# then in the Orbit checkout: git add public/ledger-research && commit && push main
+```
+
+Do not commit holdings into the public ledger repo.
+
+## Public vs private
+
+| Path | Audience |
+|------|----------|
+| `dashboard/research/` | Portfolio-safe HTML + JSON history |
+| `reports/` | Local only (gitignored) — full private review detail |
+| [ledger-private](https://github.com/AlexTouvras/ledger-private) | Private — live holdings + capital map |
+
+Deploy the static dashboard folder (or sync `dashboard/research` into Orbit `public/ledger-research` as this site does).
+
+## Brokers
+
+Saxo OpenAPI and Nordnet External API v2 clients are **stubs**. Do not put full-access API keys in a cloud agent until you have a read-only path and an explicit go-live gate.
+
+## License / status
+
+Personal research prototype. Use at your own risk.

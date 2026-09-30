@@ -1,0 +1,16 @@
+{
+  "id": "powerbi-portfolio-08-customer-experience-data-gold-dq-notes",
+  "title": "Gold DQ notes \u2014 Experience Pulse (reviews)",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi"
+  ],
+  "activation": "manual",
+  "description": "Gold DQ notes \u2014 Experience Pulse (reviews)",
+  "source_path": "08-customer-experience/data/gold/DQ_NOTES.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/08-customer-experience/data/gold/DQ_NOTES.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

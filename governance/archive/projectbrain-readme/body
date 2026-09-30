@@ -1,0 +1,58 @@
+# ProjectBrain
+
+Personal project intelligence system. Learns from multiple projects over time, identifies patterns across success and failure, and serves low-latency context to AI coding agents.
+
+## Quick Start
+
+```bash
+py -m pip install -e ".[vector,sync,dev]"
+py -m projectbrain setup --data-dir .projectbrain
+py -m projectbrain status
+```
+
+On Windows, run `scripts/install.ps1` for a one-shot install, or use `py -m projectbrain` if the CLI is not on PATH.
+
+### Encrypted off-machine sync
+
+```bash
+py -m projectbrain generate-sync-key   # save as PROJECTBRAIN_SYNC_KEY
+py -m projectbrain setup --export-dir ~/ProjectBrain-Sync --encrypt-exports
+py -m projectbrain export-backup --encrypt
+```
+
+Exports auto-copy to `sync.export_dir` after each backup when `sync.auto_export` is true.
+
+## Milestone 4 (Current)
+
+- **Installer** — `projectbrain setup`, `verify-install`, `scripts/install.ps1`
+- **Encrypted export** — Fernet `.enc` backups via `PROJECTBRAIN_SYNC_KEY` (`pip install -e ".[sync]"`)
+- **Backup/restore** — local zip backups in `.projectbrain/backups/` (auto on session start)
+- **Doctor / eval harness** — `projectbrain doctor` or MCP `doctor`
+- **Evolution adoption** — feature-flag rollout with post-adoption eval gate
+- **Monthly digest** — `projectbrain digest`
+- **Feature flags** — `.projectbrain/config.yaml`
+- **MCP tools** — `setup_workspace`, `export_backup`, `doctor`, `get_evolution_digest`, and more
+
+## Milestone 3
+
+- **Scoring engine** — success, risk, momentum, value, fulfillment, technical debt
+- **Reflection pipeline** — auto checkpoint reflections from project evidence
+- **Pattern extraction** — cross-project keyword patterns (needs 2+ projects)
+- **Risk assessment** — detected risk factors per project
+
+Open this folder in Cursor; ProjectBrain MCP is configured in `.cursor/mcp.json`. Enable the **projectbrain** MCP server in Cursor Settings → MCP. **Reload MCP** after upgrades to pick up new tools.
+
+## Milestone 1
+
+- Local SQLite storage with event outbox
+- Project, Decision, Reflection CRUD
+- Charter markdown and git metadata ingestion
+- CLI: `init`, `ingest`, `status`
+
+## Data Location
+
+By default, ProjectBrain stores data at `~/.projectbrain/` (or `%USERPROFILE%\.projectbrain\` on Windows).
+
+## License
+
+MIT

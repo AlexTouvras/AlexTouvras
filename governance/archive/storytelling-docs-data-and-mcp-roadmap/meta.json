@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-data-and-mcp-roadmap",
+  "title": "Data scale + MCP roadmap (Interactive Decision Storytelling)",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Data scale + MCP roadmap (Interactive Decision Storytelling)",
+  "source_path": "docs/DATA_AND_MCP_ROADMAP.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/DATA_AND_MCP_ROADMAP.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

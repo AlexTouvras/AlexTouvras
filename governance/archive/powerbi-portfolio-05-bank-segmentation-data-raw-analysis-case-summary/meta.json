@@ -1,0 +1,16 @@
+{
+  "id": "powerbi-portfolio-05-bank-segmentation-data-raw-analysis-case-summary",
+  "title": "Bank Segmentation Analysis",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi"
+  ],
+  "activation": "manual",
+  "description": "Bank Segmentation Analysis",
+  "source_path": "05-bank-segmentation/data/raw/analysis_case_summary.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/05-bank-segmentation/data/raw/analysis_case_summary.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

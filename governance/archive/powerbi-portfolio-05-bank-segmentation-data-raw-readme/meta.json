@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-05-bank-segmentation-data-raw-readme",
+  "title": "\ud83c\udfe6 Bank Segmentation Analysis (SQL Project)",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "\ud83c\udfe6 Bank Segmentation Analysis (SQL Project)",
+  "source_path": "05-bank-segmentation/data/raw/README.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/05-bank-segmentation/data/raw/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "thesis-readme",
+  "title": "Thesis",
+  "kind": "doc",
+  "repo": "AlexTouvras/Thesis",
+  "topics": [
+    "thesis",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Thesis",
+  "source_path": "readme.md",
+  "source_url": "https://github.com/AlexTouvras/Thesis/blob/main/readme.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

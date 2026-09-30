@@ -1,0 +1,16 @@
+{
+  "id": "ledger-docs-october-2026-prod",
+  "title": "October 2026 \u2014 first production research case",
+  "kind": "doc",
+  "repo": "AlexTouvras/ledger",
+  "topics": [
+    "ledger"
+  ],
+  "activation": "manual",
+  "description": "October 2026 \u2014 first production research case",
+  "source_path": "docs/OCTOBER_2026_PROD.md",
+  "source_url": "https://github.com/AlexTouvras/ledger/blob/main/docs/OCTOBER_2026_PROD.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

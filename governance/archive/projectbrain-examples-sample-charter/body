@@ -1,0 +1,23 @@
+---
+name: ProjectBrain
+domain: personal
+repo_uri: file:///projectbrain
+---
+
+# ProjectBrain Charter
+
+## Vision
+
+A personal project intelligence system that learns across repositories and serves context to AI agents.
+
+## Goals
+
+- Track decisions and outcomes across projects
+- Identify patterns in success, failure, and abandonment
+- Integrate natively with Cursor and Claude Code
+
+## Success Criteria
+
+- Sub-100ms context retrieval for active projects
+- Automatic charter and git ingestion
+- Cross-project pattern surfacing by M3

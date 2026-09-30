@@ -4,6 +4,8 @@
 - [x] Filter by repo, topic, kind, and activation
 - [x] Edit, save, and restore versions in the archive UI
 - [x] Show per-repo always-on token budget
-- [ ] Scan private repositories
+- [x] List other public markdown files in the archive
+- [ ] Import AlexTouvras/Orbit once this credential can read it
+- [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo
 - [ ] Push an automation prompt to the live Cursor Automation

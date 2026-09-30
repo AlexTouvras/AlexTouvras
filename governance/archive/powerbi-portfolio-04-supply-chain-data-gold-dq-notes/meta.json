@@ -1,0 +1,16 @@
+{
+  "id": "powerbi-portfolio-04-supply-chain-data-gold-dq-notes",
+  "title": "Gold DQ notes \u2014 Logistics Pulse",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi"
+  ],
+  "activation": "manual",
+  "description": "Gold DQ notes \u2014 Logistics Pulse",
+  "source_path": "04-supply-chain/data/gold/DQ_NOTES.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/04-supply-chain/data/gold/DQ_NOTES.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

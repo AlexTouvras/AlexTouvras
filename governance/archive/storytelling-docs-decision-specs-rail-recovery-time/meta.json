@@ -1,0 +1,17 @@
+{
+  "id": "storytelling-docs-decision-specs-rail-recovery-time",
+  "title": "Decision Spec \u2014 Why don't delays die?",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "decisions"
+  ],
+  "activation": "manual",
+  "description": "Decision Spec \u2014 Why don't delays die?",
+  "source_path": "docs/decision-specs/rail-recovery-time.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/decision-specs/rail-recovery-time.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

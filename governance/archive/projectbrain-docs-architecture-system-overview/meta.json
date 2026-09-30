@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-docs-architecture-system-overview",
+  "title": "ProjectBrain \u2014 system overview",
+  "kind": "doc",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "ProjectBrain \u2014 system overview",
+  "source_path": "docs/architecture/system-overview.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/docs/architecture/system-overview.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

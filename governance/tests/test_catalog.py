@@ -140,6 +140,23 @@ class CatalogTests(unittest.TestCase):
                 }
             )
 
+    def test_doc_is_outside_the_always_on_budget(self) -> None:
+        catalog.write_imported_item(
+            {
+                "id": "alpha-notes",
+                "title": "Notes",
+                "kind": "doc",
+                "repo": "AlexTouvras/alpha",
+                "topics": ["readme"],
+                "activation": "manual",
+                "source_path": "docs/NOTES.md",
+            },
+            "# Notes\n\n" + ("word " * 800),
+        )
+        budget = next(row for row in catalog.catalog()["budgets"] if row["repo"] == "AlexTouvras/alpha")
+        self.assertEqual(budget["always_on_tokens"], 0)
+        self.assertFalse(budget["over_budget"])
+
     def test_over_budget_flag(self) -> None:
         catalog.write_imported_item(
             {

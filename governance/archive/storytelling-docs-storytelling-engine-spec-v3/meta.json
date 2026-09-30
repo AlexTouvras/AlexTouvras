@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-storytelling-engine-spec-v3",
+  "title": "STORYTELLING ENGINE \u2014 SPECIFICATION (v3)",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "STORYTELLING ENGINE \u2014 SPECIFICATION (v3)",
+  "source_path": "docs/STORYTELLING_ENGINE_SPEC_V3.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/STORYTELLING_ENGINE_SPEC_V3.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

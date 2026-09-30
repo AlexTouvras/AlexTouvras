@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-flagship",
+  "title": "Interactive Decision Storytelling",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Interactive Decision Storytelling",
+  "source_path": "docs/FLAGSHIP.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/FLAGSHIP.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

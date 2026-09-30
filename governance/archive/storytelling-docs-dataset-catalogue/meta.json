@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-dataset-catalogue",
+  "title": "Dataset catalogue \u2014 second decision story",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Dataset catalogue \u2014 second decision story",
+  "source_path": "docs/DATASET_CATALOGUE.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/DATASET_CATALOGUE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

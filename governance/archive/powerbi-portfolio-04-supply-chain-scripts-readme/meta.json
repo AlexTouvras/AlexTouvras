@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-04-supply-chain-scripts-readme",
+  "title": "Scripts",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Scripts",
+  "source_path": "04-supply-chain/scripts/README.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/04-supply-chain/scripts/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-story-grammar",
+  "title": "Story Grammar (Layer 2)",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Story Grammar (Layer 2)",
+  "source_path": "docs/STORY_GRAMMAR.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/STORY_GRAMMAR.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

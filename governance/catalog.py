@@ -26,6 +26,7 @@ KINDS = (
     "contract",
     "user-rule",
     "hook",
+    "doc",
 )
 ACTIVATIONS = (
     "always",
@@ -90,6 +91,8 @@ def activation_from_frontmatter(kind: str, frontmatter: dict[str, str]) -> str:
         return "user"
     if kind == "contract":
         return "on-run"
+    if kind == "doc":
+        return "manual"
     if kind == "agents":
         return "always"
     always = frontmatter.get("alwaysApply", "").lower()
@@ -246,7 +249,8 @@ def catalog() -> dict:
         "kinds": list(KINDS),
         "activations": list(ACTIVATIONS),
         "gaps": [
-            "Private repositories were not scanned.",
+            "AlexTouvras/Orbit is not readable with this credential (GitHub 404). Its archive entry lists only the paths named from public repos.",
+            "Other public markdown is listed as kind doc and is not counted in the always-on budget.",
             "No SKILL.md files were found in the scanned public repositories.",
             "Cursor User Rules live in Customize, not in git. The archived user-rule text is the ProjectBrain template.",
             "Saving an automation prompt updates this archive. It does not change the live Cursor Automation.",

@@ -1,0 +1,17 @@
+{
+  "id": "magicmirror-readme",
+  "title": "Smart Mirror \u2014 Backend",
+  "kind": "doc",
+  "repo": "AlexTouvras/MagicMirror",
+  "topics": [
+    "magicmirror",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Smart Mirror \u2014 Backend",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/MagicMirror/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

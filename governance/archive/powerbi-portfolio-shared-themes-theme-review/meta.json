@@ -1,0 +1,16 @@
+{
+  "id": "powerbi-portfolio-shared-themes-theme-review",
+  "title": "Theme review \u2014 Nordic-Finesse \u2192 Nordic-Boardroom",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi"
+  ],
+  "activation": "manual",
+  "description": "Theme review \u2014 Nordic-Finesse \u2192 Nordic-Boardroom",
+  "source_path": "_shared/themes/THEME-REVIEW.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/_shared/themes/THEME-REVIEW.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

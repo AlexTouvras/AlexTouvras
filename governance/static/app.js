@@ -49,7 +49,7 @@ function visibleItems() {
 function renderBudgets() {
   const host = $("budgets");
   host.innerHTML = "";
-  for (const budget of state.catalog.budgets) {
+  for (const budget of state.catalog.budgets.filter((row) => row.always_on_items > 0)) {
     const chip = document.createElement("button");
     chip.type = "button";
     chip.className = "budget" + (budget.over_budget ? " over" : "");
@@ -135,7 +135,7 @@ function renderBanner() {
     "Archive of public rules, agent files, and automation prompts. Save writes this archive and keeps a version. It does not update the source repository or the live Cursor Automation." +
     budgetNote +
     " " +
-    state.catalog.gaps[0];
+    state.catalog.gaps.slice(0, 2).join(" ");
 }
 
 function render() {
@@ -157,10 +157,10 @@ function showItem(item) {
   const summary = state.catalog.items.find((row) => row.id === item.id);
   const copies = summary ? summary.identical_copies : 1;
   $("editor-title").textContent = item.title;
-  const source = item.source_url
+  const source = item.source_path
     ? ` Source: ${item.source_path}.`
-    : item.source_path
-      ? ` Path: ${item.source_path}.`
+    : item.source_url
+      ? ` Source: ${item.source_url}.`
       : "";
   $("editor-meta").textContent =
     `${item.tokens} tokens · ${item.kind} · ${item.activation}.${source} Identical copies: ${copies}.`;

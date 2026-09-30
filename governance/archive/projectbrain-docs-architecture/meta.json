@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-docs-architecture",
+  "title": "Architecture",
+  "kind": "doc",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "Architecture",
+  "source_path": "docs/ARCHITECTURE.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/docs/ARCHITECTURE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

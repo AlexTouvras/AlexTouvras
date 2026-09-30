@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-atmosphere-motifs",
+  "title": "Atmosphere Motifs",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Atmosphere Motifs",
+  "source_path": "docs/ATMOSPHERE_MOTIFS.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/ATMOSPHERE_MOTIFS.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

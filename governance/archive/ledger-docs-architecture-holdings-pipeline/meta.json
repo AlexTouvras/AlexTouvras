@@ -1,0 +1,17 @@
+{
+  "id": "ledger-docs-architecture-holdings-pipeline",
+  "title": "Holdings \u2192 research \u2192 public snapshot",
+  "kind": "doc",
+  "repo": "AlexTouvras/ledger",
+  "topics": [
+    "ledger",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "Holdings \u2192 research \u2192 public snapshot",
+  "source_path": "docs/architecture/holdings-pipeline.md",
+  "source_url": "https://github.com/AlexTouvras/ledger/blob/main/docs/architecture/holdings-pipeline.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-11-credit-risk-brief-report-spec",
+  "title": "Report Spec \u2014 Credit Risk Pulse",
+  "kind": "doc",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Report Spec \u2014 Credit Risk Pulse",
+  "source_path": "11-credit-risk/_brief/report-spec.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/11-credit-risk/_brief/report-spec.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}
