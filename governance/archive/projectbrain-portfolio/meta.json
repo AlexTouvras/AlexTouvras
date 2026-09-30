@@ -1,0 +1,18 @@
+{
+  "id": "projectbrain-portfolio",
+  "title": "ProjectBrain portfolio",
+  "kind": "rule",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "portfolio",
+    "memory",
+    "mcp"
+  ],
+  "activation": "always",
+  "description": "ProjectBrain portfolio memory \u2014 MCP tools, playbook winners, cross-project learnings",
+  "source_path": ".cursor/rules/projectbrain-portfolio.mdc",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/.cursor/rules/projectbrain-portfolio.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

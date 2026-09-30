@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-user-rules",
+  "title": "ProjectBrain user rules template",
+  "kind": "user-rule",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "portfolio",
+    "memory"
+  ],
+  "activation": "user",
+  "description": "Template for Cursor User Rules. The live text is in Customize.",
+  "source_path": "templates/cursor/USER_RULES.txt",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/templates/cursor/USER_RULES.txt",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

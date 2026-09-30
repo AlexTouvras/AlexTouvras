@@ -1,0 +1,18 @@
+{
+  "id": "data-analytics-weekly",
+  "title": "Weekly analytics field card",
+  "kind": "automation",
+  "repo": "AlexTouvras/data-analytics-field-card",
+  "topics": [
+    "field-card",
+    "analytics",
+    "schedule"
+  ],
+  "activation": "schedule",
+  "description": "Friday content pass. Archive copy of the automation prompt.",
+  "source_path": ".cursor/automations/weekly-content-pass.json",
+  "source_url": "https://github.com/AlexTouvras/data-analytics-field-card/blob/main/.cursor/automations/weekly-content-pass.json",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

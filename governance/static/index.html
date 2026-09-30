@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directive archive</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="eyebrow">Portfolio governance</p>
+      <h1>Directive archive</h1>
+    </div>
+    <button type="button" id="new-item">New directive</button>
+  </header>
+  <p class="banner" id="banner"></p>
+
+  <section class="filters" aria-label="Filters">
+    <label>Search <input id="q" type="search" placeholder="Title, repo, text"></label>
+    <label>Repo <select id="repo"><option value="">All</option></select></label>
+    <label>Topic <select id="topic"><option value="">All</option></select></label>
+    <label>Kind <select id="kind"><option value="">All</option></select></label>
+    <label>Activation <select id="activation"><option value="">All</option></select></label>
+  </section>
+
+  <section class="budgets" id="budgets" aria-label="Always-on budget by repository"></section>
+
+  <main>
+    <ul class="list" id="list"></ul>
+    <form class="editor" id="editor">
+      <div class="editor-head">
+        <h2 id="editor-title">Select a directive</h2>
+        <p id="editor-meta"></p>
+      </div>
+      <div class="fields">
+        <label>Title <input id="title" name="title" required></label>
+        <label>Repo <input id="repo-field" name="repo" required></label>
+        <label>Kind <select id="kind-field" name="kind"></select></label>
+        <label>Activation <select id="activation-field" name="activation"></select></label>
+        <label class="wide">Topics <input id="topics" name="topics" placeholder="state, context"></label>
+      </div>
+      <label class="wide body-label">Body
+        <textarea id="body" name="body" spellcheck="false"></textarea>
+      </label>
+      <div class="actions">
+        <button type="submit" id="save">Save</button>
+        <p id="status" role="status"></p>
+      </div>
+      <section class="history" id="history" hidden>
+        <h3>Version history</h3>
+        <ul id="versions"></ul>
+      </section>
+    </form>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

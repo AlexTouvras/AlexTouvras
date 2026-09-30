@@ -1,0 +1,17 @@
+{
+  "id": "storytelling-story-engine",
+  "title": "Interactive decision storytelling",
+  "kind": "rule",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "decisions"
+  ],
+  "activation": "always",
+  "description": "Interactive Decision Storytelling \u2014 Orbit flagship; engine is a stage",
+  "source_path": ".cursor/rules/story-engine.mdc",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/.cursor/rules/story-engine.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

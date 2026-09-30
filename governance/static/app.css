@@ -1,0 +1,221 @@
+:root {
+  --ink: #1c1915;
+  --muted: #5e574c;
+  --paper: #f3efe6;
+  --panel: #fffdf8;
+  --line: #e2d9cb;
+  --green: #1f4d3a;
+  --green-soft: #e5f0ea;
+  --rust: #8a3b12;
+  --rust-soft: #f8ebe3;
+  --shadow: 0 1px 0 rgba(28, 25, 21, 0.04);
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 28px 22px 64px;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: var(--green);
+  color: #f7f4ee;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+h1 { margin: 0; font-weight: 500; font-size: 40px; }
+
+.banner {
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+.filters, .fields {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fields { grid-template-columns: 1.4fr 1.4fr 0.8fr 0.8fr 1fr; margin-bottom: 12px; }
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+input, select, textarea {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+textarea {
+  min-height: 420px;
+  resize: vertical;
+  font-family: "IBM Plex Mono", "ui-monospace", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.budgets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.budget {
+  border: 1px solid var(--line);
+  background: var(--green-soft);
+  color: var(--green);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 13px;
+}
+
+.budget.over {
+  background: var(--rust-soft);
+  color: var(--rust);
+  border-color: #efd2c4;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+}
+
+.list button.row {
+  width: 100%;
+  text-align: left;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+}
+
+.list button.row.active { border-color: var(--green); }
+
+.row strong, .row span { display: block; }
+.row strong { font-weight: 560; }
+.row span, .editor-head p, #status {
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.editor {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.editor-head h2 { margin: 0 0 4px; font-weight: 500; }
+.editor-head p { margin: 0 0 12px; }
+
+.wide { grid-column: 1 / -1; }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.history { margin-top: 18px; }
+.history h3 { margin: 0 0 8px; font-weight: 500; }
+.history ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.copy {
+  display: inline-block;
+  margin: 0 0 4px 12px;
+  padding: 0;
+  background: transparent;
+  color: var(--rust);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .filters, .fields, main { grid-template-columns: 1fr; }
+  .list { max-height: none; }
+  h1 { font-size: 32px; }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "context-governance",
+  "version": "0.1.0",
+  "description": "Keep always-on rules inside a per-repository token budget.",
+  "author": {
+    "name": "Alex Touvras"
+  },
+  "license": "MIT",
+  "keywords": ["governance", "rules", "skills", "context"]
+}

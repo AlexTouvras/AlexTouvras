@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-hub",
+  "title": "ProjectBrain hub",
+  "kind": "rule",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "portfolio",
+    "projectbrain"
+  ],
+  "activation": "always",
+  "description": "ProjectBrain hub \u2014 developing the portfolio intelligence system itself",
+  "source_path": ".cursor/rules/projectbrain.mdc",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/.cursor/rules/projectbrain.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

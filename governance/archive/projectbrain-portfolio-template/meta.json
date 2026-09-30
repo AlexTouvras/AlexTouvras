@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-portfolio-template",
+  "title": "Portfolio rule installer template",
+  "kind": "rule",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "portfolio",
+    "distribution"
+  ],
+  "activation": "manual",
+  "description": "Rule copied into other repositories by install_cursor_rules",
+  "source_path": "templates/cursor/rules/projectbrain-portfolio.mdc",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/templates/cursor/rules/projectbrain-portfolio.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

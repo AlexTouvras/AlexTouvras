@@ -1,0 +1,16 @@
+{
+  "name": "alextouvras-governance",
+  "owner": {
+    "name": "Alex Touvras"
+  },
+  "metadata": {
+    "description": "Context-budget guidance for portfolio rules, skills, and automations. The directive archive itself is not installed into agent context."
+  },
+  "plugins": [
+    {
+      "name": "context-governance",
+      "source": "plugins/context-governance",
+      "description": "Keep always-on rules inside a per-repository token budget."
+    }
+  ]
+}

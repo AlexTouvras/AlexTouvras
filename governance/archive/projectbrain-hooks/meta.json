@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-hooks",
+  "title": "ProjectBrain session hooks",
+  "kind": "hook",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "session"
+  ],
+  "activation": "session",
+  "description": "sessionStart and sessionEnd hooks for ProjectBrain",
+  "source_path": ".cursor/hooks.json",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/.cursor/hooks.json",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}
