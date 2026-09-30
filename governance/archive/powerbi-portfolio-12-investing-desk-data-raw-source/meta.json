@@ -1,10 +1,11 @@
 {
   "id": "powerbi-portfolio-12-investing-desk-data-raw-source",
   "title": "Investing desk \u2014 dual sources",
-  "kind": "doc",
+  "kind": "source",
   "repo": "AlexTouvras/powerbi-portfolio",
   "topics": [
-    "powerbi"
+    "powerbi",
+    "source"
   ],
   "activation": "manual",
   "description": "Investing desk \u2014 dual sources",
@@ -12,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/12-investing-desk/data/raw/SOURCE.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

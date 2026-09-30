@@ -1,0 +1,17 @@
+{
+  "id": "ravens-docs-contracts-readme",
+  "title": "Ravens contracts",
+  "kind": "readme",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Ravens contracts",
+  "source_path": "docs/contracts/README.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/docs/contracts/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

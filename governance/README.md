@@ -14,11 +14,11 @@ Open http://127.0.0.1:8765
 
 ## What is imported
 
-Rules, agent files, automation prompts, and contracts from the public repositories, plus every other public `.md` file as kind `doc`. Docs are listed so they can be filtered by repository and topic. They are not part of the always-on budget.
+Rules, agent files, automation prompts, and contracts from the public repositories, plus the other public Markdown files. Grouped notes are not part of the always-on budget.
 
-`AlexTouvras/Orbit` returns 404 with the credential that built this archive. The Orbit entry records the paths public files already name (the `website/.cursor/automations/` backups and the storytelling sync). It does not contain Orbit's own files.
+Orbit and ravens are included from their `.cursor` folders: rules, skills, automation JSON, plus the agent role files and contracts those folders point at. Similar notes are grouped (readme, state, architecture, charter, brief, spec, schema, runbook, discovery, source, log). Anything that does not match a shared pattern stays kind `doc`.
 
-No `SKILL.md` files were in the public repositories. Live Automations dashboard objects and the User Rules stored in Cursor Customize are outside this import. The ProjectBrain user-rule file is the template, not a live export.
+Personal skills named by Orbit rules (`orbit-essay`, `anti-ai-slop-writing`, `fable-method`) are not files in these repositories. Live Automations dashboard objects and the User Rules stored in Cursor Customize are outside this import.
 
 ## Budget
 
@@ -35,6 +35,7 @@ python3 governance/tests/test_catalog.py
 ```bash
 python3 governance/import_harvest.py /path/to/harvest
 python3 governance/import_markdown.py
+python3 governance/categorize.py
 ```
 
 `import_markdown.py` reads public GitHub repositories and adds markdown that is not already archived. The harvest directory for `import_harvest.py` is organized as `<repo>/<path-in-repo>`.

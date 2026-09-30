@@ -1,0 +1,18 @@
+{
+  "id": "orbit-cursor-rules-orbit-essays",
+  "title": "Orbit essays \u2014 skill router",
+  "kind": "rule",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "rule",
+    "essay"
+  ],
+  "activation": "glob",
+  "description": "Orbit essays \u2014 skill router",
+  "source_path": ".cursor/rules/orbit-essays.mdc",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/rules/orbit-essays.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

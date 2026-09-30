@@ -1,0 +1,8 @@
+---
+description: Visual storytelling for Orbit public pages and live desks
+globs: src/app/page.tsx,src/app/about/**/*.tsx,src/app/portfolio/**/*.tsx,src/components/hub/**/*.tsx,src/components/story/**/*.tsx,src/components/live/**/*.tsx,src/components/about/**/*.tsx
+---
+
+When changing Hub, About, Portfolio, or live desks, read `.cursor/skills/visual-storytelling/SKILL.md`.
+
+Public pages are chaptered stories (one idea per beat, oversized type, numbered craft). Do not relapse into 3-up `GlassCard` grids on Hub. Live desks keep the dataset **question** as `h1` via `DeskStoryHeader`. Field-card competency links stay plain `<a>`. Studio, week log, `/card`, and `/qr-code` stay tools.

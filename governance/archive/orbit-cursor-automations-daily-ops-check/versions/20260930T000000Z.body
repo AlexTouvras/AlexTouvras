@@ -1,0 +1,27 @@
+{
+  "name": "Daily ops check",
+  "description": "08:00 Helsinki: read docs/ops/fleet.yaml, check GitHub + Slack, post issues only to #ops-channel with a proposed fix. Propose-only — never apply the fix.",
+  "workflow": {
+    "triggers": [
+      {
+        "cron": {
+          "cron": "0 5 * * *",
+          "note": "Prefer UI Daily 08:00 local so DST tracks. 0 5 * * * = 08:00 EEST / 07:00 EET."
+        }
+      }
+    ],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "Before other steps: read `.state/AUTOMATION_CONTRACT.md`. Do not use ProjectBrain MCP.\n\nDaily fleet ops check for Alex Touvras.\n\nRepository: AlexTouvras/Orbit (branch main).\nFollow docs/ops/daily-check.md exactly. Registry: docs/ops/fleet.yaml.\n\nHard rules:\n- Propose-only. Do not commit, push, open a PR, merge, send email, or start another automation.\n- Post to Slack #ops-channel only when something is wrong. Silent when green.\n- Infer runs from GitHub (gh) and Slack. Do not invent Cursor automation history.\n- Cloud cannot see ~/.cursor — missing local paths are not failures.\n- Do not auto-fix if someone reacted with a checkmark. v1 reports only.\n\nSteps:\n1. git pull. Read docs/ops/fleet.yaml and docs/ops/daily-check.md.\n2. Check in-scope jobs for Europe/Helsinki today.\n3. For each issue, include evidence (run id, Slack permalink, or commit) and the registry proposed_fix.\n4. If any issues: one #ops-channel digest plus a thread per issue with ✅ follow-up / ⏸️ snooze / ignore = later.\n5. Update memories (last_check, snoozes). Stop.\n\nDone when every in-scope job has a status and #ops-channel is either silent or actionable."
+      }
+    ],
+    "model": "",
+    "agentOptions": { "skipInstall": true },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "AlexTouvras/Orbit",
+      "branch": "main"
+    }
+  }
+}

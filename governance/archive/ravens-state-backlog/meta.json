@@ -1,0 +1,17 @@
+{
+  "id": "ravens-state-backlog",
+  "title": "Backlog",
+  "kind": "state",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "state"
+  ],
+  "activation": "manual",
+  "description": "Backlog",
+  "source_path": ".state/BACKLOG.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/.state/BACKLOG.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "orbit-cursor-skills-visual-storytelling-skill",
+  "title": "Visual storytelling (Orbit)",
+  "kind": "skill",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "storytelling",
+    "skill"
+  ],
+  "activation": "agent",
+  "description": "Visual storytelling (Orbit)",
+  "source_path": ".cursor/skills/visual-storytelling/SKILL.md",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/skills/visual-storytelling/SKILL.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:46:27Z"
+}

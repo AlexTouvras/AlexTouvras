@@ -24,6 +24,17 @@ KINDS = (
     "automation",
     "agents",
     "contract",
+    "state",
+    "architecture",
+    "charter",
+    "brief",
+    "spec",
+    "schema",
+    "runbook",
+    "discovery",
+    "source",
+    "log",
+    "readme",
     "user-rule",
     "hook",
     "doc",
@@ -91,8 +102,23 @@ def activation_from_frontmatter(kind: str, frontmatter: dict[str, str]) -> str:
         return "user"
     if kind == "contract":
         return "on-run"
-    if kind == "doc":
+    if kind in {
+        "doc",
+        "readme",
+        "state",
+        "architecture",
+        "charter",
+        "brief",
+        "discovery",
+        "spec",
+        "source",
+        "log",
+        "schema",
+        "runbook",
+    }:
         return "manual"
+    if kind == "skill":
+        return "agent"
     if kind == "agents":
         return "always"
     always = frontmatter.get("alwaysApply", "").lower()
@@ -105,6 +131,63 @@ def activation_from_frontmatter(kind: str, frontmatter: dict[str, str]) -> str:
     if description:
         return "agent"
     return "manual"
+
+
+_KEEP_KINDS = {"rule", "skill", "automation", "hook", "user-rule", "agents", "contract"}
+
+
+def suggest_category(source_path: str, current_kind: str) -> tuple[str, str] | None:
+    """Upgrade an uncategorised file to a shared kind. None means leave it."""
+    if current_kind in _KEEP_KINDS:
+        return None
+    path = (source_path or "").replace("\\", "/").lstrip("/")
+    if not path:
+        return None
+    name = path.rsplit("/", 1)[-1]
+    lower = f"/{path.lower()}"
+    if name in {"AGENTS.md", "CLAUDE.md"}:
+        return "agents", "always"
+    if name == "AGENT_RULES.md":
+        return "agents", "manual"
+    if name.endswith(".md") and "/agents/" in lower:
+        return "agents", "agent"
+    if (
+        name == "AUTOMATION_CONTRACT.md"
+        or "automation-contract" in lower
+        or "cursor-friday" in lower
+        or "weekly-refresh-prompt" in lower
+        or "weekly-review-prompt" in lower
+        or lower.endswith("holdings_automation.md")
+        or lower.endswith("/prompt.md")
+    ):
+        return "contract", "on-run"
+    if name in {"CURRENT_STATE.md", "BACKLOG.md"} or "/.state/" in lower:
+        return "state", "manual"
+    if name.lower() == "readme.md":
+        return "readme", "manual"
+    if "charter" in lower:
+        return "charter", "manual"
+    if name == "ARCHITECTURE.md" or "/architecture/" in lower:
+        return "architecture", "manual"
+    if "/_brief/" in lower or "theme-review" in lower:
+        return "brief", "manual"
+    if lower.endswith("/essay-voice.md"):
+        return "skill", "manual"
+    if "discovery-report" in lower or name.lower().startswith("judgment"):
+        return "discovery", "manual"
+    if "/decision-specs/" in lower or "spec" in name.lower():
+        return "spec", "manual"
+    if name in {"SOURCE.md", "DQ_NOTES.md", "DATASETS.md", "analysis_case_summary.md"}:
+        return "source", "manual"
+    if name == "AGENT_LOG.md":
+        return "log", "manual"
+    if name.lower() == "runbook.md":
+        return "runbook", "manual"
+    if "/docs/contracts/" in lower:
+        return "schema", "manual"
+    if "/.cursor/skills/" in lower:
+        return ("skill", "agent") if name == "SKILL.md" else ("skill", "manual")
+    return None
 
 
 def _sync_frontmatter(body: str, activation: str, kind: str) -> str:
@@ -249,9 +332,8 @@ def catalog() -> dict:
         "kinds": list(KINDS),
         "activations": list(ACTIVATIONS),
         "gaps": [
-            "AlexTouvras/Orbit is not readable with this credential (GitHub 404). Its archive entry lists only the paths named from public repos.",
-            "Other public markdown is listed as kind doc and is not counted in the always-on budget.",
-            "No SKILL.md files were found in the scanned public repositories.",
+            "Orbit rules name personal skills that are not files in these repositories: orbit-essay, anti-ai-slop-writing, and fable-method.",
+            "Files that do not match a shared pattern stay kind doc.",
             "Cursor User Rules live in Customize, not in git. The archived user-rule text is the ProjectBrain template.",
             "Saving an automation prompt updates this archive. It does not change the live Cursor Automation.",
         ],
@@ -330,8 +412,9 @@ def _snapshot(folder: Path, body: str, note: str, meta: dict) -> None:
 
 def _description_from_body(body: str, title: str) -> str:
     frontmatter, rest = parse_frontmatter(body)
-    if frontmatter.get("description"):
-        return frontmatter["description"]
+    description = frontmatter.get("description", "")
+    if description and description not in {">", ">-", "|", "|-"}:
+        return description
     for line in rest.splitlines():
         stripped = line.strip().lstrip("#").strip()
         if stripped:

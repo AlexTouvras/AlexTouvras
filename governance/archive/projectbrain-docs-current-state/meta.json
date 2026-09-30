@@ -1,10 +1,11 @@
 {
   "id": "projectbrain-docs-current-state",
   "title": "Current state",
-  "kind": "doc",
+  "kind": "state",
   "repo": "AlexTouvras/ProjectBrain",
   "topics": [
-    "projectbrain"
+    "projectbrain",
+    "state"
   ],
   "activation": "manual",
   "description": "Current state",
@@ -12,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/docs/CURRENT_STATE.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

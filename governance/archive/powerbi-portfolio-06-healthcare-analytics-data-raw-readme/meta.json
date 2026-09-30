@@ -1,7 +1,7 @@
 {
   "id": "powerbi-portfolio-06-healthcare-analytics-data-raw-readme",
   "title": "Healthcare raw data",
-  "kind": "doc",
+  "kind": "readme",
   "repo": "AlexTouvras/powerbi-portfolio",
   "topics": [
     "powerbi",
@@ -13,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/06-healthcare-analytics/data/raw/README.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

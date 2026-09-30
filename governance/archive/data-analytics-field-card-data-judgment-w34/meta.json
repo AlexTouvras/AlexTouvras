@@ -1,10 +1,11 @@
 {
   "id": "data-analytics-field-card-data-judgment-w34",
   "title": "W34 judgment (2026-08-21)",
-  "kind": "doc",
+  "kind": "discovery",
   "repo": "AlexTouvras/data-analytics-field-card",
   "topics": [
-    "field-card"
+    "field-card",
+    "discovery"
   ],
   "activation": "manual",
   "description": "W34 judgment (2026-08-21)",
@@ -12,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/data-analytics-field-card/blob/main/data/judgment-W34.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

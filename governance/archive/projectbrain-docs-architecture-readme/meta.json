@@ -1,7 +1,7 @@
 {
   "id": "projectbrain-docs-architecture-readme",
   "title": "Architecture diagrams (canonical)",
-  "kind": "doc",
+  "kind": "readme",
   "repo": "AlexTouvras/ProjectBrain",
   "topics": [
     "projectbrain",
@@ -14,5 +14,5 @@
   "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/docs/architecture/README.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

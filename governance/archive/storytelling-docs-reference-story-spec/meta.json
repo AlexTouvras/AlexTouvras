@@ -1,10 +1,11 @@
 {
   "id": "storytelling-docs-reference-story-spec",
   "title": "Reference Story \u2014 When Rates Rise",
-  "kind": "doc",
+  "kind": "spec",
   "repo": "AlexTouvras/storytelling",
   "topics": [
-    "storytelling"
+    "storytelling",
+    "spec"
   ],
   "activation": "manual",
   "description": "Reference Story \u2014 When Rates Rise",
@@ -12,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/reference-story-spec.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

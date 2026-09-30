@@ -1,0 +1,18 @@
+{
+  "id": "ravens-cursor-rules-00-state-management",
+  "title": "State management",
+  "kind": "rule",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "rule",
+    "state"
+  ],
+  "activation": "always",
+  "description": "File-based project state \u2014 read/write .state/ instead of chat history",
+  "source_path": ".cursor/rules/00-state-management.mdc",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/.cursor/rules/00-state-management.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

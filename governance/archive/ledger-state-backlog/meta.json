@@ -1,7 +1,7 @@
 {
   "id": "ledger-state-backlog",
   "title": "\ufeff# Backlog",
-  "kind": "doc",
+  "kind": "state",
   "repo": "AlexTouvras/ledger",
   "topics": [
     "ledger",
@@ -13,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/ledger/blob/main/.state/BACKLOG.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

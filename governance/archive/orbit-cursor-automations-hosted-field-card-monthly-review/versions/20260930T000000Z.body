@@ -1,0 +1,20 @@
+{
+  "name": "Monthly hosted field card discovery",
+  "description": "1st of the month 17:00: research the SDLC life cycle and decide update or no-change. Credit, Story, and Bayes: judge picker/jobs. Stamp all four. Not stamp-only.",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 14 1 * *" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "AUTOMATION_CONTRACT\n\nBefore other steps: read `.state/AUTOMATION_CONTRACT.md`. Do not use ProjectBrain MCP.\n\nMonthly discovery of Orbit-hosted field cards for Alex Touvras.\n\nRepository: AlexTouvras/Orbit (branch main).\nFollow docs/architecture/field-card-review.md section “Monthly hosted cards”. That section is the procedure if this prompt is shorter.\n\nPublic cadence is monthly. Do not write “week of” or “Weekly review” on the cards. Research the SDLC life cycle, then judge. Not a stamp-only bump.\n\nCards (Orbit paths, not source repos):\n- public/sdlc-field-card/index.html — H1 “Write the plan before the code”; opening PLAN → SPEC → DESIGN → BUILD → TEST; read PLAYBOOK.md including “Monthly research” and keep its three lines (plan fits on a page a person will review; a spec file is not shared understanding; a person drops tests that do not fail for the right reason); job table still a written plan, design, build, and test; cutover stays on Delivery; do not add an AI-native brochure (intent files, continuous evals, REVIEW.md)\n- public/credit-risk-field-card/index.html — H1 “Credit risk is for a lifetime. Act early.”; spine ORIGINATE → MONITOR → STAGE → PROVISION\n- public/story-field-card/index.html — Hub competency Story; H1 “A point of view, not a chart”; spine DWELL → CLAIM → SKETCH → LEAD → OPEN; read PLAYBOOK.md; charts and themes are lanes; essays stay prose\n- public/bayes-field-card/index.html — method card, not Hub; H1 “Bayesian optimisation is a budget of trials, not a search of space”; spine BOUND → MODEL → ACQ → STOP; read PLAYBOOK.md; not a BoTorch brochure\n\nSteps:\n1. Prefer open branch chore/monthly-field-cards-YYYY-MM for this calendar month; else create it from main.\n2. SDLC research (required, once this month): follow public/sdlc-field-card/PLAYBOOK.md section “Monthly research”. Open real sources on plan, specify, design, build, and test, including security in that order. Then assess whether the picker or job table should change. Credit, Story, and Bayes: read PLAYBOOK.md when one exists and judge picker and jobs against the spine. Do not invent docs URLs.\n3. If a card should change, edit the HTML. If not, leave picker/jobs as-is. SDLC no-change is allowed only after the research note exists.\n4. Always bump #version-stamp to Reviewed <this month> · Next: <next month>. Changed line: “Monthly review — picker and jobs unchanged” unless you actually changed that card’s HTML.\n5. Do not edit the three source-repo cards (AI / analytics / delivery) except to keep inbound Bayes links if they already exist.\n6. Do not add a Hub competency tile for Bayesian optimisation. Do not register FIELD_CARDS.\n7. Commit/push to the monthly PR only. Write ## Summary with Decision: update|no-change per card. For SDLC also list the URLs you opened and one sentence on why the card did or did not change. “Did not look” is not a decision.\n8. Stop. Do not merge. Do not Slack-Approve.\n\nDone when SDLC was researched, every hosted card was judged and stamped for this month, and the PR is open."
+      }
+    ],
+    "model": "",
+    "agentOptions": { "skipInstall": false },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "AlexTouvras/Orbit",
+      "branch": "main"
+    }
+  }
+}

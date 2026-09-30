@@ -140,6 +140,39 @@ class CatalogTests(unittest.TestCase):
                 }
             )
 
+    def test_similar_docs_get_a_shared_kind(self) -> None:
+        self.assertEqual(catalog.suggest_category("README.md", "doc"), ("readme", "manual"))
+        self.assertEqual(
+            catalog.suggest_category(".state/BACKLOG.md", "doc"),
+            ("state", "manual"),
+        )
+        self.assertEqual(
+            catalog.suggest_category("docs/architecture/system-overview.md", "doc"),
+            ("architecture", "manual"),
+        )
+        self.assertEqual(
+            catalog.suggest_category("agents/huginn.md", "doc"),
+            ("agents", "agent"),
+        )
+        self.assertEqual(
+            catalog.suggest_category(".cursor/skills/visual-storytelling/SKILL.md", "doc"),
+            ("skill", "agent"),
+        )
+        self.assertEqual(
+            catalog.suggest_category("docs/contracts/signal.md", "doc"),
+            ("schema", "manual"),
+        )
+        self.assertEqual(
+            catalog.suggest_category("docs/essay-voice.md", "doc"),
+            ("skill", "manual"),
+        )
+        self.assertEqual(
+            catalog.suggest_category("_shared/themes/THEME-REVIEW.md", "doc"),
+            ("brief", "manual"),
+        )
+        self.assertIsNone(catalog.suggest_category("docs/FLAGSHIP.md", "doc"))
+        self.assertIsNone(catalog.suggest_category(".cursor/rules/core.mdc", "rule"))
+
     def test_doc_is_outside_the_always_on_budget(self) -> None:
         catalog.write_imported_item(
             {

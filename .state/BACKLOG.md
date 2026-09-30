@@ -5,7 +5,8 @@
 - [x] Edit, save, and restore versions in the archive UI
 - [x] Show per-repo always-on token budget
 - [x] List other public markdown files in the archive
-- [ ] Import AlexTouvras/Orbit once this credential can read it
+- [x] Import Orbit and ravens `.cursor` rules, skills, and automations
+- [x] Categorise similar docs and leave the rest as docs
 - [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo
 - [ ] Push an automation prompt to the live Cursor Automation

@@ -1,0 +1,35 @@
+---
+description: >-
+  Route Orbit Blog / Write / essay work to the right skill. Use when drafting or
+  rewriting writes/*.mdx, weekly Write drafts, IDE briefs, showcase posts,
+  responses to Related/RSS articles, or when the user asks for an essay.
+globs: src/content/writes/**/*.mdx,data/weekly-write-*.md,data/weekly-write-*.json,CONTENT.md
+alwaysApply: false
+---
+
+# Orbit essays — skill router
+
+Do **not** improvise a generic blog post. Open the shared voice bar, then the matching skill.
+
+## Shared bar (always)
+
+1. Read `docs/essay-voice.md` (compelling / human gates, **stranger test / primary reader**, topic balance, **and** thesis voice fingerprint).
+2. Open personal skill `anti-ai-slop-writing` before drafting.
+3. Open at least one peer Write under `src/content/writes/` for tone (prefer same category; avoid Power BI peers for non-Power-BI theses).
+4. Apply thesis *reasoning* (false belief → method → counter-case → limit); never thesis *form* (lit review, “this paper examines…”).
+
+## Which skill
+
+| Situation | Skill | Output |
+|-----------|--------|--------|
+| Weekly Signal / IDE brief / `weekly:notify-draft` | **`weekly-write-essay`** (`.cursor/skills/weekly-write-essay/`) | `data/weekly-write-draft.json` → Slack Approve |
+| Showcase project, respond to Related/RSS, rewrite a Write, on-demand Blog MDX | **`orbit-essay`** (`~/.cursor/skills/orbit-essay/`) | `src/content/writes/{slug}.mdx` |
+
+If both could apply: weekly brief present → weekly skill. Otherwise → `orbit-essay`.
+
+## Hard constraints
+
+- Body starts with `## The question`; ends with a takeaway section.
+- One thesis — not a digest or link roundup.
+- Write for an external stranger: gloss workshop nicknames; no tool catalogs; category matches the decision rule (rotate away from Power BI defaults).
+- No commit / Slack publish / live deploy without explicit user AUTH (weekly path: Slack Approve only).

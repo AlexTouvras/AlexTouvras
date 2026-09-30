@@ -12,7 +12,8 @@ Directive archive for skills, rules, and automation prompts.
 
 - Public corpus imported into `governance/archive/`
 - Public markdown listed as kind `doc`
-- Orbit recorded as unreadable; known paths listed from public repos
+- Orbit and ravens `.cursor` rules, skills, and automations imported
+- Similar docs grouped; leftovers stay kind doc
 - Local editor with filters, always-on budget, save, and version restore
 - Context-budget skill packaged as a Cursor plugin
 

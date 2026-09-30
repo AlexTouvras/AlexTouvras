@@ -1,0 +1,17 @@
+{
+  "id": "ravens-docs-contracts-inbox",
+  "title": "Contract: inbox day file",
+  "kind": "schema",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "schema"
+  ],
+  "activation": "manual",
+  "description": "Contract: inbox day file",
+  "source_path": "docs/contracts/inbox.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/docs/contracts/inbox.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:46:27Z"
+}

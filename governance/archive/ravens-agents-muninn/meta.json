@@ -1,0 +1,18 @@
+{
+  "id": "ravens-agents-muninn",
+  "title": "Muninn \u2014 Memory (daily distill)",
+  "kind": "agents",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "agents",
+    "muninn"
+  ],
+  "activation": "agent",
+  "description": "Muninn \u2014 Memory (daily distill)",
+  "source_path": "agents/muninn.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/agents/muninn.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

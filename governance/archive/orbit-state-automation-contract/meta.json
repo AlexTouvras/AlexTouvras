@@ -1,0 +1,18 @@
+{
+  "id": "orbit-state-automation-contract",
+  "title": "Automation contract",
+  "kind": "contract",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "contract",
+    "automation"
+  ],
+  "activation": "on-run",
+  "description": "Automation contract",
+  "source_path": ".state/AUTOMATION_CONTRACT.md",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.state/AUTOMATION_CONTRACT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,14 @@
+---
+description: Pointer to Orbit architecture registry and portfolio sync
+alwaysApply: true
+---
+
+# Architecture documentation
+
+This repo owns the **portfolio sync hub**: `architecture-projects.json` and `scripts/architecture/`.
+
+Per-project canonical diagrams live in each repo under `docs/architecture/`.
+
+After editing any project's diagrams: `npm run arch:validate-all` then `npm run arch:sync-all`.
+
+This project's own diagrams: `docs/architecture/`.

@@ -1,0 +1,19 @@
+{
+  "id": "orbit-cursor-skills-weekly-write-essay-skill",
+  "title": "Weekly Write essay (Orbit)",
+  "kind": "skill",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "essay",
+    "writing",
+    "skill"
+  ],
+  "activation": "agent",
+  "description": "Weekly Write essay (Orbit)",
+  "source_path": ".cursor/skills/weekly-write-essay/SKILL.md",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/skills/weekly-write-essay/SKILL.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:46:27Z"
+}

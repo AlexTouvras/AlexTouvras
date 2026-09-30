@@ -1,0 +1,18 @@
+{
+  "id": "orbit-cursor-rules-weekly-write-ide",
+  "title": "Weekly Write \u2014 IDE fallback",
+  "kind": "rule",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "rule",
+    "writing"
+  ],
+  "activation": "glob",
+  "description": "Weekly Write \u2014 IDE fallback",
+  "source_path": ".cursor/rules/weekly-write-ide.mdc",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/rules/weekly-write-ide.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

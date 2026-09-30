@@ -1,7 +1,7 @@
 {
   "id": "powerbi-portfolio-04-supply-chain-brief-report-spec",
   "title": "Report Spec \u2014 Logistics Pulse",
-  "kind": "doc",
+  "kind": "brief",
   "repo": "AlexTouvras/powerbi-portfolio",
   "topics": [
     "powerbi",
@@ -13,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/04-supply-chain/_brief/report-spec.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

@@ -1,7 +1,7 @@
 {
   "id": "powerbi-portfolio-docs-architecture-report-page-contract",
   "title": "Report page contract",
-  "kind": "doc",
+  "kind": "architecture",
   "repo": "AlexTouvras/powerbi-portfolio",
   "topics": [
     "powerbi",
@@ -13,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/docs/architecture/report-page-contract.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }

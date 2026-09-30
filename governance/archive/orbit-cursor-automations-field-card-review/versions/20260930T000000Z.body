@@ -1,0 +1,20 @@
+{
+  "name": "Monthly field card review",
+  "description": "1st of the month 18:00 review gate for the three source-repo field cards. Publishes via Apply review, including stamp-only months.",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 15 1 * *" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "AUTOMATION_CONTRACT\n\nBefore other steps: read `.state/AUTOMATION_CONTRACT.md`. Do not use ProjectBrain MCP.\n\nMonthly field card review for Alex Touvras.\n\nRepository: AlexTouvras/Orbit (branch main).\nFollow docs/architecture/field-card-review.md exactly.\n\nYou are the gate, not the author. Do not rewrite card HTML beyond a stamp-only bump when no PR exists. Do not gh pr merge.\n\nCards:\n- AlexTouvras/agentic-ai-field-card — H1 \"Agentic AI is a loop, not a menu\" (do not restore stack); spine RAG → AGENT → MCP → A2A\n- AlexTouvras/data-analytics-field-card — spine ASK → GRAIN → TRUTH → USE\n- AlexTouvras/technology-delivery-field-card — spine INTENT → WINDOW → PROOF → CUTOVER\n\nFor each card:\n1. Find an open PR whose head branch matches chore/monthly-refresh-YYYY-MM for this calendar month.\n2. If none: still ship the month. Create chore/monthly-refresh-YYYY-MM from main, bump the version stamp only (Reviewed <month> · Next: <next month>), write ## Summary with Decision: no-change, then Apply review approve. Do not skip the 1st with a silent live card. Do not open chore/weekly-refresh-*.\n3. If a PR exists: diff index.html on the PR head vs main. Read ## Summary.\n4. Publish (approve) if the live card should update, or the PR is stamp-only with spine intact. Keep previous (decline) only if the PR would make the live card worse.\n5. Apply with: gh workflow run \"Apply review\" --repo <repo> -f pr_number=<N> -f decision=approve|decline -f note=\"<one sentence>\"\n6. Orbit posts the FYI to Slack #orbit. Only post yourself if Apply review failed.\n\nDone when each of the three source-repo cards this month was approved or declined (including stamp-only).\n\nDo not stamp or rewrite Orbit-hosted SDLC, Credit Risk, or Bayesian optimisation cards on this run — those are the hosted monthly pass (`hosted-field-card-monthly-review.json`). Do not add a Hub competency for Bayes."
+      }
+    ],
+    "model": "",
+    "agentOptions": { "skipInstall": false },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "AlexTouvras/Orbit",
+      "branch": "main"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Monthly delivery field card content pass",
+  "description": "1st of the month 17:00 discovery for technology-delivery-field-card: discover, update vs no-change, PR Summary. 18:00 review publishes.",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 14 1 * *" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "AUTOMATION_CONTRACT\n\nBefore other steps: read `.state/AUTOMATION_CONTRACT.md` on the target repo. Do not use ProjectBrain MCP.\n\nMonthly Technology Delivery Field Card judgment for Alex Touvras.\n\nRepository: AlexTouvras/technology-delivery-field-card (branch main).\n\nFollow docs/weekly-refresh-prompt.md exactly (fail-closed). That playbook is still named weekly-refresh-prompt.md on the source repo until it is renamed; this run is monthly.\n\nHard rules:\n- This is NOT a Scrum / SAFe / Azure DevOps brochure. Keep INTENT → WINDOW → PROOF → CUTOVER as the stack.\n- Discovery alone is not enough — every run must end with an explicit update OR no HTML change decision in the PR ## Summary.\n- Do not merge. Do not force-push main. The 1st-of-month 18:00 review agent publishes or keeps the previous card.\n- Never invent docs URLs.\n- Public stamp is monthly (Reviewed <month> · Next: <next month>), not \"week of\".\n\nSteps:\n1. Prefer open branch chore/monthly-refresh-YYYY-MM for this calendar month; else create/update from main. Do not open chore/weekly-refresh-*.\n2. Run npm run discover; read data/discovery-report.md and index.html.\n3. Decide update vs no-change; write ## Summary either way.\n4. If updating index.html: tool picker ≤7 by constraint; bump version; fix Changed line; prefer delivery language (sequence, owner, window, rollback).\n5. Run node scripts/check-links.mjs on any URLs you touched.\n6. Update data/watchlist.json onCard flags as needed.\n7. Commit/push to the monthly PR only.\n8. Rewrite PR body with ## Summary and ## Card preview.\n9. Stop. Do not notify Slack. Do not merge.\n\nDone when discovery ran, Summary has the decision, link check is clean if HTML changed, and the PR is open for the 18:00 review agent."
+      }
+    ],
+    "model": "",
+    "agentOptions": { "skipInstall": false },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "AlexTouvras/technology-delivery-field-card",
+      "branch": "main"
+    }
+  }
+}

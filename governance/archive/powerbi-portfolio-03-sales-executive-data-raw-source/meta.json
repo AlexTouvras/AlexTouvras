@@ -1,10 +1,11 @@
 {
   "id": "powerbi-portfolio-03-sales-executive-data-raw-source",
   "title": "Sources (KDNuggets #3 Sales)",
-  "kind": "doc",
+  "kind": "source",
   "repo": "AlexTouvras/powerbi-portfolio",
   "topics": [
-    "powerbi"
+    "powerbi",
+    "source"
   ],
   "activation": "manual",
   "description": "Sources (KDNuggets #3 Sales)",
@@ -12,5 +13,5 @@
   "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/03-sales-executive/data/raw/SOURCE.md",
   "origin": "github",
   "imported_on": "2026-09-30",
-  "updated_at": "2026-09-30T00:00:00Z"
+  "updated_at": "2026-09-30T17:43:24Z"
 }
