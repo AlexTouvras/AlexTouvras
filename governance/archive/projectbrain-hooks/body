@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "py",
+        "args": [".cursor/hooks/session_hook.py"],
+        "env": {
+          "PROJECTBRAIN_DATA_DIR": ".projectbrain",
+          "PROJECTBRAIN_WORKSPACE": "."
+        }
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "py",
+        "args": [".cursor/hooks/session_hook.py"],
+        "env": {
+          "PROJECTBRAIN_DATA_DIR": ".projectbrain",
+          "PROJECTBRAIN_WORKSPACE": "."
+        }
+      }
+    ]
+  }
+}

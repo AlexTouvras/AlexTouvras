@@ -1,0 +1,18 @@
+{
+  "id": "storytelling-docs-decision-specs-home-credit-cutoff",
+  "title": "Decision Spec \u2014 Where should the cut-off sit?",
+  "kind": "spec",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "decisions",
+    "spec"
+  ],
+  "activation": "manual",
+  "description": "Decision Spec \u2014 Where should the cut-off sit?",
+  "source_path": "docs/decision-specs/home-credit-cutoff.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/decision-specs/home-credit-cutoff.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

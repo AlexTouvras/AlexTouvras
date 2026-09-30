@@ -1,0 +1,18 @@
+{
+  "id": "powerbi-portfolio-docs-architecture-readme",
+  "title": "Architecture diagrams (Power BI portfolio)",
+  "kind": "readme",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "architecture",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Architecture diagrams (Power BI portfolio)",
+  "source_path": "docs/architecture/README.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/docs/architecture/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

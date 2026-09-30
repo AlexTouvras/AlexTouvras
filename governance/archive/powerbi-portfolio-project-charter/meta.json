@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-project-charter",
+  "title": "Project charter \u2014 Power BI portfolio",
+  "kind": "charter",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "charter"
+  ],
+  "activation": "manual",
+  "description": "Project charter \u2014 Power BI portfolio",
+  "source_path": "PROJECT_CHARTER.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/PROJECT_CHARTER.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

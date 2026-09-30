@@ -1,0 +1,17 @@
+{
+  "id": "orbit-docs-product-agent-rules",
+  "title": "Agent Rules",
+  "kind": "agents",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "agents"
+  ],
+  "activation": "manual",
+  "description": "Agent Rules",
+  "source_path": "docs/product/AGENT_RULES.md",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/docs/product/AGENT_RULES.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

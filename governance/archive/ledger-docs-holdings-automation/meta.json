@@ -1,0 +1,18 @@
+{
+  "id": "ledger-docs-holdings-automation",
+  "title": "Ledger holdings then research (Cursor Automation)",
+  "kind": "contract",
+  "repo": "AlexTouvras/ledger",
+  "topics": [
+    "ledger",
+    "automation",
+    "governance"
+  ],
+  "activation": "on-run",
+  "description": "Ledger holdings then research (Cursor Automation)",
+  "source_path": "docs/HOLDINGS_AUTOMATION.md",
+  "source_url": "https://github.com/AlexTouvras/ledger/blob/main/docs/HOLDINGS_AUTOMATION.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

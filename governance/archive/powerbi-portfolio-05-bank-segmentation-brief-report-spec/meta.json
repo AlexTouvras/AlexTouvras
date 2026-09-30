@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-05-bank-segmentation-brief-report-spec",
+  "title": "Report Spec \u2014 Bank Value & Engagement",
+  "kind": "brief",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Report Spec \u2014 Bank Value & Engagement",
+  "source_path": "05-bank-segmentation/_brief/report-spec.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/05-bank-segmentation/_brief/report-spec.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

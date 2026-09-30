@@ -1,0 +1,18 @@
+{
+  "id": "ravens-agents-huginn",
+  "title": "Huginn \u2014 Thought (daily scan)",
+  "kind": "agents",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "agents",
+    "huginn"
+  ],
+  "activation": "agent",
+  "description": "Huginn \u2014 Thought (daily scan)",
+  "source_path": "agents/huginn.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/agents/huginn.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

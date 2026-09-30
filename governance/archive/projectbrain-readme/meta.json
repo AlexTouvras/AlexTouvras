@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-readme",
+  "title": "ProjectBrain",
+  "kind": "readme",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "ProjectBrain",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

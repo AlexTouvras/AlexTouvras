@@ -1,0 +1,18 @@
+{
+  "id": "data-analytics-field-card-docs-cursor-friday-automation",
+  "title": "Cursor Automation \u2014 weekly analytics field card",
+  "kind": "contract",
+  "repo": "AlexTouvras/data-analytics-field-card",
+  "topics": [
+    "field-card",
+    "automation",
+    "governance"
+  ],
+  "activation": "on-run",
+  "description": "Cursor Automation \u2014 weekly analytics field card",
+  "source_path": "docs/cursor-friday-automation.md",
+  "source_url": "https://github.com/AlexTouvras/data-analytics-field-card/blob/main/docs/cursor-friday-automation.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "orbit-docs-essay-voice",
+  "title": "Orbit essay voice (shared)",
+  "kind": "skill",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "essay",
+    "skill"
+  ],
+  "activation": "manual",
+  "description": "Orbit essay voice (shared)",
+  "source_path": "docs/essay-voice.md",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/docs/essay-voice.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:46:27Z"
+}

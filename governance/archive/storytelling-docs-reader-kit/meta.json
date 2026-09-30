@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-reader-kit",
+  "title": "Reader kit",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Reader kit",
+  "source_path": "docs/READER_KIT.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/READER_KIT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

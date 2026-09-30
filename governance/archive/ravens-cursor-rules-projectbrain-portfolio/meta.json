@@ -1,0 +1,18 @@
+{
+  "id": "ravens-cursor-rules-projectbrain-portfolio",
+  "title": "ProjectBrain Portfolio",
+  "kind": "rule",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "rule",
+    "portfolio"
+  ],
+  "activation": "always",
+  "description": "ProjectBrain portfolio memory \u2014 MCP tools, playbook winners, cross-project learnings",
+  "source_path": ".cursor/rules/projectbrain-portfolio.mdc",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/.cursor/rules/projectbrain-portfolio.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

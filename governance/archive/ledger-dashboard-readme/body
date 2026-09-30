@@ -1,0 +1,40 @@
+# Ledger static site (Vercel)
+
+Two surfaces under `dashboard/`:
+
+| Path | Audience | Contents |
+|------|----------|----------|
+| `/` | Local / private cockpit | Sim equity curves (`invest sim`) |
+| `/research` | **Public / portfolio** | Strategy selection cycle with **history** — no broker names or EUR amounts |
+
+## Publish a research run
+
+```powershell
+invest research --publish-orbit
+```
+
+Writes:
+
+- Private: `reports/research_cycle.html`, `proposal.html`, …
+- Public: `dashboard/research/data/latest.json`
+- Archive: `dashboard/research/data/history/<id>.json`
+- Index: `dashboard/research/data/index.json` (history dropdown)
+- Orbit copy: `public/ledger-research` in the Orbit checkout (`ORBIT_ROOT` or sibling `website` / `Orbit`)
+
+Commit and push **Orbit `main`** (`public/ledger-research` only, no PR) so [alextouvras.com/ledger-research](https://alextouvras.com/ledger-research) updates. The Slack holdings automation is supposed to do that push.
+
+Standing prompt: [`docs/HOLDINGS_AUTOMATION.md`](../docs/HOLDINGS_AUTOMATION.md).
+
+## Deploy
+
+```bash
+npx vercel deploy dashboard --prod
+```
+
+Then link `https://<your-project>.vercel.app/research` from your website.
+
+## Privacy rules (public page)
+
+Shown: strategy KPIs, indexed equity chart, decision rationale, ticker actions with % weight deltas and momentum ranks.
+
+Hidden: broker names (Nordnet / Saxo / OP), absolute € amounts, cash/book totals, capital sleeve map.

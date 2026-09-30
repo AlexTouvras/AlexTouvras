@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-03-sales-executive-brief-theme-review",
+  "title": "Theme review \u2014 Nordic-Finesse \u2192 Nordic-Boardroom",
+  "kind": "brief",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Theme review \u2014 Nordic-Finesse \u2192 Nordic-Boardroom",
+  "source_path": "03-sales-executive/_brief/THEME-REVIEW.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/03-sales-executive/_brief/THEME-REVIEW.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

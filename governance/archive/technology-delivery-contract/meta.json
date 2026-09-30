@@ -1,0 +1,18 @@
+{
+  "id": "technology-delivery-contract",
+  "title": "Delivery automation contract",
+  "kind": "contract",
+  "repo": "AlexTouvras/technology-delivery-field-card",
+  "topics": [
+    "governance",
+    "allowlist",
+    "delivery"
+  ],
+  "activation": "on-run",
+  "description": "Read order, write order, and scope for the weekly delivery automation",
+  "source_path": ".state/AUTOMATION_CONTRACT.md",
+  "source_url": "https://github.com/AlexTouvras/technology-delivery-field-card/blob/main/.state/AUTOMATION_CONTRACT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "technology-delivery-field-card-state-backlog",
+  "title": "Backlog",
+  "kind": "state",
+  "repo": "AlexTouvras/technology-delivery-field-card",
+  "topics": [
+    "field-card",
+    "state"
+  ],
+  "activation": "manual",
+  "description": "Backlog",
+  "source_path": ".state/BACKLOG.md",
+  "source_url": "https://github.com/AlexTouvras/technology-delivery-field-card/blob/main/.state/BACKLOG.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

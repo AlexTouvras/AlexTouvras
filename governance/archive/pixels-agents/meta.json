@@ -1,0 +1,17 @@
+{
+  "id": "pixels-agents",
+  "title": "Next.js agent rules",
+  "kind": "agents",
+  "repo": "AlexTouvras/pixels",
+  "topics": [
+    "nextjs",
+    "generated"
+  ],
+  "activation": "always",
+  "description": "Generated Next.js agent instructions",
+  "source_path": "AGENTS.md",
+  "source_url": "https://github.com/AlexTouvras/pixels/blob/main/AGENTS.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

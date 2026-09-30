@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-02-ecommerce-churn-brief-report-spec",
+  "title": "Report Spec \u2014 E-commerce Churn Retention",
+  "kind": "brief",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Report Spec \u2014 E-commerce Churn Retention",
+  "source_path": "02-ecommerce-churn/_brief/report-spec.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/02-ecommerce-churn/_brief/report-spec.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

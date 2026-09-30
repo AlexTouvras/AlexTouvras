@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-06-healthcare-analytics-readme",
+  "title": "06 \u2013 Care Pulse (Hospital Readmission)",
+  "kind": "readme",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "06 \u2013 Care Pulse (Hospital Readmission)",
+  "source_path": "06-healthcare-analytics/README.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/06-healthcare-analytics/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

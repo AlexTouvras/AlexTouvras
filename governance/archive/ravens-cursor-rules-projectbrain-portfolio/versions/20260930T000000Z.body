@@ -1,0 +1,67 @@
+---
+description: ProjectBrain portfolio memory — MCP tools, playbook winners, cross-project learnings
+alwaysApply: true
+---
+
+# ProjectBrain Portfolio
+
+Projects are tracked in **ProjectBrain** (portfolio data: `Memory/.projectbrain/`). Use the **projectbrain** MCP server.
+
+## Magic phrases (user types one line — you do the rest)
+
+**`ralph loop`** (or `next story`, `run ralph`) — autonomous iteration. Do immediately:
+1. Read `scripts/ralph/PROMPT.md`, `prd.json`, `progress.txt`
+2. Implement **one** highest-priority story where `passes: false`
+3. Run `py scripts/ralph/validate.py`, commit, mark story `passes: true`
+4. Output `<promise>COMPLETE</promise>` only when all stories pass
+
+**`new project`** (or `set up project`, `initialize project`) — first time in a repo. Do immediately:
+
+**Step 0 — search before build (required):** Use web search to find existing open-source projects, templates, or tools that already solve the same problem. Search GitHub, awesome-lists, and recent blog posts. Present 3–5 candidates with: name, URL, license, last activity, fit summary. **Prefer clone/fork** when a strong match exists — do not greenfield if a maintained repo covers ≥80% of the need.
+
+- If a good match exists: recommend cloning it (`git clone <url>`), open that folder in Cursor, then run `setup_new_project` there. `record_decision` with why you chose clone vs build.
+- If nothing fits: proceed in the current workspace with `setup_new_project`.
+- Pass `vision` from text after the phrase into `setup_new_project`.
+
+Then summarize: research findings, charter, kit files, rules, playbook tips. Tell user to edit `CHARTER.md`, then **`continue`** in the next chat.
+
+Example: `new project — habit tracker for daily routines`
+
+**`continue`** (or `pick up`, `resume`) — new chat bootstrap. Do immediately, no clarifying questions:
+1. `get_session_handoff`
+2. Read `docs/CURRENT_STATE.md` (and last `docs/AGENT_LOG.md` entry if needed)
+3. Reply with: what's in progress, next step from CURRENT_STATE, then start that work
+
+**`wrap up`** (or `done`, `hand off`) — end session. Do immediately:
+1. Summarize what was done this chat
+2. `end_session_handoff` with done / in_progress / next_steps / built / why
+3. Confirm CURRENT_STATE was updated; tell user to open a new chat and type **`continue`**
+
+Optional: user can add a task after the phrase, e.g. `continue — fix the login bug` (bootstrap first, then that task).
+
+## Session start (low tokens — do not rely on chat history)
+
+If the user did not use a magic phrase, still call `get_session_handoff` before substantive work.
+Use `get_portfolio_summary` only when cross-project impact is likely.
+
+## Session end (required before long breaks or new chat)
+
+If the user did not use `wrap up`, call `end_session_handoff` before they leave.
+Prefer a new chat for the next task; user types **`continue`** to resume.
+
+## During work
+
+- `semantic_search(limit=3)` before dumping portfolio context.
+- `record_decision` for choices that must stick across chats.
+- `scaffold_project_kit` once if docs/ kit files are missing.
+
+## Repo kit (required artifacts)
+
+- `docs/ARCHITECTURE.md` — living index (link to details, don't paste code)
+- `docs/AGENT_LOG.md` — what was built and why
+- `docs/CURRENT_STATE.md` — handoff for next session
+
+## Constraints
+
+- Do not ask the user to run CLI — use MCP.
+- Do not rely on conversation memory for project state — use handoff files.

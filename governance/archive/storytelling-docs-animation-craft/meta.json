@@ -1,0 +1,16 @@
+{
+  "id": "storytelling-docs-animation-craft",
+  "title": "Animation craft (Layer 2)",
+  "kind": "doc",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling"
+  ],
+  "activation": "manual",
+  "description": "Animation craft (Layer 2)",
+  "source_path": "docs/ANIMATION_CRAFT.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/docs/ANIMATION_CRAFT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

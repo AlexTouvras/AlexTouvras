@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-01-finance-brief-report-spec",
+  "title": "Report Spec \u2014 Nordic Equity (Live Market Board)",
+  "kind": "brief",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "brief"
+  ],
+  "activation": "manual",
+  "description": "Report Spec \u2014 Nordic Equity (Live Market Board)",
+  "source_path": "01-finance/_brief/report-spec.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/01-finance/_brief/report-spec.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

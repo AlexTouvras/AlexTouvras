@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-04-supply-chain-data-raw-source",
+  "title": "Supply chain \u2014 raw sources",
+  "kind": "source",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "source"
+  ],
+  "activation": "manual",
+  "description": "Supply chain \u2014 raw sources",
+  "source_path": "04-supply-chain/data/raw/SOURCE.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/04-supply-chain/data/raw/SOURCE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

@@ -1,0 +1,17 @@
+---
+description: >-
+  Weekly Write IDE fallback: when Gemini fails or weekly-write-ide-brief exists,
+  use weekly-write-essay then Slack-notify. Also matches notify-draft / weekly essay asks.
+globs: data/weekly-write-ide-brief.md,data/weekly-write-ide-brief.json,data/weekly-write-draft.json
+alwaysApply: false
+---
+
+# Weekly Write — IDE fallback
+
+If `data/weekly-write-ide-brief.md` exists (awaiting IDE), or the user asks to draft/notify a weekly Write:
+
+1. Open `docs/essay-voice.md` (shared human bar).
+2. Follow the project skill **`weekly-write-essay`** (`.cursor/skills/weekly-write-essay/SKILL.md`).
+3. Notify Slack; do **not** publish MDX yourself — Approve in `#career-ops`.
+
+For showcase / rewrite / Related-response essays (no weekly brief), use the router `.cursor/rules/orbit-essays.mdc` → personal skill **`orbit-essay`**.

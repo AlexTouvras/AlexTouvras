@@ -1,0 +1,17 @@
+{
+  "id": "testingmcp-readme",
+  "title": "TestingMCP",
+  "kind": "readme",
+  "repo": "AlexTouvras/TestingMCP",
+  "topics": [
+    "testingmcp",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "TestingMCP",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/TestingMCP/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

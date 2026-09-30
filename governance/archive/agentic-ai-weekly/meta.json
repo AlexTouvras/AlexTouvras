@@ -1,0 +1,18 @@
+{
+  "id": "agentic-ai-weekly",
+  "title": "Weekly agentic field card",
+  "kind": "automation",
+  "repo": "AlexTouvras/agentic-ai-field-card",
+  "topics": [
+    "field-card",
+    "agents",
+    "schedule"
+  ],
+  "activation": "schedule",
+  "description": "Friday content pass. Archive copy of the automation prompt.",
+  "source_path": ".cursor/automations/weekly-content-pass.json",
+  "source_url": "https://github.com/AlexTouvras/agentic-ai-field-card/blob/main/.cursor/automations/weekly-content-pass.json",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

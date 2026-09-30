@@ -1,0 +1,12 @@
+# Holdings → research → public snapshot
+
+```mermaid
+flowchart LR
+  slack["Slack #ledger-holdings"] --> auto["Cursor Automation<br/>primary: ledger-private"]
+  auto --> private["ledger-private main<br/>holdings_nordnet.yaml"]
+  auto --> research["Public ledger clone<br/>invest research"]
+  research --> scrub["dashboard/research<br/>scrubbed JSON"]
+  scrub --> orbit["Orbit public/ledger-research<br/>alextouvras.com"]
+```
+
+Holdings stay private. The Orbit page is the scrubbed snapshot only (no brokers, no €).

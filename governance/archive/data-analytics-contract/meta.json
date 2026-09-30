@@ -1,0 +1,18 @@
+{
+  "id": "data-analytics-contract",
+  "title": "Analytics automation contract",
+  "kind": "contract",
+  "repo": "AlexTouvras/data-analytics-field-card",
+  "topics": [
+    "governance",
+    "allowlist",
+    "analytics"
+  ],
+  "activation": "on-run",
+  "description": "Read order and scope for the weekly analytics automation",
+  "source_path": ".state/AUTOMATION_CONTRACT.md",
+  "source_url": "https://github.com/AlexTouvras/data-analytics-field-card/blob/main/.state/AUTOMATION_CONTRACT.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

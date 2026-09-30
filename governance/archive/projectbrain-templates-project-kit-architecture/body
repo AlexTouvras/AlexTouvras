@@ -1,0 +1,28 @@
+# Architecture
+
+> Living map of the system. Keep this an **index** — link to details, don't paste whole codebases.
+
+## Overview
+
+{{PROJECT_NAME}} — (one paragraph: what this system does)
+
+## Components
+
+| Component | Path | Responsibility |
+|-----------|------|----------------|
+| | | |
+
+## Data flow
+
+```text
+(input) → … → (output)
+```
+
+## Key decisions
+
+- See ProjectBrain `record_decision` / `docs/AGENT_LOG.md` for rationale.
+
+## Phase / scope
+
+- Current phase:
+- Out of scope:

@@ -1,0 +1,18 @@
+{
+  "id": "data-analytics-field-card-docs-weekly-refresh-prompt",
+  "title": "Weekly Data Analytics field card \u2014 Cursor Automation",
+  "kind": "contract",
+  "repo": "AlexTouvras/data-analytics-field-card",
+  "topics": [
+    "field-card",
+    "automation",
+    "governance"
+  ],
+  "activation": "on-run",
+  "description": "Weekly Data Analytics field card \u2014 Cursor Automation",
+  "source_path": "docs/weekly-refresh-prompt.md",
+  "source_url": "https://github.com/AlexTouvras/data-analytics-field-card/blob/main/docs/weekly-refresh-prompt.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,10 @@
+# Ralph agent instructions (Cursor)
+
+One iteration — fresh context. Read files, do ONE story, update state.
+
+1. Read `scripts/ralph/prd.json` and `scripts/ralph/progress.txt`
+2. Pick highest priority story where `passes` is false
+3. Implement only that story
+4. Run `py scripts/ralph/validate.py`
+5. Mark story `passes: true`, append to `progress.txt`
+6. Output `<promise>COMPLETE</promise>` only when all stories pass

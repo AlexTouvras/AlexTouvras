@@ -1,0 +1,15 @@
+---
+description: Pointer to canonical architecture diagrams and Orbit sync
+alwaysApply: true
+---
+
+# Architecture documentation
+
+Canonical Mermaid diagrams: **`docs/architecture/`** (single source of truth).
+
+When changing ingest, MCP tools, or scoring:
+
+1. Update `docs/architecture/` first (personal skill: `architecture-diagrams`).
+2. From `website/`: `npm run arch:validate-all` then `npm run arch:sync-all`.
+
+Portfolio: `/writes/memory-projectbrain-architecture`.

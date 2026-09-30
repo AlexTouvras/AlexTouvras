@@ -1,0 +1,17 @@
+{
+  "id": "orbit-cursor-automations-field-card-review",
+  "title": "Monthly field card review",
+  "kind": "automation",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "automation"
+  ],
+  "activation": "schedule",
+  "description": "{",
+  "source_path": ".cursor/automations/field-card-review.json",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/automations/field-card-review.json",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

@@ -1,0 +1,26 @@
+---
+name: ProjectBrain
+domain: personal
+---
+
+# ProjectBrain Charter
+
+## Vision
+
+A personal project intelligence system that learns from multiple projects over time, identifies deep patterns correlating with success and failure, and serves context to AI coding agents.
+
+## Current Phase
+
+M1–M4 in progress: hybrid storage, agent hooks, intelligence engine, evolution digest + adoption eval.
+
+## Architecture
+
+- Local-first SQLite storage in `.projectbrain/`
+- MCP server for Cursor agent tools
+- Event outbox for async projections (graph/vector in M3+)
+
+## Success Criteria
+
+- Agents receive project context without user running commands
+- Decisions and reflections persist across sessions
+- Cross-project pattern learning by M3

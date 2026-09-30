@@ -1,0 +1,17 @@
+{
+  "id": "powerbi-portfolio-01-finance-heatmap-web-readme",
+  "title": "Nordic Equity \u00b7 Sector heatmap (Vercel)",
+  "kind": "readme",
+  "repo": "AlexTouvras/powerbi-portfolio",
+  "topics": [
+    "powerbi",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Nordic Equity \u00b7 Sector heatmap (Vercel)",
+  "source_path": "01-finance/heatmap-web/README.md",
+  "source_url": "https://github.com/AlexTouvras/powerbi-portfolio/blob/main/01-finance/heatmap-web/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

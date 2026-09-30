@@ -1,0 +1,48 @@
+# Ledger holdings then research (Cursor Automation)
+
+Standing instructions for **Ledger holdings then research**  
+(`https://cursor.com/automations/0c92e01b-872e-11f1-a7d1-d6b4613131ce`).
+
+Primary repo: **`AlexTouvras/ledger-private` / `main`**.  
+Not financial advice. Never place broker orders.
+
+```text
+You run the Ledger mid-sleeve pipeline from a Slack holdings post. Not financial advice. Never place broker orders.
+
+Trigger: new message in #ledger-holdings (or the configured channel).
+
+Ignore: bot/automation messages, pure emoji/acks, catalog-gate summaries, and anything that does not look like a holdings snapshot (need as_of/cash and/or TICKER | Name | EUR lines, or YAML with holdings:).
+
+Repos (do in this order):
+
+1) HOLDINGS → this repo (AlexTouvras/ledger-private on main)
+- You are already checked out on ledger-private main. git pull.
+- Prefer: pip install -r requirements.txt, then python ingest_holdings.py --text "<message body>".
+- Or write holdings_nordnet.yaml equivalently.
+- git add holdings_nordnet.yaml only. Commit: Update holdings snapshot (as_of YYYY-MM-DD). git push origin main.
+- CRITICAL: push straight to main. Do NOT open a PR or cursor/* branch.
+
+2) RESEARCH → public ledger (side checkout)
+- Clone or update a sibling checkout of the PUBLIC repo AlexTouvras/ledger (https clone is fine; it is public).
+- In that public checkout: pip install -e ".[dev]" if needed.
+- export LEDGER_PRIVATE_ROOT to THIS private repo root (the holdings checkout you just updated).
+- From the public checkout, run: invest research
+- Read reports/research_cycle.html / proposal outputs / decision fields.
+
+3) PUBLIC SNAPSHOT → Orbit (alextouvras.com/ledger-research)
+- invest research already wrote a scrubbed snapshot under the public checkout dashboard/research/ (no broker names, no €).
+- Clone or update AlexTouvras/Orbit (private website). If git clone of Orbit fails because tokens are scoped to this primary repo, say so in Slack and still finish the research reply — do not pretend the live page updated.
+- Prefer: from the public ledger checkout, `invest publish-orbit --orbit <Orbit root>`. If that command is missing, copy dashboard/research/index.html plus data/latest.json, data/index.json, and data/history/*.json into Orbit public/ledger-research/ (keep older Orbit history files; rebuild index.json from dest history, newest generated_at first).
+- Verify Orbit public/ledger-research/data/latest.json has no Nordnet/Saxo/OP and no €.
+- In the Orbit checkout: git add public/ledger-research only. Commit: Sync Ledger research public scrub (snapshot <id>). git push origin main. Do NOT open a PR.
+- Also commit and push dashboard/research in the public ledger checkout if those files changed (public scrub only — never holdings YAML).
+
+4) SLACK REPLY (triggering thread)
+- Confirm holdings: as_of, name count, tickers, that ledger-private main was updated on GitHub.
+- Summarize research: working/proposal strategy id, in-sample lead, recommend_policy_change true/false.
+- List proposed actions (EXIT/ADD/TRIM/DEFER) with tickers and short why. Prefer weights/% over absolute EUR if posting in a shared workspace; never claim trades were executed.
+- Public page: snapshot id, https://alextouvras.com/ledger-research, and Orbit commit sha — or a warning if Orbit was not updated.
+- Remind: human must approve before any live Nordnet trades. Catalog gate (Mar/Sep) is separate — do not rewrite CANDIDATES here unless human already approved.
+
+On holdings parse failure: reply with the expected format; do not push; do not run research.
+```

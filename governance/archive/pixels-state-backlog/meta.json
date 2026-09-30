@@ -1,0 +1,17 @@
+{
+  "id": "pixels-state-backlog",
+  "title": "\ufeff# Backlog",
+  "kind": "state",
+  "repo": "AlexTouvras/pixels",
+  "topics": [
+    "pixels",
+    "state"
+  ],
+  "activation": "manual",
+  "description": "\ufeff# Backlog",
+  "source_path": ".state/BACKLOG.md",
+  "source_url": "https://github.com/AlexTouvras/pixels/blob/main/.state/BACKLOG.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

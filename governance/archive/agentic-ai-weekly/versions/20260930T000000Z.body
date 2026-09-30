@@ -1,0 +1,20 @@
+{
+  "name": "Weekly agentic AI field card content pass",
+  "description": "Friday 17:00 judgment for agentic-ai-field-card: discover, update vs no-change, PR Summary. 18:00 review publishes.",
+  "workflow": {
+    "triggers": [{ "cron": { "cron": "0 14 * * 5" } }],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "AUTOMATION_CONTRACT\n\nBefore other steps: read `.state/AUTOMATION_CONTRACT.md` on the target repo. Do not use ProjectBrain MCP.\n\nWeekly Agentic AI Field Card judgment for Alex Touvras.\n\nRepository: AlexTouvras/agentic-ai-field-card (branch main).\n\nFollow docs/weekly-refresh-prompt.md exactly (fail-closed).\n\nHard rules:\n- Public H1 stays \"Agentic AI is a loop, not a menu\". Do not revert to stack; analytics owns stack.\n- Discovery alone is not enough — every run must end with an explicit update OR no HTML change decision in the PR ## Summary (include Decision: update|no-change).\n- Do not merge. Do not force-push main. The Friday 18:00 review agent publishes or keeps the previous card.\n- Never invent docs URLs.\n- Framework picker ≤ 7 rows; swap by constraint, not hype.\n- Footer Next is the next calendar month (October 2026), never \"week of\". A no-change week does not move Reviewed or Next.\n\nSteps:\n1. Prefer open branch chore/weekly-refresh-YYYY-Www for this ISO week; else create/update from main.\n2. Run npm run discover; read data/discovery-report.md and index.html.\n3. Decide update vs no-change; write ## Summary either way.\n4. If updating index.html: apply picker/table rules; bump version; fix Changed line.\n5. Run node scripts/check-links.mjs on any URLs you touched.\n6. Update data/watchlist.json onCard flags as needed.\n7. Commit/push to the weekly PR only.\n8. Rewrite PR body with ## Summary and ## Card preview.\n9. Stop. Do not notify Slack. Do not merge.\n\nDone when discovery ran, Summary has the decision, link check is clean if HTML changed, and the PR is open for the 18:00 review agent."
+      }
+    ],
+    "model": "",
+    "agentOptions": { "skipInstall": false },
+    "memoryEnabled": true,
+    "gitConfig": {
+      "repo": "AlexTouvras/agentic-ai-field-card",
+      "branch": "main"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "ravens-docs-runbook",
+  "title": "Operations runbook",
+  "kind": "runbook",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "runbook"
+  ],
+  "activation": "manual",
+  "description": "Operations runbook",
+  "source_path": "docs/runbook.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/docs/runbook.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

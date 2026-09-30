@@ -1,0 +1,17 @@
+{
+  "id": "storytelling-architecture",
+  "title": "Architecture",
+  "kind": "architecture",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "Architecture",
+  "source_path": "ARCHITECTURE.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/ARCHITECTURE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

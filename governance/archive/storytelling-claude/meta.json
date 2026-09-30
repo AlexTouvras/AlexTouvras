@@ -1,0 +1,17 @@
+{
+  "id": "storytelling-claude",
+  "title": "@AGENTS.md",
+  "kind": "agents",
+  "repo": "AlexTouvras/storytelling",
+  "topics": [
+    "storytelling",
+    "agents"
+  ],
+  "activation": "always",
+  "description": "@AGENTS.md",
+  "source_path": "CLAUDE.md",
+  "source_url": "https://github.com/AlexTouvras/storytelling/blob/main/CLAUDE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

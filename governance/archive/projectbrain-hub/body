@@ -1,0 +1,21 @@
+---
+description: ProjectBrain hub — developing the portfolio intelligence system itself
+alwaysApply: true
+---
+
+# ProjectBrain Hub
+
+This workspace **is** ProjectBrain. Data lives in `.projectbrain/`. Also follow `projectbrain-portfolio.mdc`.
+
+## Hub-only
+
+- After code changes to MCP tools, remind that MCP must be reloaded.
+- Use `doctor`, `run_analysis`, evolution scout/digest for system maintenance.
+- `sync_graph`, `reindex_vectors` after bulk ingest or schema changes.
+- `list_evolution_proposals`, `review_evolution_proposal` for architecture evolution.
+
+## IDE integration
+
+Cursor **hooks** (`sessionStart`/`sessionEnd`) bootstrap sessions; sessionEnd reminds to call `end_session_handoff`.
+Session memory lives in repo `docs/CURRENT_STATE.md` — use `get_session_handoff` / `end_session_handoff` MCP tools.
+Install portfolio rules to all repos: `install_cursor_rules` MCP or `projectbrain install-rules`.

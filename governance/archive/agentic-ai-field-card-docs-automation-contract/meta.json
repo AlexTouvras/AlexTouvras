@@ -1,0 +1,18 @@
+{
+  "id": "agentic-ai-field-card-docs-automation-contract",
+  "title": "Automation contract \u2014 Agentic AI Field Card",
+  "kind": "contract",
+  "repo": "AlexTouvras/agentic-ai-field-card",
+  "topics": [
+    "field-card",
+    "automation",
+    "governance"
+  ],
+  "activation": "on-run",
+  "description": "Automation contract \u2014 Agentic AI Field Card",
+  "source_path": "docs/automation-contract.md",
+  "source_url": "https://github.com/AlexTouvras/agentic-ai-field-card/blob/main/docs/automation-contract.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

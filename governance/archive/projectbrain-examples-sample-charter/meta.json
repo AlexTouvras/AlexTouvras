@@ -1,0 +1,17 @@
+{
+  "id": "projectbrain-examples-sample-charter",
+  "title": "ProjectBrain Charter",
+  "kind": "charter",
+  "repo": "AlexTouvras/ProjectBrain",
+  "topics": [
+    "projectbrain",
+    "charter"
+  ],
+  "activation": "manual",
+  "description": "ProjectBrain Charter",
+  "source_path": "examples/sample-charter.md",
+  "source_url": "https://github.com/AlexTouvras/ProjectBrain/blob/main/examples/sample-charter.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

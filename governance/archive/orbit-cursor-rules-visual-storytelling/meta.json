@@ -1,0 +1,18 @@
+{
+  "id": "orbit-cursor-rules-visual-storytelling",
+  "title": "visual storytelling",
+  "kind": "rule",
+  "repo": "AlexTouvras/Orbit",
+  "topics": [
+    "orbit",
+    "rule",
+    "storytelling"
+  ],
+  "activation": "glob",
+  "description": "Visual storytelling for Orbit public pages and live desks",
+  "source_path": ".cursor/rules/visual-storytelling.mdc",
+  "source_url": "https://github.com/AlexTouvras/Orbit/blob/main/.cursor/rules/visual-storytelling.mdc",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

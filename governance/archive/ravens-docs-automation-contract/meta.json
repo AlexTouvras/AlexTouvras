@@ -1,0 +1,18 @@
+{
+  "id": "ravens-docs-automation-contract",
+  "title": "Automation contract \u2014 ravens",
+  "kind": "contract",
+  "repo": "AlexTouvras/ravens",
+  "topics": [
+    "ravens",
+    "contract",
+    "automation"
+  ],
+  "activation": "on-run",
+  "description": "Automation contract \u2014 ravens",
+  "source_path": "docs/automation-contract.md",
+  "source_url": "https://github.com/AlexTouvras/ravens/blob/main/docs/automation-contract.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T00:00:00Z"
+}

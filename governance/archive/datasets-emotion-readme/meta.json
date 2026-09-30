@@ -1,0 +1,17 @@
+{
+  "id": "datasets-emotion-readme",
+  "title": "Music Emotion Recognition: Toward new, robust standards in personalized and context-sensit",
+  "kind": "readme",
+  "repo": "AlexTouvras/datasets_emotion",
+  "topics": [
+    "datasets-emotion",
+    "readme"
+  ],
+  "activation": "manual",
+  "description": "Music Emotion Recognition: Toward new, robust standards in personalized and context-sensitive applications",
+  "source_path": "README.md",
+  "source_url": "https://github.com/AlexTouvras/datasets_emotion/blob/main/README.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

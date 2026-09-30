@@ -1,0 +1,21 @@
+# Current state
+
+> Update at end of each session. New chats start here — not from conversation history.
+
+**Last updated:** 2026-06-12 06:47 UTC
+
+## Done this session
+
+- Project kit + slim context + MCP/CLI handoff tools
+
+## In progress
+
+- 
+
+## Next session
+
+1. Use get_session_handoff at chat start; call end_session_handoff at chat end
+
+## Blockers
+
+- None

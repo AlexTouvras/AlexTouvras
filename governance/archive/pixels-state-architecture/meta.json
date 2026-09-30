@@ -1,0 +1,18 @@
+{
+  "id": "pixels-state-architecture",
+  "title": "\ufeff# Architecture (working log)",
+  "kind": "state",
+  "repo": "AlexTouvras/pixels",
+  "topics": [
+    "pixels",
+    "state",
+    "architecture"
+  ],
+  "activation": "manual",
+  "description": "\ufeff# Architecture (working log)",
+  "source_path": ".state/ARCHITECTURE.md",
+  "source_url": "https://github.com/AlexTouvras/pixels/blob/main/.state/ARCHITECTURE.md",
+  "origin": "github",
+  "imported_on": "2026-09-30",
+  "updated_at": "2026-09-30T17:43:24Z"
+}

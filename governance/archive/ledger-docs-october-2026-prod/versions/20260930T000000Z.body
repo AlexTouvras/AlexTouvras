@@ -1,0 +1,60 @@
+# October 2026 — first production research case
+
+**Not regulated financial advice.** You approve every trade by hand.
+
+## Schedule (locked)
+
+| Milestone | When |
+|-----------|------|
+| Dress rehearsal (done in finalize) | Jul 2026 |
+| **Catalog research gate** | **by 2026-09-24** (~1 month before) |
+| **First prod case** | **October 2026** |
+| Holdings snapshot ready | by 2026-10-24 |
+| Run `invest research` | 2026-10-24 .. 2026-10-26 |
+| Execute approved trades (if any) | quiet week 2026-10-27 .. 2026-10-31 |
+| Next catalog gate | ~2027-03-24 (before April 2027) |
+| Next cycle after that | April 2027 |
+
+Config source of truth: `configs/next_review.yaml` + `configs/review_policy.yaml` (`review_months: [4, 10]`).
+
+## Catalog gate (Sep) then holdings review (Oct)
+
+```powershell
+# ~1 month before: review research vs strategy catalog
+invest catalog-gate --open
+# Approve any CANDIDATES / review_policy tweaks yourself — nothing auto-merges.
+
+# Prod week: refresh companion holdings (Slack #ledger-holdings), then:
+invest research --open
+```
+
+## Prod command
+
+```powershell
+cd C:\Users\kater\.cursor\projects\investing
+.\.venv\Scripts\Activate.ps1
+# 1) refresh private companion holdings (Slack ingest or):
+#    invest holdings ingest --file message.txt
+#    then commit/push inside C:\Users\kater\.cursor\projects\ledger-private
+invest research
+# 2) open reports/research_cycle.html — approve actions manually
+# 3) invest publish-orbit  (automation also does this; then push Orbit main)
+#    live: https://alextouvras.com/ledger-research
+```
+
+## Pass criteria for the October run
+
+1. Catalog gate for Sep completed (or explicitly deferred with a note)  
+2. `invest research` exits 0  
+3. Private report lists actions with reasons under the **working / proposal** strategy  
+4. Public JSON has no broker names and no `€` amounts  
+5. You either execute the approved subset or explicitly defer — no silent skip  
+6. Working policy YAML only changes if you agree (catalog gate and/or research change bar)
+
+## Out of scope for October
+
+- Auto-trading / Nordnet API orders  
+- Saxo Core ETF sleeve  
+- OP ring-fenced ETFs  
+- Short-term sleeve (still live-blocked)  
+- Auto-editing `CANDIDATES` without human approval  
