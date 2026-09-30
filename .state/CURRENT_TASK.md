@@ -18,6 +18,7 @@ Directive archive for skills, rules, and automation prompts.
 - Context-budget skill packaged as a Cursor plugin
 - Studio page and snapshot prepared in `governance/orbit-studio/`
 - Push to AlexTouvras/Orbit denied (HTTP 403). Live `/studio/directives` is not deployed.
+- Local Orbit dev server (`STUDIO_DEV_OPEN=1`) served `/studio` and `/studio/directives`. Filtering to Orbit skills showed the five skill files and the visual-storytelling body. The public home page does not link the archive.
 
 ## Out of scope
 
