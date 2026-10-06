@@ -18,6 +18,10 @@ Open `daycare/index.html` over HTTP (`python3 -m http.server` inside `daycare/`)
 - A routed commute time
 - Publishing the page from the profile README
 
+## Studio
+
+Temporary Orbit Studio route `/studio/daycare` is prepared in `governance/orbit-studio/` and committed locally on Orbit branch `cursor/studio-daycare-9c6e`. Push to AlexTouvras/Orbit returned HTTP 403 for cursor[bot]. The live Studio does not show the card until that branch is pushed by someone with write access.
+
 ## Verify
 
 `python3 governance/tests/test_catalog.py` exits 0.

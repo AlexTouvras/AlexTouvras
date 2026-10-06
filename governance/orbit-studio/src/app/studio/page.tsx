@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CalendarDays, FolderGit2, Library, Map, ArrowRight } from "lucide-react";
+import { Baby, CalendarDays, FolderGit2, Library, Map, ArrowRight } from "lucide-react";
 import { isStudioAccessible } from "@/lib/auth";
 import { getEditableProfile } from "@/lib/profile-store";
 import { getPublishedProjects } from "@/lib/projects-local";
@@ -64,6 +64,20 @@ export default async function StudioPage() {
               <p className="font-semibold text-white">Directives</p>
               <p className="text-sm text-slate-400">
                 Rules, skills, and automation prompts
+              </p>
+            </div>
+            <ArrowRight className="ml-auto h-5 w-5 shrink-0 text-slate-500" />
+          </GlassCard>
+        </Link>
+        <Link href="/studio/daycare" className="block">
+          <GlassCard hover className="flex h-full items-center gap-4 p-5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+              <Baby className="h-5 w-5 text-neon-cyan" />
+            </div>
+            <div className="min-w-0">
+              <p className="font-semibold text-white">Daycare</p>
+              <p className="text-sm text-slate-400">
+                Temporary shortlist from Rekola, November 2027
               </p>
             </div>
             <ArrowRight className="ml-auto h-5 w-5 shrink-0 text-slate-500" />

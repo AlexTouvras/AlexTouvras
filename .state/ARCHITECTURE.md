@@ -9,3 +9,5 @@ Always-on budget counts directives whose activation is `always` (rules with `alw
 `governance/export_studio_snapshot.py` writes `governance/orbit-studio/data/directive-archive.json` for Orbit's private `/studio/directives` page. That page reads the snapshot. It does not edit the archive.
 
 `daycare/` is a static page. `scripts/build_data.py` writes `data.json` from the Helsinki region Service Map (service node 868, 10 km of 60.3381055, 25.0572163) and OpenStreetMap kindergartens for Kerava and Tuusula. `app.js` scores each row in the browser from stored factors and the weights in `data.json`, so the sliders do not need a rebuild. Serve the folder over HTTP; `fetch("data.json")` does not run from a `file://` open.
+
+The same page is staged for Orbit Studio at `governance/orbit-studio/`. `/studio/daycare` is owner-only: the page checks `isStudioAccessible()`, and `data/studio-daycare/` is not under `public/`. `AppChrome` treats `/studio/daycare` as a bare route so the map can use the viewport. Push to `AlexTouvras/Orbit` is denied for this agent.
