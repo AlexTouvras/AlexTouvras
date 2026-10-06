@@ -1,6 +1,26 @@
 # Current task
 
-Directive archive for skills, rules, and automation prompts.
+Daycare comparison page for Lipstikkakuja 14, Rekola. Child is 7 weeks old on 6 Oct 2026; target start is November 2027 (about 15 months).
+
+## Verify
+
+Open `daycare/index.html` over HTTP (`python3 -m http.server` inside `daycare/`). Map shows home and a 10 km circle. Press a marker and a list row; both open the same card. English filter leaves the four English programmes plus the lighter English-enrichment centres. Default order starts with Pilke Playschool Pohjantähti.
+
+## Done
+
+- 176 daycares inside 10 km: Helsinki region Service Map for Helsinki and Vantaa, OpenStreetMap plus city pages for Kerava and Tuusula
+- Score weights English, toddler-age fit, whether Vantaa can actually offer the place, fee versus the municipal cap, and distance
+- Map, pressable card, ranked list, filters, shortlist
+
+## Out of scope
+
+- Live vacancy or an application form
+- A routed commute time
+- Publishing the page from the profile README
+
+## Studio
+
+Temporary Orbit Studio route `/studio/daycare` is prepared in `governance/orbit-studio/` and committed locally on Orbit branch `cursor/studio-daycare-9c6e`. Push to AlexTouvras/Orbit returned HTTP 403 for cursor[bot]. The live Studio does not show the card until that branch is pushed by someone with write access.
 
 ## Verify
 

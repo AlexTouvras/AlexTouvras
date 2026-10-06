@@ -14,6 +14,10 @@ Studio stays owner-only (`isStudioAccessible`, `noindex`). The public site does 
 | `src/lib/directives.ts` | `src/lib/directives.ts` |
 | `src/lib/directive-types.ts` | `src/lib/directive-types.ts` |
 | `data/directive-archive.json` | `data/directive-archive.json` |
+| `src/app/studio/daycare/page.tsx` | `src/app/studio/daycare/page.tsx` |
+| `src/app/studio/daycare/site/[[...path]]/route.ts` | `src/app/studio/daycare/site/[[...path]]/route.ts` |
+| `src/components/layout/AppChrome.tsx` | `src/components/layout/AppChrome.tsx` |
+| `data/studio-daycare/` | `data/studio-daycare/` |
 
 `src/app/studio/page.tsx` is the Studio home with a Directives card added. Refresh the snapshot before copying:
 
@@ -21,4 +25,4 @@ Studio stays owner-only (`isStudioAccessible`, `noindex`). The public site does 
 python3 governance/export_studio_snapshot.py --published-at 2026-09-30
 ```
 
-A local Orbit commit of these files exists as `149120d` on `cursor/studio-directives-5895`. Push to `AlexTouvras/Orbit` was denied for this agent (HTTP 403). The live site does not include `/studio/directives` until someone who can write to that repository pushes the branch.
+A local Orbit commit of the directives files exists as `149120d` on `cursor/studio-directives-5895`. The daycare shortlist is a separate local commit on `cursor/studio-daycare-9c6e` (Studio card at `/studio/daycare`, files served only after `isStudioAccessible()`). Push to `AlexTouvras/Orbit` was denied for this agent (HTTP 403, `cursor[bot]`). The live site does not include these Studio routes until someone who can write to that repository pushes the branch.
