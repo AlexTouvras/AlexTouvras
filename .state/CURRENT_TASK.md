@@ -1,23 +1,24 @@
 # Current task
 
-Delivery Signal sample: an evidence-linked weekly brief from a synthetic consultancy export. Demand is not validated. No orders, payments, or live project-tool connections.
+Delivery Signal as a shareable brief: same result id from canonical, Jira, and Azure DevOps exports, with the review on the first screen. The pay reason and the next cycles are in `delivery-signal/PLAN.md`. No orders or live connections.
 
 ## Verify
 
-`python3 delivery-signal/tests/test_pipeline.py` exits 0.
+`python3 delivery-signal/tests/test_pipeline.py` exits 0. The three Northline folders share one result id.
 
-`python3 delivery-signal/pipeline.py delivery-signal/samples/northline` writes `delivery-signal/samples/northline/out/brief.html`. The page shows five top risks, sets the overdue legacy-extract dependency aside, leaves Aster on track, and keeps approval pending.
+Open `delivery-signal/samples/northline/out/brief.html`. Pulse, changes, and the set-aside line are visible before the evidence. Evidence starts collapsed. A phone-width window still stacks the pulse.
 
 ## Done
 
-- Deterministic pipeline in `delivery-signal/pipeline.py`
-- Northline sample with planted traps: unassigned overdue work, a blocked release, a green note that disagrees with the export, a misleading 85% completion, and one overdue dependency that does not block
-- Markdown, HTML, and JSON brief
+- Column profiles for canonical, Jira, and Azure DevOps, plus `columns.json`
+- One command for a single CSV
+- Executive HTML and a dated file meant to be forwarded
+- Plan for why a team would pay, and what waits until a second cycle
 
 ## Out of scope
 
-- Claiming a buyer or a price
-- Jira or Azure DevOps integrations, email, accounts, payments
+- Accounts, checkout, live Jira or Azure DevOps connections
+- A claim that a buyer has agreed to pay
 
 # Previous task
 

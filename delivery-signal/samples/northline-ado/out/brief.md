@@ -2,7 +2,7 @@
 
 Weekly delivery brief · 2026-10-10 · Audience: Delivery director
 
-Source: canonical · 25 work items · rules 2026-10-10 · result e53f514aa6
+Source: azure_devops · 25 work items · rules 2026-10-10 · result e53f514aa6
 
 **Approval: pending.** A person still has to check this brief before it goes to a customer.
 

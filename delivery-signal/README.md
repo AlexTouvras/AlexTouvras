@@ -1,39 +1,42 @@
 # Delivery Signal
 
-A weekly delivery brief built from a project export. The brief says what changed, which work needs attention, and which decision is waiting. Every material claim cites a row. A person approves it before a customer sees it.
+A weekly delivery brief from a Jira, Azure DevOps, or canonical CSV. The page says what changed, which work needs attention, and which decision is waiting. Every material claim cites a field. The same inputs produce the same result id.
 
-This is a sample, not a business. Nobody has paid for it, and the page does not take orders.
+Send the HTML file. The recipient does not need an account or the original export.
+
+The reason to pay for that, and what is deliberately not built yet, is in [PLAN.md](PLAN.md). Nobody has paid. The page does not take orders.
 
 ## Run
+
+One export:
+
+```bash
+python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv
+```
+
+A folder, when you also have notes, milestones, or dependencies:
 
 ```bash
 python3 delivery-signal/pipeline.py delivery-signal/samples/northline
 python3 delivery-signal/tests/test_pipeline.py
 ```
 
-Open `delivery-signal/samples/northline/out/brief.html`.
+Open `delivery-signal/samples/northline/out/brief.html`. The file to forward is next to it, named with the portfolio and the report date.
 
-The pipeline reads a directory:
+`samples/northline-jira` and `samples/northline-ado` are the same portfolio in the other two header layouts. All three briefs share one result id.
 
-- `meta.json` — portfolio name and the report date
-- `work_items.csv` — one row per Jira-style issue
-- `previous_work_items.csv` — optional prior export, used only for the change list
-- `milestones.csv`, `dependencies.csv`, `notes.csv` — optional
+If a team renamed a column, put `columns.json` beside the export. `templates/columns.example.json` is the shape. Recognized profiles are `canonical`, `jira`, and `azure_devops`.
 
-It writes `brief.json`, `brief.md`, and `brief.html`.
+## What the sample shows
 
-## What the sample is designed to show
-
-`samples/northline` is invented. Four traps are planted, and one healthy project is left alone:
+`samples/northline` is invented.
 
 - Forge `FOR-12` is overdue and unassigned, and it blocks `FOR-20`.
 - Lumen reports the epic 85% complete while 8 of 37 story points are Done.
 - Cedar's 9 Oct note says the project is green. The open stories were last updated in August and are already overdue.
-- The legacy-extract milestone is overdue, and its successor `FOR-3` is Done, so that signal is set aside.
+- The legacy-extract milestone is overdue, and its successor `FOR-3` is Done, so that signal is set aside on the first screen.
 - Aster's note also says "on track". The export agrees, so it stays on track.
 
-The rules are in the brief. They are operating rules for this sample, not a predictor that a date will be missed.
+## Left for a later cycle
 
-## Left out on purpose
-
-Live Jira or Azure DevOps connections, accounts, email, and payments. Those wait until a delivery lead has looked at a brief like this one and said what was useful.
+Live Jira or Azure DevOps connections, accounts, and payments. The next useful input is one real sanitized export, not another integration.

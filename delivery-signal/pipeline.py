@@ -10,42 +10,29 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import html
 import json
 import re
+import shutil
 import sys
+import tempfile
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime
 from pathlib import Path
 
+import extract
 
+
+RULES_VERSION = "2026-10-10"
 DONE = {"done", "closed", "resolved"}
 ACTIVE = {"in progress", "blocked", "waiting"}
 HIGH = {"highest", "high"}
 OPTIMISTIC = re.compile(r"\b(green|on track|no risks?|no blockers?)\b", re.I)
 ONLY_OPEN = re.compile(r"\bonly open\b", re.I)
-REQUIRED_ITEM_COLUMNS = {
-    "key",
-    "project",
-    "project_name",
-    "type",
-    "summary",
-    "status",
-    "priority",
-    "assignee",
-    "story_points",
-    "percent_complete",
-    "created",
-    "updated",
-    "due",
-    "parent",
-    "blocked_by",
-    "comment",
-}
 
 
-class InputError(Exception):
-    pass
+InputError = extract.InputError
 
 
 @dataclass
@@ -181,47 +168,21 @@ def load_portfolio(directory: Path) -> dict:
     if not _clean(str(meta.get("portfolio", ""))):
         raise InputError("meta.json portfolio name is required")
 
-    item_rows = _read_csv(items_path)
-    if not item_rows:
-        raise InputError("work_items.csv has no rows")
-    missing = REQUIRED_ITEM_COLUMNS - set(item_rows[0])
-    if missing:
-        raise InputError("work_items.csv is missing columns: " + ", ".join(sorted(missing)))
-
-    items: list[WorkItem] = []
-    seen: dict[str, int] = {}
-    for offset, row in enumerate(item_rows, start=2):
-        key = _clean(row.get("key"))
-        if not key:
-            issues.append(f"work_items.csv row {offset} has no key")
-            continue
-        if key in seen:
-            issues.append(f"duplicate work item {key} on rows {seen[key]} and {offset}")
-            continue
-        seen[key] = offset
-        items.append(
-            WorkItem(
-                key=key,
-                project=_clean(row.get("project")),
-                project_name=_clean(row.get("project_name")) or _clean(row.get("project")),
-                type=_clean(row.get("type")),
-                summary=_clean(row.get("summary")),
-                status=_clean(row.get("status")),
-                priority=_clean(row.get("priority")),
-                assignee=_clean(row.get("assignee")),
-                story_points=_parse_number(row.get("story_points", ""), f"{key} story_points", issues),
-                percent_complete=_parse_number(
-                    row.get("percent_complete", ""), f"{key} percent_complete", issues
-                ),
-                created=_parse_date(row.get("created", ""), f"{key} created", issues),
-                updated=_parse_date(row.get("updated", ""), f"{key} updated", issues),
-                due=_parse_date(row.get("due", ""), f"{key} due", issues),
-                parent=_clean(row.get("parent")),
-                blocked_by=_clean(row.get("blocked_by")),
-                comment=_clean(row.get("comment")),
-                row=offset,
-            )
-        )
+    forced, overrides = extract.load_column_map(directory)
+    profile = forced or str(meta.get("profile") or "") or None
+    if profile is not None and profile not in extract.PROFILES:
+        raise InputError(f"meta.json profile must be one of: {', '.join(extract.PROFILES)}")
+    headers, _table = extract.read_table(items_path)
+    profile = profile or extract.detect_profile(headers)
+    mapped = extract.map_work_items(
+        items_path,
+        profile,
+        overrides,
+        issues,
+        default_project=_clean(str(meta.get("default_project", ""))),
+        default_project_name=_clean(str(meta.get("default_project_name", ""))),
+    )
+    items = [WorkItem(**asdict(item)) for item in mapped]
 
     def optional(name: str) -> list[dict[str, str]]:
         path = directory / name
@@ -282,7 +243,20 @@ def load_portfolio(directory: Path) -> dict:
     previous = []
     previous_path = directory / "previous_work_items.csv"
     if previous_path.is_file():
-        previous = _read_csv(previous_path)
+        for item in extract.map_work_items(previous_path, profile, overrides, issues):
+            previous.append(
+                {
+                    "key": item.key,
+                    "project": item.project,
+                    "summary": item.summary,
+                    "status": item.status,
+                    "assignee": item.assignee,
+                    "priority": item.priority,
+                    "due": item.due.isoformat() if item.due else "",
+                    "blocked_by": item.blocked_by,
+                    "percent_complete": "" if item.percent_complete is None else _fmt_num(item.percent_complete),
+                }
+            )
 
     by_key = {item.key: item for item in items}
     for item in items:
@@ -311,6 +285,7 @@ def load_portfolio(directory: Path) -> dict:
         "stale_days": int(meta.get("stale_days", 14)),
         "top_n": int(meta.get("top_n", 5)),
         "min_severity": int(meta.get("min_severity", 40)),
+        "source_profile": profile,
     }
 
 
@@ -896,6 +871,20 @@ def analyse(data: dict) -> dict:
     ]
 
     traceable = dropped == 0 and all(finding.evidence for finding in findings + set_aside)
+    identity = {
+        "top": [finding.id for finding in top],
+        "aside": [finding.id for finding in set_aside],
+        "decisions": [decision["key"] for decision in decisions],
+        "pulse": [[row["id"], row["state"]] for row in projects],
+        "changes": [
+            [
+                change["key"],
+                [[field["field"], field["before"], field["after"]] for field in change["fields"]],
+            ]
+            for change in changes
+        ],
+    }
+    result_id = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()[:10]
     return {
         "portfolio": data["meta"]["portfolio"],
         "as_of": as_of.isoformat(),
@@ -903,6 +892,10 @@ def analyse(data: dict) -> dict:
         "description": data["meta"].get("description", ""),
         "approval": "pending",
         "synthetic": bool(data["meta"].get("synthetic", False)),
+        "source_profile": data["source_profile"],
+        "item_count": len(data["items"]),
+        "rules_version": RULES_VERSION,
+        "result_id": result_id,
         "lead": lead,
         "pulse": projects,
         "top_risks": [finding.to_dict() for finding in top],
@@ -964,6 +957,12 @@ def render_markdown(brief: dict) -> str:
         f"# {brief['portfolio']}",
         "",
         f"Weekly delivery brief · {brief['as_of']} · Audience: {brief['audience'] or 'not set'}",
+        "",
+        (
+            f"Source: {brief.get('source_profile', 'canonical')} · "
+            f"{brief.get('item_count', 0)} work items · rules {brief.get('rules_version', RULES_VERSION)} · "
+            f"result {brief.get('result_id', '')}"
+        ),
         "",
         "**Approval: pending.** A person still has to check this brief before it goes to a customer.",
         "",
@@ -1063,27 +1062,37 @@ def _evidence_html(finding: dict) -> str:
     return "<ul class=\"evidence\">" + "".join(rows) + "</ul>"
 
 
+def _profile_label(profile: str) -> str:
+    return {"jira": "Jira export", "azure_devops": "Azure DevOps export", "canonical": "Canonical export"}.get(
+        profile, profile
+    )
+
+
 def render_html(brief: dict) -> str:
     labels = {"on_track": "On track", "needs_attention": "Needs attention", "blocked": "Blocked"}
     pulse = "".join(
-        f"<li><span class=\"state {html.escape(row['state'])}\">{labels[row['state']]}</span> {html.escape(row['name'])}</li>"
+        "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span></li>".format(
+            html.escape(row["state"]),
+            labels[row["state"]],
+            html.escape(row["name"]),
+        )
         for row in brief["pulse"]
     )
     risks = []
     for finding in brief["top_risks"]:
+        count = len(finding["evidence"])
         risks.append(
-            "<article>"
-            f"<p class=\"meta\">{html.escape(finding['confidence'])} · severity {finding['severity']}</p>"
+            "<article class=\"card\">"
+            f"<p class=\"kicker\">{html.escape(finding['confidence'])} · severity {finding['severity']}</p>"
             f"<h3>{html.escape(finding['title'])}</h3>"
             f"<p>{html.escape(finding['summary'])}</p>"
-            f"{_evidence_html(finding)}"
+            f"<details><summary>Evidence, {count} fields</summary>{_evidence_html(finding)}</details>"
             "</article>"
         )
     changes = "".join(
-        "<li>{} ({}): {}.</li>".format(
+        "<li><strong>{}</strong> {}.</li>".format(
             html.escape(change["key"]),
-            html.escape(change["summary"]),
-            html.escape(", ".join(f"{field['field']}: {field['before']} → {field['after']}" for field in change["fields"])),
+            html.escape(", ".join(f"{field['field']} {field['before']} → {field['after']}" for field in change["fields"])),
         )
         for change in brief["changes"]
     ) or "<li>No compared field changed.</li>"
@@ -1105,12 +1114,20 @@ def render_html(brief: dict) -> str:
                 html.escape("; ".join(extra)),
             )
         )
-    aside = "".join(
+    aside_items = "".join(
         f"<li>{html.escape(finding['summary'])}</li>" for finding in brief["set_aside"]
     ) or "<li>None.</li>"
+    aside_count = len(brief["set_aside"])
+    if aside_count == 1:
+        aside_label = brief["set_aside"][0]["title"]
+    elif aside_count == 0:
+        aside_label = "Nothing was set aside"
+    else:
+        aside_label = f"{aside_count} signals set aside"
     noted = "".join(f"<li>{html.escape(finding['title'])}</li>" for finding in brief["also_noted"]) or "<li>None.</li>"
     questions = "".join(f"<li>{html.escape(question)}</li>" for question in brief["questions"])
     stamp = "Synthetic sample · pending approval" if brief["synthetic"] else "Pending approval"
+    profile = _profile_label(str(brief.get("source_profile", "canonical")))
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1119,25 +1136,33 @@ def render_html(brief: dict) -> str:
   <title>{html.escape(brief['portfolio'])} delivery brief</title>
   <style>
     :root {{ color-scheme: light; }}
-    body {{ margin: 0; background: #efe8dc; color: #1e1a16; font: 18px/1.5 "Iowan Old Style", Palatino, Georgia, serif; }}
-    main {{ max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }}
-    header {{ border-top: 8px solid #1e1a16; padding-top: 1rem; }}
-    .stamp {{ letter-spacing: 0.08em; text-transform: uppercase; font: 600 0.78rem/1.2 ui-sans-serif, sans-serif; color: #8a3b12; }}
-    h1 {{ font-size: 2.4rem; line-height: 1.05; margin: 0.4rem 0; }}
-    h2 {{ font-size: 1.35rem; margin: 2rem 0 0.6rem; }}
-    h3 {{ font-size: 1.15rem; margin: 0 0 0.4rem; }}
-    .lede {{ font-size: 1.15rem; }}
-    ol.pulse, ul {{ padding-left: 1.1rem; }}
-    .pulse {{ list-style: none; padding: 0; }}
-    .pulse li {{ display: flex; gap: 0.75rem; align-items: baseline; padding: 0.35rem 0; border-bottom: 1px solid #e2d8c8; }}
-    .state {{ font: 600 0.75rem/1 ui-sans-serif, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; min-width: 8.5rem; }}
-    .on_track {{ color: #1f6b3a; }}
-    .needs_attention {{ color: #8a5a00; }}
-    .blocked {{ color: #8a3b12; }}
-    article {{ background: #fffdf8; border: 1px solid #e2d8c8; padding: 0.9rem 1rem; margin: 0.8rem 0; }}
-    .meta {{ margin: 0; font: 600 0.75rem/1.2 ui-sans-serif, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #5c5348; }}
-    .evidence {{ font: 0.82rem/1.4 ui-monospace, monospace; color: #3d3832; }}
-    footer {{ margin-top: 2rem; color: #5c5348; font-size: 0.95rem; }}
+    body {{ margin: 0; background: #f4f1ea; color: #1c1917; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }}
+    main {{ max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }}
+    header {{ border-top: 6px solid #1c1917; padding-top: 0.8rem; }}
+    .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }}
+    h1 {{ font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }}
+    h2 {{ font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }}
+    h3 {{ font-size: 1rem; margin: 0 0 0.35rem; }}
+    .meta {{ margin: 0; color: #57534e; }}
+    .lede {{ font-size: 1.02rem; }}
+    .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.45rem; }}
+    .card {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }}
+    .pulse .card {{ display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }}
+    .state {{ font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }}
+    .on_track {{ color: #166534; }}
+    .needs_attention {{ color: #a16207; }}
+    .blocked {{ color: #9a3412; }}
+    .kicker {{ margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #57534e; }}
+    article {{ margin: 0.45rem 0; }}
+    details {{ margin-top: 0.35rem; }}
+    summary {{ cursor: pointer; color: #44403c; }}
+    .evidence {{ font: 0.78rem/1.4 ui-monospace, monospace; color: #44403c; }}
+    ul {{ padding-left: 1.1rem; }}
+    footer {{ margin-top: 1.5rem; color: #57534e; }}
+    @media (max-width: 640px) {{
+      h1 {{ font-size: 1.45rem; }}
+      .pulse {{ grid-template-columns: 1fr; }}
+    }}
   </style>
 </head>
 <body>
@@ -1145,25 +1170,29 @@ def render_html(brief: dict) -> str:
     <header>
       <p class="stamp">{html.escape(stamp)}</p>
       <h1>{html.escape(brief['portfolio'])}</h1>
-      <p>Weekly delivery brief · {html.escape(brief['as_of'])} · {html.escape(brief['audience'])}</p>
+      <p class="meta">{html.escape(brief['as_of'])} · {html.escape(brief['audience'])} · {html.escape(profile)} · {brief.get('item_count', 0)} work items · rules {html.escape(str(brief.get('rules_version', '')))} · result {html.escape(str(brief.get('result_id', '')))}</p>
     </header>
     <p class="lede">{html.escape(brief['lead'])}</p>
     <h2>Delivery pulse</h2>
     <ul class="pulse">{pulse}</ul>
-    <h2>Top risks</h2>
-    {''.join(risks) or '<p>No risk cleared the evidence rules.</p>'}
-    <h2>Changes since the previous export</h2>
+    <h2>What changed</h2>
     <ul>{changes}</ul>
     <h2>Decisions needed</h2>
     <ul>{''.join(decisions) or '<li>None.</li>'}</ul>
+    <h2>Ask in the review</h2>
+    <ul>{questions or '<li>None.</li>'}</ul>
+    <h2>Top risks</h2>
+    {''.join(risks) or '<p>No risk cleared the evidence rules.</p>'}
     <h2>Checked and set aside</h2>
-    <ul>{aside}</ul>
+    <details>
+      <summary>{html.escape(aside_label)}</summary>
+      <ul>{aside_items}</ul>
+    </details>
     <h2>Also noted</h2>
     <ul>{noted}</ul>
-    <h2>Questions for the delivery lead</h2>
-    <ul>{questions}</ul>
     <footer>
-      <p>Proposed questions are not messages that have been sent. A person approves the brief before a customer sees it.</p>
+      <p>Send this file. The recipient does not need an account or the original export. Evidence is under each risk. Nothing on this page has been sent to a project tool.</p>
+      <p>A person approves the brief before a customer sees it. The result id changes when the findings change, so two copies can be compared.</p>
       <p>{html.escape(brief['description'])}</p>
     </footer>
   </main>
@@ -1172,34 +1201,81 @@ def render_html(brief: dict) -> str:
 """
 
 
+def share_filename(brief: dict) -> str:
+    slug = re.sub(r"[^A-Za-z0-9]+", "-", brief["portfolio"]).strip("-") or "delivery-brief"
+    profile = str(brief.get("source_profile") or "canonical")
+    profile_bit = "" if profile == "canonical" else f"-{profile}"
+    return f"{slug}{profile_bit}-{brief['as_of']}.html"
+
+
 def write_brief(brief: dict, output: Path) -> None:
     output.mkdir(parents=True, exist_ok=True)
+    page = render_html(brief)
     (output / "brief.json").write_text(json.dumps(brief, indent=2) + "\n", encoding="utf-8")
     (output / "brief.md").write_text(render_markdown(brief), encoding="utf-8")
-    (output / "brief.html").write_text(render_html(brief), encoding="utf-8")
+    (output / "brief.html").write_text(page, encoding="utf-8")
+    (output / share_filename(brief)).write_text(page, encoding="utf-8")
 
 
 def build(directory: Path) -> dict:
     return analyse(load_portfolio(directory))
 
 
+def _stage_csv(source: Path, name: str, as_of: str, previous: Path | None, profile: str | None, columns: Path | None) -> Path:
+    staging = Path(tempfile.mkdtemp(prefix="delivery-signal-"))
+    meta = {
+        "portfolio": name,
+        "as_of": as_of,
+        "audience": "Delivery director",
+        "description": "Brief built from a single export file.",
+        "synthetic": False,
+    }
+    if profile:
+        meta["profile"] = profile
+    (staging / "meta.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+    shutil.copy(source, staging / "work_items.csv")
+    if previous is not None:
+        shutil.copy(previous, staging / "previous_work_items.csv")
+    if columns is not None:
+        shutil.copy(columns, staging / "columns.json")
+    return staging
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build an evidence-linked delivery brief.")
-    parser.add_argument("portfolio", type=Path, help="Directory with meta.json and work_items.csv")
+    parser.add_argument("portfolio", type=Path, help="Portfolio directory, or one CSV export")
     parser.add_argument("--out", type=Path, help="Output directory (default: <portfolio>/out)")
+    parser.add_argument("--name", help="Portfolio name when the input is a single CSV")
+    parser.add_argument("--as-of", help="Report date YYYY-MM-DD when the input is a single CSV")
+    parser.add_argument("--previous", type=Path, help="Previous CSV, used only for the change list")
+    parser.add_argument("--profile", choices=extract.PROFILES, help="Force canonical, jira, or azure_devops")
+    parser.add_argument("--columns", type=Path, help="columns.json header overrides")
     args = parser.parse_args(argv)
+    staging: Path | None = None
     try:
-        brief = build(args.portfolio)
+        if args.portfolio.is_file():
+            if not args.name or not args.as_of:
+                print("A CSV export needs --name and --as-of YYYY-MM-DD.", file=sys.stderr)
+                return 1
+            staging = _stage_csv(args.portfolio, args.name, args.as_of, args.previous, args.profile, args.columns)
+            brief = build(staging)
+            output = args.out or (args.portfolio.parent / "out")
+        else:
+            brief = build(args.portfolio)
+            output = args.out or (args.portfolio / "out")
     except (InputError, json.JSONDecodeError, OSError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
+    finally:
+        if staging is not None:
+            shutil.rmtree(staging, ignore_errors=True)
     if not brief["quality"]["traceable"]:
         print("Brief has a finding without evidence.", file=sys.stderr)
         return 1
-    write_brief(brief, args.out or (args.portfolio / "out"))
+    write_brief(brief, output)
     print(
-        f"{brief['portfolio']}: {len(brief['top_risks'])} top risks, "
-        f"{len(brief['set_aside'])} set aside, approval {brief['approval']}"
+        f"{brief['portfolio']}: {brief['source_profile']}, {len(brief['top_risks'])} top risks, "
+        f"{len(brief['set_aside'])} set aside, result {brief['result_id']}, approval {brief['approval']}"
     )
     return 0
 

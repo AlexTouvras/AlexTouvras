@@ -6,10 +6,12 @@ import json
 import sys
 import tempfile
 import unittest
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import extract  # noqa: E402
 import pipeline  # noqa: E402
 
 
@@ -236,7 +238,111 @@ class RuleTests(unittest.TestCase):
             self.assertIn("Northline Advisory", html)
             self.assertIn("Checked and set aside", html)
             self.assertIn("FOR-3 is Done", html)
+            self.assertIn("<details", html)
             self.assertIn("pending approval", html.lower())
+            self.assertTrue((output / "Northline-Advisory-2026-10-10.html").is_file())
+
+
+class ProfileTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.base = pipeline.build(SAMPLE)
+
+    def test_jira_and_azure_devops_match_the_canonical_result(self) -> None:
+        root = SAMPLE.parent
+        for folder in ("northline-jira", "northline-ado"):
+            brief = pipeline.build(root / folder)
+            self.assertEqual(brief["result_id"], self.base["result_id"])
+            self.assertEqual(
+                [item["id"] for item in brief["top_risks"]],
+                [item["id"] for item in self.base["top_risks"]],
+            )
+            self.assertEqual(brief["data_quality"], [])
+        self.assertEqual(pipeline.build(root / "northline-jira")["source_profile"], "jira")
+        self.assertEqual(pipeline.build(root / "northline-ado")["source_profile"], "azure_devops")
+
+    def test_rewritten_profiles_match_too(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            for profile in ("jira", "azure_devops"):
+                dest = Path(tmp) / profile
+                extract.write_profile_copy(SAMPLE, dest, profile)
+                brief = pipeline.build(dest)
+                self.assertEqual(brief["result_id"], self.base["result_id"])
+                self.assertEqual(brief["source_profile"], profile)
+
+    def test_export_dates_and_joined_comments(self) -> None:
+        self.assertEqual(extract.parse_date("08/Oct/26 4:12 PM", "jira"), date(2026, 10, 8))
+        self.assertEqual(extract.parse_date("10/08/2026 4:12:00 PM", "azure_devops"), date(2026, 10, 8))
+        self.assertEqual(extract.parse_date("08.10.2026", "jira"), date(2026, 10, 8))
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / "meta.json").write_text(
+                json.dumps({"portfolio": "Comments", "as_of": "2026-10-10", "profile": "jira"}),
+                encoding="utf-8",
+            )
+            (directory / "work_items.csv").write_text(
+                "Issue key,Summary,Status,Comment,Comment\n"
+                "C-1,Join me,Done,First note.,Second note.\n",
+                encoding="utf-8",
+            )
+            loaded = pipeline.load_portfolio(directory)
+        self.assertEqual(loaded["items"][0].comment, "First note. Second note.")
+
+    def test_column_override_and_single_csv_command(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / "meta.json").write_text(
+                json.dumps({"portfolio": "Renamed", "as_of": "2026-10-10"}),
+                encoding="utf-8",
+            )
+            (directory / "columns.json").write_text(
+                json.dumps({"profile": "canonical", "columns": {"key": "Ticket"}}),
+                encoding="utf-8",
+            )
+            write_items(
+                directory,
+                [
+                    {
+                        "key": "T-1",
+                        "project": "ONE",
+                        "project_name": "One",
+                        "type": "Task",
+                        "summary": "Named ticket",
+                        "status": "Done",
+                        "assignee": "Mina Cho",
+                    }
+                ],
+            )
+            text = (directory / "work_items.csv").read_text(encoding="utf-8").replace("key,", "Ticket,", 1)
+            (directory / "work_items.csv").write_text(text, encoding="utf-8")
+            brief = pipeline.build(directory)
+            self.assertEqual(brief["item_count"], 1)
+            code = pipeline.main(
+                [
+                    str(directory / "work_items.csv"),
+                    "--name",
+                    "From a file",
+                    "--as-of",
+                    "2026-10-10",
+                    "--columns",
+                    str(directory / "columns.json"),
+                    "--out",
+                    str(directory / "out"),
+                ]
+            )
+            self.assertEqual(code, 0)
+            self.assertTrue((directory / "out" / "From-a-file-2026-10-10.html").is_file())
+
+    def test_unknown_headers_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / "meta.json").write_text(
+                json.dumps({"portfolio": "Odd", "as_of": "2026-10-10"}),
+                encoding="utf-8",
+            )
+            (directory / "work_items.csv").write_text("Foo,Bar\nA,B\n", encoding="utf-8")
+            with self.assertRaises(pipeline.InputError):
+                pipeline.build(directory)
 
 
 if __name__ == "__main__":
