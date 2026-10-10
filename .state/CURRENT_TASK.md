@@ -1,5 +1,74 @@
 # Current task
 
+In the person's own terminal: connect the folder with `run`, connect a Jira, Azure DevOps, or other project or import a CSV, then `run report`.
+
+## Verify
+
+`python3 delivery-signal/tests/test_link.py` exits 0. A connected project file has no token. `run import` with no file reads Jira or Azure DevOps through the stand-in. `run issues.csv` still writes a brief.
+
+## Done
+
+- `run connect jira|ado|other` stores the site and the project key in `.delivery-signal/project.json`
+- `run import issues.csv` copies the export; a second import becomes the previous file
+- `run import` with no file reads the connected project; the token stays in the environment
+- `run report` writes the brief under `out/`
+
+# Previous task
+
+In the person's own terminal, the command is `run` plus their CSV. Command Prompt: `run issues.csv`. PowerShell: `.\run issues.csv`. bash: `./run issues.csv`.
+
+## Verify
+
+`python3 delivery-signal/tests/test_command.py` exits 0. `./run` writes a brief. The skill tells an agent to use that `run` command and not to install anything.
+
+## Done
+
+- `run`, `run.ps1`, and `run.cmd` are the command in bash, PowerShell, and Command Prompt
+- A missing Python prints the page link
+
+# Previous task
+
+One command in the shell the person already has. No separate install.
+
+## Verify
+
+`python3 delivery-signal/tests/test_command.py` exits 0. `delivery-signal/run.sh` writes a brief from one CSV. The PowerShell and cmd scripts call the same checker and do not install a package.
+
+## Done
+
+- `run.sh`, `run.ps1`, and `run.cmd` forward one CSV to the checker
+- A missing Python prints the page link
+- `skills/delivery-signal/SKILL.md` tells an agent CLI to run that command and not to install anything
+- The CSV name and today's date are the defaults
+
+# Previous task
+
+Publish Delivery Signal so a phone or a computer can open it from GitHub and connect a CSV. No account. The export stays on that device.
+
+## Verify
+
+`python3 delivery-signal/tests/test_site.py` exits 0. The published files match the checker. The page loads, the Northline sample result id is `e53f514aa6` for the canonical, Jira, and Azure DevOps copies, and a chosen CSV matches `pipeline.brief_from_csv`.
+
+The page opens from the repo at the HTML preview of `docs/index.html`. https://alextouvras.github.io/AlexTouvras/ is the address once GitHub Pages is serving `docs/`. Creating the Pages site returned HTTP 403.
+
+## Done
+
+- `docs/` page with Home Screen install, a CSV form, share, and download
+- The page runs `pipeline.py` in the browser so the result id matches this repo
+- `connect.py` page with the sample, the export form, and the terminal commands
+- `POST /run` for the form and for curl
+- Column profiles for canonical, Jira, and Azure DevOps, plus `columns.json`
+- One command for a single CSV
+- Executive HTML and a dated file meant to be forwarded
+- Plan for why a team would pay, and what waits until a second cycle
+
+## Out of scope
+
+- Accounts, checkout, live Jira or Azure DevOps connections
+- A claim that a buyer has agreed to pay
+
+# Previous task
+
 Daycare comparison page for Lipstikkakuja 14, Rekola. Child is 7 weeks old on 6 Oct 2026; target start is November 2027 (about 15 months).
 
 ## Verify
