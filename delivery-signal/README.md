@@ -16,37 +16,31 @@ Choose this week's CSV. The export stays in that browser. Share or download the 
 
 The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/AlexTouvras/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages. It could not be turned on from this change.
 
-## From the CLI you already use
+## From your own terminal
 
-In the agent CLI, type:
+In `delivery-signal`, the command is `run` plus the CSV.
 
-```text
-/delivery-signal issues.csv
-```
-
-`/skill delivery-signal issues.csv` is the same command. From an OpenClaw terminal:
-
-```bash
-openclaw agent --message "/delivery-signal issues.csv"
-```
-
-The words after the command are the CSV. Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The skill at `skills/delivery-signal/SKILL.md` runs the checker and does not install anything. The CSV stays on the machine.
-
-A plain shell can run the same checker directly:
-
-```bash
-delivery-signal/run.sh issues.csv
-```
-
-```powershell
-delivery-signal/run.ps1 issues.csv
-```
+Command Prompt:
 
 ```bat
-delivery-signal\run.cmd issues.csv
+run issues.csv
 ```
 
-If Python is not already on the machine, that command prints the page link instead of starting an installer.
+PowerShell:
+
+```powershell
+.\run issues.csv
+```
+
+bash:
+
+```bash
+./run issues.csv
+```
+
+Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The CSV stays on the machine. An agent in this repo uses that same command in the terminal it already has.
+
+If Python is not already on the machine, the command prints the page link instead of starting an installer.
 
 ## On this computer
 

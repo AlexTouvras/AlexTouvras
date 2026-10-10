@@ -4,7 +4,7 @@
 
 ## Delivery Signal
 
-A weekly delivery brief from a Jira or Azure DevOps CSV. On a phone or a computer, open the [page in this repo](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html) and choose a CSV. The export stays in that browser. Details are in [`delivery-signal/`](delivery-signal/README.md).
+A weekly delivery brief from a Jira or Azure DevOps CSV. In your own terminal, from [`delivery-signal/`](delivery-signal/), the command is `run` plus the CSV. On a phone, open the [page in this repo](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html). Details are in [`delivery-signal/README.md`](delivery-signal/README.md).
 
 ## Directive archive
 

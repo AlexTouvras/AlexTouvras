@@ -15,30 +15,29 @@ PAGE = "htmlpreview.github.io"
 
 class CommandTests(unittest.TestCase):
     def test_shells_only_forward_to_the_checker(self) -> None:
-        for name in ("run.sh", "run.ps1"):
+        for name in ("run", "run.ps1"):
             text = (ROOT / name).read_text(encoding="utf-8")
             self.assertIn("pipeline.py", text, name)
             self.assertIn(PAGE, text, name)
             lowered = text.lower()
+            self.assertNotIn("openclaw", lowered, name)
             self.assertNotIn("pip install", lowered, name)
             self.assertNotIn("npm install", lowered, name)
             self.assertNotIn("venv", lowered, name)
         cmd = (ROOT / "run.cmd").read_text(encoding="utf-8").lower()
         self.assertIn("run.ps1", cmd)
+        self.assertNotIn("openclaw", cmd)
         self.assertNotIn("pip install", cmd)
-        self.assertNotIn("npm install", cmd)
         skill = (ROOT.parents[0] / "skills" / "delivery-signal" / "SKILL.md").read_text(encoding="utf-8")
-        self.assertIn("/delivery-signal issues.csv", skill)
-        self.assertIn("/skill delivery-signal issues.csv", skill)
-        self.assertIn("run.sh", skill)
-        self.assertIn("run.ps1", skill)
-        self.assertIn("run.cmd", skill)
+        self.assertNotIn("openclaw", skill.lower())
+        self.assertNotIn("/delivery-signal", skill)
+        self.assertIn("run issues.csv", skill)
         self.assertIn("Do not install Python", skill)
 
     def test_bash_command_writes_the_brief(self) -> None:
-        script = ROOT / "run.sh"
+        script = ROOT / "run"
         mode = script.stat().st_mode
-        self.assertTrue(mode & stat.S_IXUSR, "run.sh is executable")
+        self.assertTrue(mode & stat.S_IXUSR, "run is executable")
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
             csv_path = directory / "Northwind.csv"

@@ -1,4 +1,4 @@
-# One command. Uses python3, python, or py when one of them is already on PATH.
+# One command in your own PowerShell: .\run issues.csv
 # Does not install a runtime, a package, or a server.
 param(
     [Parameter(ValueFromRemainingArguments = $true)]

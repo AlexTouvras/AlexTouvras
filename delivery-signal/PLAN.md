@@ -35,10 +35,10 @@ The page a phone or another computer opens from this repo is the [`docs/`](../do
 
 That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
 
-In the CLI an agent already runs, the command is `/delivery-signal issues.csv`. `/skill delivery-signal issues.csv` is the same command. An OpenClaw terminal can send it with `openclaw agent --message "/delivery-signal issues.csv"`. The skill runs the checker and does not install a runtime. A plain shell can still call `delivery-signal/run.sh`, `run.ps1`, or `run.cmd`.
+In the person's own terminal, from `delivery-signal`, the command is `run` plus the CSV: `run issues.csv` in Command Prompt, `.\run issues.csv` in PowerShell, and `./run issues.csv` in bash. An agent in this repo uses that same command. It does not install a runtime.
 
-```text
-/delivery-signal issues.csv --previous issues-last-week.csv
+```bat
+run issues.csv --previous issues-last-week.csv
 ```
 
 Send the HTML file in `out/`. That is the whole handoff.

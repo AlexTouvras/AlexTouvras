@@ -1,15 +1,14 @@
 # Current task
 
-The brief is a command in the CLI the agent already runs: `/delivery-signal issues.csv`.
+In the person's own terminal, the command is `run` plus their CSV. Command Prompt: `run issues.csv`. PowerShell: `.\run issues.csv`. bash: `./run issues.csv`.
 
 ## Verify
 
-`python3 delivery-signal/tests/test_command.py` exits 0. The skill tells the agent to run that slash command by calling `run.sh`, `run.ps1`, or `run.cmd`, and not to install anything.
+`python3 delivery-signal/tests/test_command.py` exits 0. `./run` writes a brief. The skill tells an agent to use that `run` command and not to install anything.
 
 ## Done
 
-- `/delivery-signal` and `/skill delivery-signal` are the commands a person types
-- `run.sh`, `run.ps1`, and `run.cmd` are what that command executes
+- `run`, `run.ps1`, and `run.cmd` are the command in bash, PowerShell, and Command Prompt
 - A missing Python prints the page link
 
 # Previous task
