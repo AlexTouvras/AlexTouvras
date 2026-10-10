@@ -8,13 +8,13 @@ The reason to pay for that, and what is deliberately not built yet, is in [PLAN.
 
 ## On a phone or a computer
 
-Open the published page: https://alextouvras.github.io/AlexTouvras/
+Open the page from this repo:
 
-Add it to the Home Screen on a phone, or install it on a computer. Then choose this week's CSV. The export stays on that device. Share or download the HTML brief when it is ready. Android can share a CSV into the installed page. Chrome and Edge on a computer can open a CSV with it.
+https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html
 
-The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
+Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
 
-GitHub Pages serves the [`docs/`](../docs) folder. This branch publishes that folder. After this branch is merged, point Pages at `main` and `/docs` so later edits on `main` keep the same address.
+The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/AlexTouvras/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages. It could not be turned on from this change.
 
 ## On this computer
 

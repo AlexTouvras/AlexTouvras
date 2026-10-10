@@ -6,7 +6,7 @@ Publish Delivery Signal so a phone or a computer can open it from GitHub and con
 
 `python3 delivery-signal/tests/test_site.py` exits 0. The published files match the checker. The page loads, the Northline sample result id is `e53f514aa6` for the canonical, Jira, and Azure DevOps copies, and a chosen CSV matches `pipeline.brief_from_csv`.
 
-https://alextouvras.github.io/AlexTouvras/ is the address once GitHub Pages is serving `docs/` from this repo.
+The page opens from the repo at the HTML preview of `docs/index.html`. https://alextouvras.github.io/AlexTouvras/ is the address once GitHub Pages is serving `docs/`. Creating the Pages site returned HTTP 403.
 
 ## Done
 

@@ -50,11 +50,25 @@ function yieldFrame() {
   });
 }
 
+function ensurePyodide() {
+  if (typeof loadPyodide === "function") {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = PYODIDE + "pyodide.js";
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("The checker could not be downloaded."));
+    document.head.appendChild(script);
+  });
+}
+
 async function ready() {
   if (engine) {
     return engine;
   }
   engine = (async () => {
+    await ensurePyodide();
     const [pyodide, pipelineSrc, extractSrc] = await Promise.all([
       loadPyodide({ indexURL: PYODIDE }),
       fetchText("engine/pipeline.py"),
@@ -246,7 +260,9 @@ installButton.addEventListener("click", async () => {
   installButton.hidden = true;
 });
 
-if (window.matchMedia("(display-mode: standalone)").matches) {
+if (location.hostname === "htmlpreview.github.io") {
+  installHint.textContent = "This preview builds the brief in the browser. Home Screen install belongs to the page once it has its own address.";
+} else if (window.matchMedia("(display-mode: standalone)").matches) {
   installHint.textContent = "This device is already running the installed page.";
 } else if (/iphone|ipad/i.test(navigator.userAgent)) {
   installHint.textContent = "On an iPhone or iPad, use Share, then Add to Home Screen.";

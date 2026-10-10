@@ -90,7 +90,7 @@ def connect_page(port: int) -> str:
       <p class="stamp">Local test · this computer only</p>
       <h1>Connect a project</h1>
       <p class="meta">Drop this week's export. The brief is built here and the file is deleted. Nothing is uploaded to a hosted service.</p>
-      <p class="meta">On a phone, or on another computer, open <a href="https://alextouvras.github.io/AlexTouvras/">the published page</a>. Add it to the Home Screen or install it, then choose the CSV there. That file stays on that device.</p>
+      <p class="meta">On a phone, or on another computer, open <a href="https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html">the page from this repo</a> and choose the CSV there. That file stays in that browser.</p>
     </header>
 
     <h2>Try it before you export anything</h2>
