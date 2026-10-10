@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# One command. Uses python3, python, or py when one of them is already on PATH.
+# Does not install a runtime, a package, or a server.
+set -euo pipefail
+
+PAGE="https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html"
+BASE="https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
+
+source_path="${BASH_SOURCE[0]:-}"
+root=""
+if [[ -n "$source_path" && -f "$source_path" ]]; then
+  here="$(cd "$(dirname "$source_path")" && pwd)"
+  if [[ -f "$here/pipeline.py" && -f "$here/extract.py" ]]; then
+    root="$here"
+  fi
+fi
+
+if [[ -z "$root" ]]; then
+  root="$(mktemp -d)"
+  curl -fsSL "$BASE/pipeline.py" -o "$root/pipeline.py"
+  curl -fsSL "$BASE/extract.py" -o "$root/extract.py"
+fi
+
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 "$root/pipeline.py" "$@"
+fi
+if command -v python >/dev/null 2>&1; then
+  exec python "$root/pipeline.py" "$@"
+fi
+if command -v py >/dev/null 2>&1; then
+  exec py -3 "$root/pipeline.py" "$@"
+fi
+
+echo "Python is not on this machine. Open the page and choose the CSV:" >&2
+echo "$PAGE" >&2
+exit 1

@@ -1275,10 +1275,9 @@ def main(argv: list[str] | None = None) -> int:
     staging: Path | None = None
     try:
         if args.portfolio.is_file():
-            if not args.name or not args.as_of:
-                print("A CSV export needs --name and --as-of YYYY-MM-DD.", file=sys.stderr)
-                return 1
-            staging = _stage_csv(args.portfolio, args.name, args.as_of, args.previous, args.profile, args.columns)
+            name = args.name or (args.portfolio.stem.strip() or "Portfolio")
+            as_of = args.as_of or date.today().isoformat()
+            staging = _stage_csv(args.portfolio, name, as_of, args.previous, args.profile, args.columns)
             brief = build(staging)
             output = args.out or (args.portfolio.parent / "out")
         else:

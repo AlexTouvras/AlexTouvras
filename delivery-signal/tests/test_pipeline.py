@@ -333,6 +333,20 @@ class ProfileTests(unittest.TestCase):
             self.assertEqual(code, 0)
             self.assertTrue((directory / "out" / "From-a-file-2026-10-10.html").is_file())
 
+    def test_csv_command_defaults_the_name_and_the_date(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            csv_path = directory / "Northwind.csv"
+            csv_path.write_text(
+                "key,summary,status\nT-1,Rotate keys,To Do\n",
+                encoding="utf-8",
+            )
+            code = pipeline.main([str(csv_path), "--out", str(directory / "out")])
+            self.assertEqual(code, 0)
+            brief = json.loads((directory / "out" / "brief.json").read_text(encoding="utf-8"))
+            self.assertEqual(brief["portfolio"], "Northwind")
+            self.assertEqual(brief["as_of"], date.today().isoformat())
+
     def test_unknown_headers_are_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)

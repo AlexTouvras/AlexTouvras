@@ -1,5 +1,20 @@
 # Current task
 
+One command in the shell the person already has, or in the agent CLI already running there. No separate install.
+
+## Verify
+
+`python3 delivery-signal/tests/test_command.py` exits 0. `delivery-signal/run.sh` writes a brief from one CSV. The PowerShell and cmd scripts call the same checker and do not install a package.
+
+## Done
+
+- `run.sh`, `run.ps1`, and `run.cmd` forward one CSV to the checker
+- A missing Python prints the page link
+- `skills/delivery-signal/SKILL.md` tells an agent CLI to run that command and not to install anything
+- The CSV name and today's date are the defaults
+
+# Previous task
+
 Publish Delivery Signal so a phone or a computer can open it from GitHub and connect a CSV. No account. The export stays on that device.
 
 ## Verify

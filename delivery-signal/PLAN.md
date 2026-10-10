@@ -35,10 +35,10 @@ The page a phone or another computer opens from this repo is the [`docs/`](../do
 
 That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
 
-On the machine that has the repo, `python3 delivery-signal/connect.py` opens a local page. A script can post the same form with curl while that page is running. The pipeline command still writes a file without a page.
+On a machine that already has a shell, one command writes the brief: `delivery-signal/run.sh`, `delivery-signal/run.ps1`, or `delivery-signal\run.cmd`. The same scripts can be fetched with curl or `irm` when the repo is not there. They use `python3`, `python`, or `py` only when that program is already on the machine, and they do not install a runtime or start a server. An agent CLI opened on this repo uses `skills/delivery-signal/SKILL.md` and runs that same command.
 
 ```bash
-python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv
+delivery-signal/run.sh issues.csv --previous issues-last-week.csv
 ```
 
 Send the HTML file in `out/`. That is the whole handoff.

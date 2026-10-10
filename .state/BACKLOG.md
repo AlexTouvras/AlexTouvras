@@ -12,6 +12,7 @@
 - [x] Same brief from Jira and Azure DevOps headers, with a file a team can forward
 - [x] Local page and curl call so a team can try an export without an account
 - [x] Published page a phone or a computer can install and open a CSV with
+- [x] One shell command, or the agent CLI already running, with no separate install
 - [ ] Publish `/studio/directives` on AlexTouvras/Orbit (local commit `149120d`; this agent cannot push)
 - [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo
