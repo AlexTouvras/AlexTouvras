@@ -10,6 +10,7 @@
 - [x] Daycare map and ranked list for Lipstikkakuja 14, November 2027 start
 - [x] Delivery Signal sample brief from a synthetic project export
 - [x] Same brief from Jira and Azure DevOps headers, with a file a team can forward
+- [x] Local page and curl call so a team can try an export without an account
 - [ ] Publish `/studio/directives` on AlexTouvras/Orbit (local commit `149120d`; this agent cannot push)
 - [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo

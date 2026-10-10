@@ -903,6 +903,7 @@ def analyse(data: dict) -> dict:
         "set_aside": [finding.to_dict() for finding in set_aside],
         "decisions": decisions,
         "changes": changes,
+        "has_previous": bool(data["previous"]),
         "questions": questions,
         "actions": actions,
         "data_quality": data["issues"],
@@ -1089,13 +1090,18 @@ def render_html(brief: dict) -> str:
             f"<details><summary>Evidence, {count} fields</summary>{_evidence_html(finding)}</details>"
             "</article>"
         )
-    changes = "".join(
-        "<li><strong>{}</strong> {}.</li>".format(
-            html.escape(change["key"]),
-            html.escape(", ".join(f"{field['field']} {field['before']} → {field['after']}" for field in change["fields"])),
+    if brief["changes"]:
+        changes = "".join(
+            "<li><strong>{}</strong> {}.</li>".format(
+                html.escape(change["key"]),
+                html.escape(", ".join(f"{field['field']} {field['before']} → {field['after']}" for field in change["fields"])),
+            )
+            for change in brief["changes"]
         )
-        for change in brief["changes"]
-    ) or "<li>No compared field changed.</li>"
+    elif brief.get("has_previous"):
+        changes = "<li>No compared field changed.</li>"
+    else:
+        changes = "<li>No previous export was attached.</li>"
     decisions = []
     for decision in brief["decisions"]:
         extra = []
@@ -1219,6 +1225,21 @@ def write_brief(brief: dict, output: Path) -> None:
 
 def build(directory: Path) -> dict:
     return analyse(load_portfolio(directory))
+
+
+def brief_from_csv(
+    source: Path,
+    name: str,
+    as_of: str,
+    previous: Path | None = None,
+    profile: str | None = None,
+    columns: Path | None = None,
+) -> dict:
+    staging = _stage_csv(source, name, as_of, previous, profile, columns)
+    try:
+        return build(staging)
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
 
 
 def _stage_csv(source: Path, name: str, as_of: str, previous: Path | None, profile: str | None, columns: Path | None) -> Path:

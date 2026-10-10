@@ -29,13 +29,15 @@ Three shapes are in the product now: the canonical sheet, a Jira header row, and
 
 The first screen is the pulse, what changed, the open decision, and the questions for the review. Evidence stays on the page and starts collapsed, so a reader can check a line without scrolling through every field. The set-aside line is visible without opening it: the overdue legacy extract does not block the story that is already done.
 
-## How a team uses it this week
+## How a team tests it
+
+`python3 delivery-signal/connect.py` opens a page on this computer. They can open the sample brief, or choose an export. A script can post the same form with curl while the page is running. The pipeline command still writes a file without the page. There is no account and no hosted upload. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
 
 ```bash
 python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv
 ```
 
-Send the HTML file in `out/`. That is the whole handoff. No account, no hosted link, no payment step.
+Send the HTML file in `out/`. That is the whole handoff.
 
 A folder with `meta.json` still works when the pack also has notes, milestones, and dependencies:
 

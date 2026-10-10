@@ -1,15 +1,17 @@
 # Current task
 
-Delivery Signal as a shareable brief: same result id from canonical, Jira, and Azure DevOps exports, with the review on the first screen. The pay reason and the next cycles are in `delivery-signal/PLAN.md`. No orders or live connections.
+Local connect page so a team can try Delivery Signal from a browser, a terminal, or a script. No account and no hosted upload.
 
 ## Verify
 
-`python3 delivery-signal/tests/test_pipeline.py` exits 0. The three Northline folders share one result id.
+`python3 delivery-signal/tests/test_connect.py` exits 0. It loads the page, opens the sample, posts a CSV, and rejects a form with no file.
 
-Open `delivery-signal/samples/northline/out/brief.html`. Pulse, changes, and the set-aside line are visible before the evidence. Evidence starts collapsed. A phone-width window still stacks the pulse.
+`python3 delivery-signal/connect.py` serves http://127.0.0.1:8766. The sample link fills the brief frame. A chosen CSV builds a brief in that frame.
 
 ## Done
 
+- `connect.py` page with the sample, the export form, and the terminal commands
+- `POST /run` for the form and for curl
 - Column profiles for canonical, Jira, and Azure DevOps, plus `columns.json`
 - One command for a single CSV
 - Executive HTML and a dated file meant to be forwarded

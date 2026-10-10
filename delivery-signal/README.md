@@ -6,9 +6,28 @@ Send the HTML file. The recipient does not need an account or the original expor
 
 The reason to pay for that, and what is deliberately not built yet, is in [PLAN.md](PLAN.md). Nobody has paid. The page does not take orders.
 
+## Try it
+
+Start a page on this computer and open it in a browser:
+
+```bash
+python3 delivery-signal/connect.py
+```
+
+The page is at http://127.0.0.1:8766. Open the Northline sample, or choose a Jira, Azure DevOps, or canonical CSV. The export stays on this machine.
+
+From a terminal in an IDE, or from a script while that page is running:
+
+```bash
+python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv
+
+curl -F name="Northwind" -F as_of="2026-10-10" -F export=@issues.csv \
+  http://127.0.0.1:8766/run -o brief.html
+```
+
 ## Run
 
-One export:
+One export, without the page:
 
 ```bash
 python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv

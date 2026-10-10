@@ -523,6 +523,7 @@
       ]
     }
   ],
+  "has_previous": true,
   "questions": [
     "Who owns FOR-12 (Rotate carrier credentials)?",
     "Who owns LUM-4 (KYC document upload)?",
