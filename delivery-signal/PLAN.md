@@ -31,7 +31,11 @@ The first screen is the pulse, what changed, the open decision, and the question
 
 ## How a team tests it
 
-`python3 delivery-signal/connect.py` opens a page on this computer. They can open the sample brief, or choose an export. A script can post the same form with curl while the page is running. The pipeline command still writes a file without the page. There is no account and no hosted upload. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
+The page a phone or another computer opens is https://alextouvras.github.io/AlexTouvras/ . GitHub Pages serves the `docs/` folder from this repo. Add it to the Home Screen, or install it in Chrome or Edge. Choose the CSV there. The export is read in that browser. Android can share a CSV into the installed page, and a computer can open a CSV with it. The brief can be shared or downloaded as one HTML file.
+
+That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
+
+On the machine that has the repo, `python3 delivery-signal/connect.py` opens a local page. A script can post the same form with curl while that page is running. The pipeline command still writes a file without a page.
 
 ```bash
 python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv

@@ -1,15 +1,17 @@
 # Current task
 
-Local connect page so a team can try Delivery Signal from a browser, a terminal, or a script. No account and no hosted upload.
+Publish Delivery Signal so a phone or a computer can open it from GitHub and connect a CSV. No account. The export stays on that device.
 
 ## Verify
 
-`python3 delivery-signal/tests/test_connect.py` exits 0. It loads the page, opens the sample, posts a CSV, and rejects a form with no file.
+`python3 delivery-signal/tests/test_site.py` exits 0. The published files match the checker. The page loads, the Northline sample result id is `e53f514aa6` for the canonical, Jira, and Azure DevOps copies, and a chosen CSV matches `pipeline.brief_from_csv`.
 
-`python3 delivery-signal/connect.py` serves http://127.0.0.1:8766. The sample link fills the brief frame. A chosen CSV builds a brief in that frame.
+https://alextouvras.github.io/AlexTouvras/ is the address once GitHub Pages is serving `docs/` from this repo.
 
 ## Done
 
+- `docs/` page with Home Screen install, a CSV form, share, and download
+- The page runs `pipeline.py` in the browser so the result id matches this repo
 - `connect.py` page with the sample, the export form, and the terminal commands
 - `POST /run` for the form and for curl
 - Column profiles for canonical, Jira, and Azure DevOps, plus `columns.json`

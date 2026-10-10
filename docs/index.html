@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1c1917">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Delivery">
+  <title>Delivery Signal</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="canonical" href="https://alextouvras.github.io/AlexTouvras/">
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; background: #f4f1ea; color: #1c1917; font: 16px/1.45 ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    header { border-top: 6px solid #1c1917; padding-top: 0.8rem; }
+    .stamp { margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }
+    h1 { font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }
+    h2 { font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }
+    .meta, .hint { color: #57534e; }
+    .card, form, details.panel { background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.9rem 1rem; }
+    details.panel { margin-top: 0.6rem; }
+    label { display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }
+    input, select { width: 100%; max-width: 28rem; font: inherit; padding: 0.45rem 0.5rem; box-sizing: border-box; }
+    button, .button { font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.55rem 0.85rem; cursor: pointer; }
+    button.secondary, a.secondary { background: #fffdf8; color: #1c1917; border: 1px solid #1c1917; }
+    a.button { display: inline-block; text-decoration: none; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.6rem 0; }
+    pre { background: #1c1917; color: #f4f1ea; padding: 0.8rem; overflow-x: auto; white-space: pre-wrap; font: 0.82rem/1.45 ui-monospace, monospace; }
+    iframe { width: 100%; height: 75vh; border: 1px solid #e7e0d4; background: #fff; }
+    ul { padding-left: 1.1rem; }
+    #status { min-height: 1.4em; }
+    [hidden] { display: none !important; }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.45rem; }
+      input, select { max-width: none; font-size: 16px; }
+      button, .button { width: 100%; text-align: center; box-sizing: border-box; }
+      .row { align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="stamp">Phone or computer · the export stays on this device</p>
+      <h1>Delivery Signal</h1>
+      <p class="meta">A weekly brief from a Jira, Azure DevOps, or canonical CSV. Add this page to a phone or install it on a computer, then choose the export. The file is read here. It is not sent to GitHub or written back to the project tool.</p>
+    </header>
+
+    <h2>Add it to this device</h2>
+    <div class="card">
+      <p><strong>Phone.</strong> Open this page in the browser, then add it to the Home Screen. On an iPhone that is Share, then Add to Home Screen. On Android, choose Install or Add to Home screen. Open the icon and choose the CSV. Android can also share a CSV into Delivery Signal.</p>
+      <p><strong>Computer.</strong> Install the page from the button or the browser menu. Chrome and Edge can then open a CSV with Delivery Signal. Choosing the file below works either way.</p>
+      <p class="row">
+        <button type="button" id="install" hidden>Install on this device</button>
+      </p>
+      <p class="hint" id="install-hint"></p>
+    </div>
+
+    <h2>Try the sample</h2>
+    <p class="row"><button type="button" id="sample">Open the Northline sample</button></p>
+    <p class="hint">Northline is invented. The result id matches a run of this repo on a computer.</p>
+
+    <h2>Your project</h2>
+    <form id="brief-form">
+      <label for="name">Project or portfolio name</label>
+      <input id="name" name="name" required placeholder="Northwind" autocomplete="organization">
+      <label for="as_of">Report date</label>
+      <input id="as_of" name="as_of" required type="date">
+      <label for="export">This week's CSV</label>
+      <input id="export" name="export" required type="file" accept=".csv,text/csv">
+      <details class="panel">
+        <summary>Last week, renamed columns, or a fuller pack</summary>
+        <label for="previous">Last week's CSV</label>
+        <input id="previous" name="previous" type="file" accept=".csv,text/csv">
+        <label for="profile">Export shape</label>
+        <select id="profile" name="profile">
+          <option value="">Detect from the header row</option>
+          <option value="jira">Jira CSV</option>
+          <option value="azure_devops">Azure DevOps CSV</option>
+          <option value="canonical">Canonical columns</option>
+        </select>
+        <label for="columns">columns.json</label>
+        <input id="columns" name="columns" type="file" accept=".json,application/json">
+        <label for="notes">notes.csv</label>
+        <input id="notes" name="notes" type="file" accept=".csv,text/csv">
+        <label for="milestones">milestones.csv</label>
+        <input id="milestones" name="milestones" type="file" accept=".csv,text/csv">
+        <label for="dependencies">dependencies.csv</label>
+        <input id="dependencies" name="dependencies" type="file" accept=".csv,text/csv">
+      </details>
+      <p class="row"><button type="submit" id="build">Build the brief</button></p>
+    </form>
+
+    <h2>How to export</h2>
+    <ul>
+      <li>Jira: search work items, choose Export, then CSV. Keep Issue key, Summary, Status, Updated, and Due date.</li>
+      <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, and Changed Date.</li>
+      <li>A renamed header goes in columns.json beside the export.</li>
+    </ul>
+
+    <details class="panel">
+      <summary>From a terminal in this repo</summary>
+      <pre>python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv</pre>
+    </details>
+
+    <h2>Brief</h2>
+    <p id="status" role="status" data-state="loading">Loading the checker. The first open downloads it once.</p>
+    <p class="row">
+      <button type="button" id="share" class="secondary" hidden>Share the brief</button>
+      <a id="download" class="button secondary" hidden>Download the brief</a>
+    </p>
+    <iframe id="brief" title="Delivery brief" hidden></iframe>
+  </main>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
