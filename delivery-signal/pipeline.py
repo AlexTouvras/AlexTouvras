@@ -1263,6 +1263,11 @@ def _stage_csv(source: Path, name: str, as_of: str, previous: Path | None, profi
 
 
 def main(argv: list[str] | None = None) -> int:
+    argv_list = list(sys.argv[1:] if argv is None else argv)
+    if not argv_list or (argv_list[0] in {"connect", "import", "report", "help"} and not Path(argv_list[0]).exists()):
+        import link
+
+        return link.main(argv_list or ["help"])
     parser = argparse.ArgumentParser(description="Build an evidence-linked delivery brief.")
     parser.add_argument("portfolio", type=Path, help="Portfolio directory, or one CSV export")
     parser.add_argument("--out", type=Path, help="Output directory (default: <portfolio>/out)")
@@ -1271,7 +1276,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--previous", type=Path, help="Previous CSV, used only for the change list")
     parser.add_argument("--profile", choices=extract.PROFILES, help="Force canonical, jira, or azure_devops")
     parser.add_argument("--columns", type=Path, help="columns.json header overrides")
-    args = parser.parse_args(argv)
+    args = parser.parse_args(argv_list)
     staging: Path | None = None
     try:
         if args.portfolio.is_file():

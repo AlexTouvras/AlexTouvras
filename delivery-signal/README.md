@@ -18,27 +18,23 @@ The files live in [`docs/`](../docs). A durable address a phone can keep on the 
 
 ## From your own terminal
 
-In `delivery-signal`, the command is `run` plus the CSV.
+Three steps, in the terminal you already have, from `delivery-signal`.
 
-Command Prompt:
+1. Connect this folder. Command Prompt: `run`. PowerShell: `.\run`. bash: `./run`.
+2. Connect a project, or import a CSV.
+3. Get the report with `run report`.
 
 ```bat
-run issues.csv
+run connect jira --site https://acme.atlassian.net --project FORGE
+run connect ado --org https://dev.azure.com/contoso --project Fabrikam
+run connect other --name "Board" --project WEB
+run import issues.csv
+run report
 ```
 
-PowerShell:
+`run import` with no file reads the connected Jira or Azure DevOps project. Jira uses `JIRA_EMAIL` and `JIRA_API_TOKEN`. Azure DevOps uses `ADO_PAT`. The token stays in the environment. The project file records the site and the project key only. A second import becomes last week's file for the change list. `other` is import only.
 
-```powershell
-.\run issues.csv
-```
-
-bash:
-
-```bash
-./run issues.csv
-```
-
-Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The CSV stays on the machine. An agent in this repo uses that same command in the terminal it already has.
+A single CSV is still one command: `run issues.csv`, `.\run issues.csv`, or `./run issues.csv`. Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The CSV stays on the machine. An agent in this repo uses that same command in the terminal it already has.
 
 If Python is not already on the machine, the command prints the page link instead of starting an installer.
 
@@ -94,4 +90,4 @@ If a team renamed a column, put `columns.json` beside the export. `templates/col
 
 ## Left for a later cycle
 
-Live Jira or Azure DevOps connections, accounts, and payments. The next useful input is one real sanitized export, not another integration.
+Accounts and payments. The live read does not write back to Jira or Azure DevOps. The next useful input is one real sanitized export.

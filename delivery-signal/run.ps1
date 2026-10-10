@@ -1,4 +1,5 @@
-# One command in your own PowerShell: .\run issues.csv
+# In your own PowerShell: .\run, then .\run import issues.csv, then .\run report.
+# A single CSV still works: .\run issues.csv
 # Does not install a runtime, a package, or a server.
 param(
     [Parameter(ValueFromRemainingArguments = $true)]
@@ -10,11 +11,12 @@ $Page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvr
 $Base = "https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
 
 $Root = $PSScriptRoot
-if (-not $Root -or -not (Test-Path (Join-Path $Root "pipeline.py"))) {
+if (-not $Root -or -not (Test-Path (Join-Path $Root "pipeline.py")) -or -not (Test-Path (Join-Path $Root "link.py"))) {
     $Root = Join-Path $env:TEMP "delivery-signal"
     New-Item -ItemType Directory -Force -Path $Root | Out-Null
     Invoke-WebRequest "$Base/pipeline.py" -OutFile (Join-Path $Root "pipeline.py")
     Invoke-WebRequest "$Base/extract.py" -OutFile (Join-Path $Root "extract.py")
+    Invoke-WebRequest "$Base/link.py" -OutFile (Join-Path $Root "link.py")
 }
 
 $Python = $null

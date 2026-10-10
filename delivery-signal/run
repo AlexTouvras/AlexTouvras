@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# One command in your own shell: ./run issues.csv
+# In your own shell: ./run, then ./run import issues.csv, then ./run report.
+# A single CSV still works: ./run issues.csv
 # Uses python3, python, or py when one of them is already on PATH.
 # Does not install a runtime, a package, or a server.
 set -euo pipefail
@@ -11,7 +12,7 @@ source_path="${BASH_SOURCE[0]:-}"
 root=""
 if [[ -n "$source_path" && -f "$source_path" ]]; then
   here="$(cd "$(dirname "$source_path")" && pwd)"
-  if [[ -f "$here/pipeline.py" && -f "$here/extract.py" ]]; then
+  if [[ -f "$here/pipeline.py" && -f "$here/extract.py" && -f "$here/link.py" ]]; then
     root="$here"
   fi
 fi
@@ -20,6 +21,7 @@ if [[ -z "$root" ]]; then
   root="$(mktemp -d)"
   curl -fsSL "$BASE/pipeline.py" -o "$root/pipeline.py"
   curl -fsSL "$BASE/extract.py" -o "$root/extract.py"
+  curl -fsSL "$BASE/link.py" -o "$root/link.py"
 fi
 
 if command -v python3 >/dev/null 2>&1; then

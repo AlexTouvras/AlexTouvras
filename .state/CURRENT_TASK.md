@@ -1,5 +1,20 @@
 # Current task
 
+In the person's own terminal: connect the folder with `run`, connect a Jira, Azure DevOps, or other project or import a CSV, then `run report`.
+
+## Verify
+
+`python3 delivery-signal/tests/test_link.py` exits 0. A connected project file has no token. `run import` with no file reads Jira or Azure DevOps through the stand-in. `run issues.csv` still writes a brief.
+
+## Done
+
+- `run connect jira|ado|other` stores the site and the project key in `.delivery-signal/project.json`
+- `run import issues.csv` copies the export; a second import becomes the previous file
+- `run import` with no file reads the connected project; the token stays in the environment
+- `run report` writes the brief under `out/`
+
+# Previous task
+
 In the person's own terminal, the command is `run` plus their CSV. Command Prompt: `run issues.csv`. PowerShell: `.\run issues.csv`. bash: `./run issues.csv`.
 
 ## Verify

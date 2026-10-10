@@ -33,13 +33,17 @@ The first screen is the pulse, what changed, the open decision, and the question
 
 The page a phone or another computer opens from this repo is the [`docs/`](../docs) folder, through [the HTML preview of `docs/index.html`](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html). Choose the CSV there. The export is read in that browser. The brief can be shared or downloaded as one HTML file. Android can share a CSV into the page once it is installed from its own address, and Chrome or Edge on a computer can open a CSV with it. That address is https://alextouvras.github.io/AlexTouvras/ after Pages is set to `main` and `/docs`. The repository setting could not be changed from here.
 
-That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account. A live Jira or Azure DevOps login is still a later cycle: the test uses the CSV those tools already export.
+That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account.
 
-In the person's own terminal, from `delivery-signal`, the command is `run` plus the CSV: `run issues.csv` in Command Prompt, `.\run issues.csv` in PowerShell, and `./run issues.csv` in bash. An agent in this repo uses that same command. It does not install a runtime.
+In the person's own terminal, from `delivery-signal`, the three steps are the `run` command, then a project connection or a CSV import, then the report. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. An agent in this repo uses that same command. It does not install a runtime.
 
 ```bat
-run issues.csv --previous issues-last-week.csv
+run connect jira --site https://acme.atlassian.net --project FORGE
+run import issues.csv
+run report
 ```
+
+`run import` with no file reads the connected project. The token stays in `JIRA_EMAIL` and `JIRA_API_TOKEN`, or in `ADO_PAT`. It is not stored in the project file. A tracker that is not Jira or Azure DevOps is `run connect other`, then a CSV import. A single file is still `run issues.csv --previous issues-last-week.csv`.
 
 Send the HTML file in `out/`. That is the whole handoff.
 
@@ -54,7 +58,7 @@ python3 delivery-signal/tests/test_pipeline.py
 
 1. Run one real sanitized export. Add only the header aliases that file needs. Do not add a fourth system until a file fails.
 2. When the same team sends a second week, put the change list above the risks. That is the moment to ask for a second payment.
-3. Accounts, checkout, and a live Jira or Azure DevOps connection wait until someone asks to pay for the next cycle. Building them now does not make the first cycle more likely.
+3. Accounts and checkout wait until someone asks to pay for the next cycle. The optional live read is already `run import` after `run connect`. It does not write back to the tracker.
 
 ## Out of scope until then
 
