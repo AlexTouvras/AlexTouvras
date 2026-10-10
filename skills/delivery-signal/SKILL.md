@@ -6,24 +6,28 @@ user-invocable: true
 
 # Delivery brief
 
-Run one command in the shell that is already open. Do not install Python, Node, a venv, or a package. Do not start a server.
+People run this from the CLI their agent already uses:
 
-From the repository root:
+```text
+/delivery-signal issues.csv
+```
+
+`/skill delivery-signal issues.csv` is the same command. From an OpenClaw terminal:
 
 ```bash
-delivery-signal/run.sh path/to/issues.csv
+openclaw agent --message "/delivery-signal issues.csv"
 ```
 
-```powershell
-delivery-signal/run.ps1 path/to/issues.csv
+The words after the command are the CSV path and any of `--previous`, `--name`, `--as-of`, and `--profile`. The name defaults to the file name. The date defaults to today.
+
+When that command arrives, run the checker yourself. Do not install Python, Node, a venv, or a package. Do not start a server.
+
+```bash
+bash delivery-signal/run.sh <words after the command>
 ```
 
-```bat
-delivery-signal\run.cmd path/to/issues.csv
-```
+On PowerShell, run `delivery-signal/run.ps1` with those words. On cmd, run `delivery-signal\run.cmd` with those words. From another working directory, the script is `{baseDir}/../../delivery-signal/run.sh`.
 
-Add `--previous path/to/last-week.csv` when a previous export exists. Add `--name "Northwind"`, `--as-of YYYY-MM-DD`, or `--profile jira` only when the defaults are wrong. The name defaults to the file name. The date defaults to today.
+The command writes an HTML file under `out/` next to the CSV and prints a result id. Reply with that id and the HTML path. The CSV stays on this machine.
 
-The command writes an HTML file under `out/` next to the CSV and prints a result id. Report that id. The CSV stays on this machine.
-
-If the command prints that Python is missing, give the person the page link from that message. Do not install Python.
+If the command says Python is missing, send the page link it prints. Do not install Python.

@@ -1,6 +1,20 @@
 # Current task
 
-One command in the shell the person already has, or in the agent CLI already running there. No separate install.
+The brief is a command in the CLI the agent already runs: `/delivery-signal issues.csv`.
+
+## Verify
+
+`python3 delivery-signal/tests/test_command.py` exits 0. The skill tells the agent to run that slash command by calling `run.sh`, `run.ps1`, or `run.cmd`, and not to install anything.
+
+## Done
+
+- `/delivery-signal` and `/skill delivery-signal` are the commands a person types
+- `run.sh`, `run.ps1`, and `run.cmd` are what that command executes
+- A missing Python prints the page link
+
+# Previous task
+
+One command in the shell the person already has. No separate install.
 
 ## Verify
 

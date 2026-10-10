@@ -16,9 +16,23 @@ Choose this week's CSV. The export stays in that browser. Share or download the 
 
 The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/AlexTouvras/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages. It could not be turned on from this change.
 
-## One command
+## From the CLI you already use
 
-Use the shell that is already open. The command does not install Python, Node, a package, or a server. It uses `python3`, `python`, or `py` when one of them is already on the machine. The CSV stays there.
+In the agent CLI, type:
+
+```text
+/delivery-signal issues.csv
+```
+
+`/skill delivery-signal issues.csv` is the same command. From an OpenClaw terminal:
+
+```bash
+openclaw agent --message "/delivery-signal issues.csv"
+```
+
+The words after the command are the CSV. Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The skill at `skills/delivery-signal/SKILL.md` runs the checker and does not install anything. The CSV stays on the machine.
+
+A plain shell can run the same checker directly:
 
 ```bash
 delivery-signal/run.sh issues.csv
@@ -32,21 +46,7 @@ delivery-signal/run.ps1 issues.csv
 delivery-signal\run.cmd issues.csv
 ```
 
-The name defaults to the file name. The date defaults to today. Add `--previous issues-last-week.csv` when last week's export is there.
-
-From a machine that does not have this repo, the same scripts are one remote command:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/run.sh | bash -s -- issues.csv
-```
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/run.ps1))) .\issues.csv
-```
-
-If an agent CLI is already open on this repo, ask it for the brief. `skills/delivery-signal/SKILL.md` tells that agent to run the command above and not to install anything.
-
-If Python is not already on the machine, the command prints the page link instead of starting an installer.
+If Python is not already on the machine, that command prints the page link instead of starting an installer.
 
 ## On this computer
 

@@ -28,6 +28,8 @@ class CommandTests(unittest.TestCase):
         self.assertNotIn("pip install", cmd)
         self.assertNotIn("npm install", cmd)
         skill = (ROOT.parents[0] / "skills" / "delivery-signal" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("/delivery-signal issues.csv", skill)
+        self.assertIn("/skill delivery-signal issues.csv", skill)
         self.assertIn("run.sh", skill)
         self.assertIn("run.ps1", skill)
         self.assertIn("run.cmd", skill)
