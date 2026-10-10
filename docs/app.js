@@ -50,17 +50,20 @@ function yieldFrame() {
   });
 }
 
-function ensurePyodide() {
+async function ensurePyodide() {
   if (typeof loadPyodide === "function") {
-    return Promise.resolve();
+    return;
   }
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = PYODIDE + "pyodide.js";
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("The checker could not be downloaded."));
-    document.head.appendChild(script);
-  });
+  const response = await fetch(PYODIDE + "pyodide.js");
+  if (!response.ok) {
+    throw new Error("The checker could not be downloaded.");
+  }
+  // The repo preview inserts this file without running a script tag, so start
+  // the loader from the downloaded source.
+  (0, eval)(await response.text());
+  if (typeof loadPyodide !== "function") {
+    throw new Error("The checker did not start.");
+  }
 }
 
 async function ready() {
