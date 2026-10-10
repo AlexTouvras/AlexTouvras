@@ -1,5 +1,26 @@
 # Current task
 
+Delivery Signal sample: an evidence-linked weekly brief from a synthetic consultancy export. Demand is not validated. No orders, payments, or live project-tool connections.
+
+## Verify
+
+`python3 delivery-signal/tests/test_pipeline.py` exits 0.
+
+`python3 delivery-signal/pipeline.py delivery-signal/samples/northline` writes `delivery-signal/samples/northline/out/brief.html`. The page shows five top risks, sets the overdue legacy-extract dependency aside, leaves Aster on track, and keeps approval pending.
+
+## Done
+
+- Deterministic pipeline in `delivery-signal/pipeline.py`
+- Northline sample with planted traps: unassigned overdue work, a blocked release, a green note that disagrees with the export, a misleading 85% completion, and one overdue dependency that does not block
+- Markdown, HTML, and JSON brief
+
+## Out of scope
+
+- Claiming a buyer or a price
+- Jira or Azure DevOps integrations, email, accounts, payments
+
+# Previous task
+
 Daycare comparison page for Lipstikkakuja 14, Rekola. Child is 7 weeks old on 6 Oct 2026; target start is November 2027 (about 15 months).
 
 ## Verify
