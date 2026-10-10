@@ -1105,7 +1105,9 @@ def render_html(brief: dict) -> str:
                 html.escape("; ".join(extra)),
             )
         )
-    aside = "".join(f"<li>{html.escape(finding['title'])}</li>" for finding in brief["set_aside"]) or "<li>None.</li>"
+    aside = "".join(
+        f"<li>{html.escape(finding['summary'])}</li>" for finding in brief["set_aside"]
+    ) or "<li>None.</li>"
     noted = "".join(f"<li>{html.escape(finding['title'])}</li>" for finding in brief["also_noted"]) or "<li>None.</li>"
     questions = "".join(f"<li>{html.escape(question)}</li>" for question in brief["questions"])
     stamp = "Synthetic sample · pending approval" if brief["synthetic"] else "Pending approval"

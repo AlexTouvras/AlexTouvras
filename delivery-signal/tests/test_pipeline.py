@@ -235,6 +235,7 @@ class RuleTests(unittest.TestCase):
             html = (output / "brief.html").read_text(encoding="utf-8")
             self.assertIn("Northline Advisory", html)
             self.assertIn("Checked and set aside", html)
+            self.assertIn("FOR-3 is Done", html)
             self.assertIn("pending approval", html.lower())
 
 
