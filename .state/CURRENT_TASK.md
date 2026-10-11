@@ -1,5 +1,19 @@
 # Current task
 
+A connected Jira or Azure DevOps project is fetched. The configuration page does not ask that customer for a CSV. A CSV remains for another tracker, for `run issues.csv`, and for the phone page.
+
+## Verify
+
+`python3 delivery-signal/tests/test_link.py` exits 0. A Jira save that also posts a CSV builds the brief from the tracker. `run import issues.csv` after `run connect jira` reads the tracker. The Jira form hides the CSV fields. `run issues.csv` still writes a brief.
+
+## Done
+
+- Jira and Azure DevOps configuration and `run import` fetch the project
+- The fetch asks for story points, target end, and epic link on Jira, and story points, effort, and target date on Azure DevOps
+- A posted or named CSV is ignored once those trackers are connected
+
+# Previous task
+
 Decide whether an agent should assess a file before the brief. Decision, in `delivery-signal/FINDINGS.md`: a fixed pass reads the columns and the words in the file, and that reading chooses the lead. The same file still produces the same result id.
 
 ## Verify

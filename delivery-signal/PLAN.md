@@ -35,15 +35,15 @@ The page a phone or another computer opens from this repo is the [`docs/`](../do
 
 That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account.
 
-In the person's own terminal, from `delivery-signal`, `run` opens the configuration page on this computer. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. On that page they choose Jira, Azure DevOps, or another tracker, then import a CSV or enter a token for one read. The report opens on the page. An agent in this repo uses that same command. It does not install a runtime.
+In the person's own terminal, from `delivery-signal`, `run` opens the configuration page on this computer. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. On that page they choose Jira, Azure DevOps, or another tracker. Jira and Azure DevOps are read from the project. A CSV is for another tracker. The report opens on the page. An agent in this repo uses that same command. It does not install a runtime.
 
 ```bat
 run connect jira --site https://acme.atlassian.net --project FORGE
-run import issues.csv
+run import
 run report
 ```
 
-Those commands are the same connection without the page. The token stays in the page for that read, or in `JIRA_EMAIL` and `JIRA_API_TOKEN`, or in `ADO_PAT`. It is not stored in the project file. A single file is still `run issues.csv --previous issues-last-week.csv`.
+Those commands are the same connection without the page. `run import` after a Jira or Azure DevOps connection fetches the work items, including a CSV path typed next to it. The token stays in the page for that read, or in `JIRA_EMAIL` and `JIRA_API_TOKEN`, or in `ADO_PAT`. It is not stored in the project file. Another tracker still uses `run import issues.csv`. A single file with no connection is still `run issues.csv --previous issues-last-week.csv`.
 
 Send the HTML file in `out/`. That is the whole handoff.
 
@@ -60,7 +60,7 @@ The trial on public Jira and Azure DevOps files is in [FINDINGS.md](FINDINGS.md)
 
 1. Run one real sanitized export from a team. Add only the header aliases that file needs. Do not add a fourth system until a file fails.
 2. When the same team sends a second week, put the change list above the risks. That is the moment to ask for a second payment.
-3. Accounts and checkout wait until someone asks to pay for the next cycle. The optional live read is already `run import` after `run connect`. It does not write back to the tracker.
+3. Accounts and checkout wait until someone asks to pay for the next cycle. A connected Jira or Azure DevOps project is read by `run import`. It does not write back to the tracker.
 
 ## Out of scope until then
 

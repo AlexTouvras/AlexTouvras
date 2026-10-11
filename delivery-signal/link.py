@@ -63,7 +63,16 @@ ADO_FIELDS = [
     "Microsoft.VSTS.Scheduling.DueDate",
     "System.Parent",
     "System.Description",
+    "Microsoft.VSTS.Scheduling.StoryPoints",
+    "Microsoft.VSTS.Scheduling.Effort",
+    "Microsoft.VSTS.Scheduling.TargetDate",
 ]
+JIRA_FIELD_NAMES = {
+    "story points": "story_points",
+    "story point estimate": "story_points",
+    "target end": "target_end",
+    "epic link": "epic_link",
+}
 
 USAGE = """1. Connect this folder to your terminal. The command is run.
    Command Prompt: run
@@ -71,8 +80,9 @@ USAGE = """1. Connect this folder to your terminal. The command is run.
    bash: ./run
    That opens the configuration page on this computer.
 2. On that page, choose Jira, Azure DevOps, or another tracker, and the project.
-   Or import a CSV there.
+   Jira and Azure DevOps are read from the project. A CSV is for another tracker.
    run connect
+   run import
    run import issues.csv
    A script can send the same connection:
    run connect jira --site https://acme.atlassian.net --project FORGE
@@ -156,6 +166,24 @@ def _person(value: object) -> str:
     return "" if value is None else str(value).strip()
 
 
+def _issue_ref(value: object) -> str:
+    if isinstance(value, dict):
+        return str(value.get("key") or "").strip()
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _points(value: object) -> str:
+    if value is None or value == "" or isinstance(value, bool):
+        return ""
+    if isinstance(value, float) and value.is_integer():
+        return str(int(value))
+    if isinstance(value, int):
+        return str(value)
+    return str(value).strip()
+
+
 def _adf(node: object) -> str:
     if isinstance(node, str):
         return node
@@ -229,6 +257,31 @@ def _basic(user: str, secret: str) -> str:
     return "Basic " + b64encode(f"{user}:{secret}".encode()).decode("ascii")
 
 
+def _jira_field_ids(site: str, headers: dict[str, str], transport) -> dict[str, str]:
+    try:
+        catalog = transport("GET", site.rstrip("/") + "/rest/api/3/field", headers, None)
+    except LinkError:
+        return {}
+    if not isinstance(catalog, list):
+        return {}
+    rank = {"story points": 0, "story point estimate": 1, "target end": 0, "epic link": 0}
+    found: dict[str, str] = {}
+    scores: dict[str, int] = {}
+    for field in catalog:
+        if not isinstance(field, dict):
+            continue
+        name = str(field.get("name") or "").strip().casefold()
+        role = JIRA_FIELD_NAMES.get(name)
+        field_id = str(field.get("id") or "").strip()
+        if not role or not field_id:
+            continue
+        score = rank[name]
+        if role not in found or score < scores[role]:
+            found[role] = field_id
+            scores[role] = score
+    return found
+
+
 def fetch_jira(site: str, project_key: str, email: str, token: str, transport=None) -> list[list[str]]:
     transport = default_transport if transport is None else transport
     headers = {
@@ -236,6 +289,14 @@ def fetch_jira(site: str, project_key: str, email: str, token: str, transport=No
         "Accept": "application/json",
         "Content-Type": "application/json",
     }
+    extras = _jira_field_ids(site, headers, transport)
+    requested = list(JIRA_FIELDS)
+    for field_id in extras.values():
+        if field_id not in requested:
+            requested.append(field_id)
+    story_id = extras.get("story_points", "")
+    target_id = extras.get("target_end", "")
+    epic_id = extras.get("epic_link", "")
     rows: list[list[str]] = []
     page = ""
     while len(rows) < MAX_ITEMS:
@@ -243,7 +304,7 @@ def fetch_jira(site: str, project_key: str, email: str, token: str, transport=No
         body = {
             "jql": f'project = "{safe_key}" ORDER BY key',
             "maxResults": 100,
-            "fields": JIRA_FIELDS,
+            "fields": requested,
         }
         if page:
             body["nextPageToken"] = page
@@ -259,7 +320,13 @@ def fetch_jira(site: str, project_key: str, email: str, token: str, transport=No
             status = fields.get("status") or {}
             priority = fields.get("priority") or {}
             issue_type = fields.get("issuetype") or {}
-            parent = fields.get("parent") or {}
+            parent = fields.get("parent") if isinstance(fields.get("parent"), dict) else {}
+            due = _day(fields.get("duedate"))
+            if not due and target_id:
+                due = _day(fields.get(target_id))
+            parent_key = str(parent.get("key") or "")
+            if not parent_key and epic_id:
+                parent_key = _issue_ref(fields.get(epic_id))
             rows.append(
                 [
                     str(issue.get("key") or ""),
@@ -272,9 +339,10 @@ def fetch_jira(site: str, project_key: str, email: str, token: str, transport=No
                     _person(fields.get("assignee")),
                     _day(fields.get("created")),
                     _day(fields.get("updated")),
-                    _day(fields.get("duedate")),
-                    str(parent.get("key") or ""),
+                    due,
+                    parent_key,
                     _adf(fields.get("description"))[:500],
+                    _points(fields.get(story_id)) if story_id else "",
                 ]
             )
             if len(rows) >= MAX_ITEMS:
@@ -328,6 +396,9 @@ def fetch_ado(org: str, project_key: str, token: str, transport=None) -> list[li
                     _day(fields.get("Microsoft.VSTS.Scheduling.DueDate")),
                     "" if fields.get("System.Parent") is None else str(fields.get("System.Parent")),
                     _adf(fields.get("System.Description"))[:500],
+                    _points(fields.get("Microsoft.VSTS.Scheduling.StoryPoints")),
+                    _points(fields.get("Microsoft.VSTS.Scheduling.Effort")),
+                    _day(fields.get("Microsoft.VSTS.Scheduling.TargetDate")),
                 ]
             )
     return rows
@@ -347,6 +418,7 @@ JIRA_HEADERS = [
     "Due date",
     "Parent",
     "Comment",
+    "Custom field (Story Points)",
 ]
 ADO_HEADERS = [
     "ID",
@@ -362,6 +434,9 @@ ADO_HEADERS = [
     "Due Date",
     "Parent",
     "Description",
+    "Story Points",
+    "Effort",
+    "Target Date",
 ]
 
 
@@ -380,7 +455,7 @@ def pull(home: Path, transport=None, email: str | None = None, token: str | None
         email = email.strip()
         token = token.strip()
         if not email or not token:
-            raise LinkError("Set JIRA_EMAIL and JIRA_API_TOKEN, or run import with a CSV. The token is not stored.")
+            raise LinkError("Set JIRA_EMAIL and JIRA_API_TOKEN. The token is not stored.")
         rows = fetch_jira(record["site"], record["project"], email, token, transport)
         headers = JIRA_HEADERS
     elif tracker == "ado":
@@ -388,7 +463,7 @@ def pull(home: Path, transport=None, email: str | None = None, token: str | None
             token = os.environ.get("ADO_PAT") or os.environ.get("AZURE_DEVOPS_EXT_PAT") or ""
         token = token.strip()
         if not token:
-            raise LinkError("Set ADO_PAT, or run import with a CSV. The token is not stored.")
+            raise LinkError("Set ADO_PAT. The token is not stored.")
         rows = fetch_ado(record["org"], record["project"], token, transport)
         headers = ADO_HEADERS
     else:
@@ -403,6 +478,8 @@ def report(home: Path, as_of: str | None, output: Path | None) -> dict:
     record = load_project(home)
     source = state_dir(home) / "work_items.csv"
     if not source.is_file():
+        if record.get("tracker") in {"jira", "ado"}:
+            raise LinkError("Import work items before the report. Run import")
         raise LinkError("Import work items before the report. Run import issues.csv")
     previous_path = state_dir(home) / "previous_work_items.csv"
     previous = previous_path if previous_path.is_file() else None
@@ -485,6 +562,7 @@ def config_page(home: Path) -> str:
     input, select {{ width: 100%; max-width: 28rem; font: inherit; padding: 0.4rem 0.5rem; box-sizing: border-box; }}
     button {{ font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.5rem 0.8rem; }}
     .hint {{ color: #57534e; margin: 0.25rem 0 0; }}
+    [hidden] {{ display: none !important; }}
     iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #fff; margin-top: 1rem; }}
   </style>
 </head>
@@ -493,7 +571,7 @@ def config_page(home: Path) -> str:
     <header>
       <p class="stamp">Configuration · this computer only</p>
       <h1>Configure the project</h1>
-      <p class="meta">Choose Jira, Azure DevOps, or another tracker. Import a CSV, or enter a token for one read. The report opens below.</p>
+      <p class="meta">Jira or Azure DevOps reads the project. A CSV is only for another tracker. The token is used for this read and left out of the project file.</p>
     </header>
     <form action="/configure" method="post" enctype="multipart/form-data" target="result">
       <label for="tracker">Tracker</label>
@@ -522,10 +600,12 @@ def config_page(home: Path) -> str:
       </div>
       <label for="as_of">Report date</label>
       <input id="as_of" name="as_of" required type="date" value="{pipeline.date.today().isoformat()}">
-      <label for="export">This week's CSV</label>
-      <input id="export" name="export" type="file" accept=".csv,text/csv">
-      <label for="previous">Last week's CSV, optional</label>
-      <input id="previous" name="previous" type="file" accept=".csv,text/csv">
+      <div id="csv-field">
+        <label for="export">This week's CSV</label>
+        <input id="export" name="export" type="file" accept=".csv,text/csv">
+        <label for="previous">Last week's CSV, optional</label>
+        <input id="previous" name="previous" type="file" accept=".csv,text/csv">
+      </div>
       <p><button type="submit">Save and build the report</button></p>
     </form>
     <iframe name="result" title="Delivery brief" src="/waiting"></iframe>
@@ -537,6 +617,7 @@ def config_page(home: Path) -> str:
       document.getElementById("org-field").hidden = tracker !== "ado";
       document.getElementById("email-field").hidden = tracker !== "jira";
       document.getElementById("token-field").hidden = tracker === "other";
+      document.getElementById("csv-field").hidden = tracker !== "other";
     }}
     document.getElementById("tracker").addEventListener("change", syncTracker);
     syncTracker();
@@ -583,7 +664,10 @@ def apply_config(home: Path, fields: dict[str, tuple[str, bytes]]) -> tuple[byte
         export = fields.get("export")
         previous = fields.get("previous")
         saved = state_dir(home) / "work_items.csv"
-        if export and export[1].strip():
+        if tracker in {"jira", "ado"}:
+            incoming = pull(home, email=email or None, token=token or None)
+            remember_import(home, incoming, None, name or None)
+        elif export and export[1].strip():
             staging = Path(tempfile.mkdtemp(prefix="delivery-config-"))
             try:
                 source = staging / "issues.csv"
@@ -595,11 +679,8 @@ def apply_config(home: Path, fields: dict[str, tuple[str, bytes]]) -> tuple[byte
                 remember_import(home, source, previous_path, name or None)
             finally:
                 shutil.rmtree(staging, ignore_errors=True)
-        elif tracker in {"jira", "ado"} and (token or email or not saved.is_file()):
-            incoming = pull(home, email=email or None, token=token or None)
-            remember_import(home, incoming, None, name or None)
         if not saved.is_file():
-            raise LinkError("Add this week's CSV, or a token for Jira or Azure DevOps.")
+            raise LinkError("Add this week's CSV.")
         brief = report(home, as_of, None)
     except (LinkError, pipeline.InputError, json.JSONDecodeError, OSError, UnicodeError, ValueError) as exc:
         return _error_page(str(exc)), 400
@@ -722,10 +803,17 @@ def main(argv: list[str] | None = None) -> int:
             if record["tracker"] == "other":
                 print("Next: run import issues.csv")
             else:
-                print("Next: run import issues.csv, or run import to read the project.")
+                print("Next: run import")
             return 0
         if args.command == "import":
-            if args.file is None:
+            connected = ""
+            if project_path(home).is_file():
+                connected = str(load_project(home).get("tracker") or "")
+            if connected in {"jira", "ado"}:
+                if args.file is not None:
+                    print("A connected project is read from the tracker.")
+                source = pull(home)
+            elif args.file is None:
                 source = pull(home)
             else:
                 if not args.file.is_file():

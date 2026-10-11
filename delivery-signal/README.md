@@ -51,7 +51,7 @@ In `delivery-signal`, `run` opens the configuration page on this computer.
 
 Command Prompt: `run`. PowerShell: `.\run`. bash: `./run`.
 
-On that page, choose Jira, Azure DevOps, or another tracker, enter the project, and import a CSV or a token for one read. The report opens on the page. The token is used for that read and is left out of the project file. The project file keeps the site and the project key. The page stays at http://127.0.0.1:8767 until you stop it with Ctrl+C.
+On that page, choose Jira, Azure DevOps, or another tracker and enter the project. Jira and Azure DevOps are read from the project. A CSV is only for another tracker. The report opens on the page. The token is used for that read and is left out of the project file. The project file keeps the site and the project key. The page stays at http://127.0.0.1:8767 until you stop it with Ctrl+C.
 
 `run report` writes the brief again from the saved import. A second import becomes last week's file.
 
@@ -59,6 +59,7 @@ A script can send the same connection without the page:
 
 ```bat
 run connect jira --site https://acme.atlassian.net --project FORGE
+run import
 run connect ado --org https://dev.azure.com/contoso --project Fabrikam
 run connect other --name "Board" --project WEB
 run import issues.csv

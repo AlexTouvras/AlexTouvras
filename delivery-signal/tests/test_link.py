@@ -64,6 +64,8 @@ class LinkTests(unittest.TestCase):
         calls = []
 
         def transport(method, url, headers, body):
+            if method == "GET" and url.endswith("/rest/api/3/field"):
+                return []
             calls.append((method, url, headers["Authorization"], json.loads(body.decode())))
             return {
                 "issues": [
@@ -119,7 +121,11 @@ class LinkTests(unittest.TestCase):
             self.assertEqual(brief["top_risks"][0]["id"], "unassigned:FOR-12")
 
     def test_ado_pull_reads_the_connected_project(self) -> None:
+        bodies = []
+
         def transport(method, url, headers, body):
+            if body:
+                bodies.append(json.loads(body.decode()))
             if url.endswith("/wiql?api-version=7.1"):
                 return {"workItems": [{"id": 20}]}
             return {
@@ -165,6 +171,10 @@ class LinkTests(unittest.TestCase):
             brief = json.loads((home / "out" / "brief.json").read_text(encoding="utf-8"))
             self.assertEqual(brief["source_profile"], "azure_devops")
             self.assertEqual(brief["top_risks"][0]["id"], "unassigned:20")
+            requested = bodies[-1]["fields"]
+            self.assertIn("Microsoft.VSTS.Scheduling.StoryPoints", requested)
+            self.assertIn("Microsoft.VSTS.Scheduling.Effort", requested)
+            self.assertIn("Microsoft.VSTS.Scheduling.TargetDate", requested)
 
     def test_http_site_and_missing_token_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -321,6 +331,142 @@ class LinkTests(unittest.TestCase):
             saved = json.loads((Path(tmp) / ".delivery-signal" / "project.json").read_text(encoding="utf-8"))
             self.assertEqual(saved["name"], "Board")
             self.assertNotIn("token", json.dumps(saved).lower())
+
+    def test_connected_jira_ignores_a_csv_and_reads_story_points(self) -> None:
+        calls = []
+
+        def transport(method, url, headers, body):
+            if method == "GET" and url.endswith("/rest/api/3/field"):
+                return [
+                    {"id": "customfield_10016", "name": "Story point estimate"},
+                    {"id": "customfield_10028", "name": "Story Points"},
+                    {"id": "customfield_10015", "name": "Target end"},
+                    {"id": "customfield_10014", "name": "Epic Link"},
+                ]
+            payload = json.loads(body.decode())
+            calls.append(payload["fields"])
+            return {
+                "issues": [
+                    {
+                        "key": "FOR-12",
+                        "fields": {
+                            "summary": "Carrier cutover",
+                            "status": {"name": "In Progress"},
+                            "issuetype": {"name": "Story"},
+                            "priority": {"name": "Highest"},
+                            "assignee": None,
+                            "project": {"key": "FORGE", "name": "Forge"},
+                            "updated": "2026-08-02",
+                            "duedate": None,
+                            "parent": None,
+                            "customfield_10028": 5,
+                            "customfield_10015": "2026-10-01",
+                            "customfield_10014": "FOR-1",
+                        },
+                    }
+                ]
+            }
+
+        decoy = "key,summary,status,priority,assignee,due\nT-9,Ignore this row,To Do,Highest,,2026-10-01\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            source = home / "issues.csv"
+            source.write_text(decoy, encoding="utf-8")
+            with mock.patch.dict(os.environ, {"JIRA_EMAIL": "ada@example.com", "JIRA_API_TOKEN": "secret-token"}):
+                self.assertEqual(
+                    link.main(
+                        [
+                            "--home",
+                            str(home),
+                            "connect",
+                            "jira",
+                            "--site",
+                            "https://acme.atlassian.net",
+                            "--project",
+                            "FORGE",
+                        ]
+                    ),
+                    0,
+                )
+                stdout = io.StringIO()
+                with mock.patch.object(link, "default_transport", transport), mock.patch("sys.stdout", stdout):
+                    self.assertEqual(link.main(["--home", str(home), "import", str(source)]), 0)
+            self.assertIn("read from the tracker", stdout.getvalue())
+            self.assertIn("customfield_10028", calls[0])
+            self.assertNotIn("customfield_10016", calls[0])
+            self.assertIn("customfield_10015", calls[0])
+            self.assertIn("customfield_10014", calls[0])
+            table = (home / ".delivery-signal" / "work_items.csv").read_text(encoding="utf-8")
+            self.assertIn("FOR-12", table)
+            self.assertNotIn("T-9", table)
+            self.assertIn("2026-10-01", table)
+            self.assertIn("FOR-1", table)
+            self.assertIn("5", table)
+            self.assertEqual(link.main(["--home", str(home), "report", "--as-of", "2026-10-10"]), 0)
+            brief = json.loads((home / "out" / "brief.json").read_text(encoding="utf-8"))
+            self.assertEqual(brief["top_risks"][0]["id"], "unassigned:FOR-12")
+
+    def test_configuration_page_ignores_a_csv_when_jira_is_connected(self) -> None:
+        def transport(method, url, headers, body):
+            if method == "GET":
+                return []
+            return {
+                "issues": [
+                    {
+                        "key": "FOR-12",
+                        "fields": {
+                            "summary": "Carrier cutover",
+                            "status": {"name": "In Progress"},
+                            "issuetype": {"name": "Story"},
+                            "priority": {"name": "Highest"},
+                            "assignee": None,
+                            "project": {"key": "FORGE", "name": "Forge"},
+                            "updated": "2026-08-02",
+                            "duedate": "2026-10-01",
+                        },
+                    }
+                ]
+            }
+
+        decoy = b"key,summary,status,priority,assignee,due\nT-9,Ignore this row,To Do,Highest,,2026-10-01\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            httpd = link.start_config(home)
+            thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+            thread.start()
+            try:
+                port = httpd.server_address[1]
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/") as response:
+                    page = response.read().decode()
+                self.assertIn('id="csv-field"', page)
+                self.assertIn('csv-field").hidden = tracker !== "other"', page)
+                body, content_type = _multipart(
+                    [
+                        ("tracker", "", None, "jira"),
+                        ("project", "", None, "FORGE"),
+                        ("name", "", None, "Forge"),
+                        ("site", "", None, "https://acme.atlassian.net"),
+                        ("email", "", None, "ada@example.com"),
+                        ("token", "", None, "page-secret"),
+                        ("as_of", "", None, "2026-10-10"),
+                        ("export", "issues.csv", decoy, ""),
+                    ]
+                )
+                request = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/configure",
+                    data=body,
+                    headers={"Content-Type": content_type},
+                )
+                with mock.patch.object(link, "default_transport", transport):
+                    with urllib.request.urlopen(request) as response:
+                        brief_html = response.read().decode()
+                self.assertIn("FOR-12", brief_html)
+                self.assertNotIn("T-9", brief_html)
+                stored = (home / ".delivery-signal" / "project.json").read_text(encoding="utf-8")
+                self.assertNotIn("page-secret", stored)
+            finally:
+                httpd.shutdown()
+                httpd.server_close()
 
     def test_plain_csv_command_still_writes_a_brief(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

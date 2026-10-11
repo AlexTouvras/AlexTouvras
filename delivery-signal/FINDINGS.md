@@ -84,3 +84,5 @@ Yes. A first pass should read what was shared, and that reading should choose th
 The pass is fixed. It records which columns are filled, which status words appear, which priority words appear, and whether dates, assignees, parents, and story points are present. The brief then leads with that. On the phpBB file the lead is the eight unassigned blockers, because those words are in the file. A file with no due dates leads with that absence, so lateness is left out. A file whose statuses are mostly unrecognized leads with those words.
 
 The same file still produces the same result id, and every material line still cites a cell. A writing model can read the finished brief afterwards. The assessment that chooses the lead stays this pass, so two runs of one export do not disagree.
+
+A connected Jira or Azure DevOps project is fetched. The configuration page asks for a CSV only when the tracker has no live read. `run issues.csv` and the phone page stay a file on that device.
