@@ -56,7 +56,9 @@ python3 delivery-signal/tests/test_pipeline.py
 
 ## Next iterations
 
-1. Run one real sanitized export. Add only the header aliases that file needs. Do not add a fourth system until a file fails.
+The trial on public Jira and Azure DevOps files is in [FINDINGS.md](FINDINGS.md). The first change from that trial is to stop calling a project on track when the rules had nothing they could read.
+
+1. Run one real sanitized export from a team. Add only the header aliases that file needs. Do not add a fourth system until a file fails.
 2. When the same team sends a second week, put the change list above the risks. That is the moment to ask for a second payment.
 3. Accounts and checkout wait until someone asks to pay for the next cycle. The optional live read is already `run import` after `run connect`. It does not write back to the tracker.
 

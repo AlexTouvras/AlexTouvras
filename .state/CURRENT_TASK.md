@@ -1,5 +1,18 @@
 # Current task
 
+Trial of public work-item files, written up in `delivery-signal/FINDINGS.md`. The phpBB Jira export (481 items, 9 blockers) was reported on track with no risks. The configuration page needs a column and vocabulary check before that brief is trusted.
+
+## Verify
+
+The notes cite the public files and the result ids from this checker. No product rule was changed in this pass.
+
+## Done
+
+- Jira Cloud, a tutorial sheet, the phpBB export, the Microsoft Learn Azure DevOps example, and a renamed header were run through `brief_from_csv`
+- Findings cover configuration, the brief, the next change, and options for the configuration page
+
+# Previous task
+
 The page offers four install options, Apps, One-liner, npm, and Hackable, for macOS & Linux and for Windows. The one-liner puts the command on the machine and uses Python when it is already there.
 
 ## Verify
