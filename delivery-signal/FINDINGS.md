@@ -76,3 +76,11 @@ After the CSV is chosen, show a short reading of the file before the report:
 - If the report has no risks, show the data-quality lines on the page. The current page shows the HTML brief, and that HTML omits them.
 
 The token field, the site, and the project key can stay as they are. The gap is the file, not the connection.
+
+## Decision: assess the file before the brief
+
+Yes. A first pass should read what was shared, and that reading should choose the lead.
+
+The pass is fixed. It records which columns are filled, which status words appear, which priority words appear, and whether dates, assignees, parents, and story points are present. The brief then leads with that. On the phpBB file the lead is the eight unassigned blockers, because those words are in the file. A file with no due dates leads with that absence, so lateness is left out. A file whose statuses are mostly unrecognized leads with those words.
+
+The same file still produces the same result id, and every material line still cites a cell. A writing model can read the finished brief afterwards. The assessment that chooses the lead stays this pass, so two runs of one export do not disagree.

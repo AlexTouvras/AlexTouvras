@@ -56,7 +56,7 @@ python3 delivery-signal/tests/test_pipeline.py
 
 ## Next iterations
 
-The trial on public Jira and Azure DevOps files is in [FINDINGS.md](FINDINGS.md). The first change from that trial is to stop calling a project on track when the rules had nothing they could read.
+The trial on public Jira and Azure DevOps files is in [FINDINGS.md](FINDINGS.md). Before the brief, a fixed pass reads the columns and the words in the file and that reading chooses the lead. The same file still produces the same result id.
 
 1. Run one real sanitized export from a team. Add only the header aliases that file needs. Do not add a fourth system until a file fails.
 2. When the same team sends a second week, put the change list above the risks. That is the moment to ask for a second payment.

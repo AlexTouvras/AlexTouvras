@@ -1,5 +1,18 @@
 # Current task
 
+Decide whether an agent should assess a file before the brief. Decision, in `delivery-signal/FINDINGS.md`: a fixed pass reads the columns and the words in the file, and that reading chooses the lead. The same file still produces the same result id.
+
+## Verify
+
+The decision is recorded. No rule change in this pass.
+
+## Done
+
+- The phpBB false green is the case the first pass has to lead with
+- A writing model stays a reader of the finished brief
+
+# Previous task
+
 Trial of public work-item files, written up in `delivery-signal/FINDINGS.md`. The phpBB Jira export (481 items, 9 blockers) was reported on track with no risks. The configuration page needs a column and vocabulary check before that brief is trusted.
 
 ## Verify
