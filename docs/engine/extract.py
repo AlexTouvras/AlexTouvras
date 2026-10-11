@@ -66,7 +66,7 @@ FIELDS: dict[str, dict[str, list[str]]] = {
     },
     "story_points": {
         "canonical": ["story_points"],
-        "jira": ["Story Points", "Custom field (Story Points)"],
+        "jira": ["Story Points", "Custom field (Story Points)", "Custom field (Story point estimate)"],
         "azure_devops": ["Story Points", "Effort"],
     },
     "percent_complete": {
@@ -86,12 +86,12 @@ FIELDS: dict[str, dict[str, list[str]]] = {
     },
     "due": {
         "canonical": ["due"],
-        "jira": ["Due date", "Due"],
+        "jira": ["Due date", "Due", "Custom field (Target end)", "Target end"],
         "azure_devops": ["Due Date", "Target Date"],
     },
     "parent": {
         "canonical": ["parent"],
-        "jira": ["Parent"],
+        "jira": ["Parent", "Custom field (Epic Link)", "Epic Link"],
         "azure_devops": ["Parent"],
     },
     "blocked_by": {
@@ -135,13 +135,17 @@ STATUS = {
 PRIORITY = {
     "highest": "Highest",
     "critical": "Highest",
+    "blocker": "Highest",
     "1": "Highest",
     "high": "High",
+    "major": "High",
     "2": "High",
     "medium": "Medium",
     "3": "Medium",
     "low": "Low",
     "lowest": "Low",
+    "minor": "Low",
+    "trivial": "Low",
     "4": "Low",
 }
 
@@ -351,6 +355,10 @@ def map_work_items(
         status = _status(raw_status)
         if raw_status and status == raw_status and raw_status.casefold() not in STATUS:
             issues.append(f"{key} status {raw_status!r} is not a recognized workflow state")
+        raw_priority = _cell(row, indexes["priority"])
+        priority = _priority(raw_priority)
+        if raw_priority and priority == raw_priority and raw_priority.casefold() not in PRIORITY:
+            issues.append(f"{key} priority {raw_priority!r} is not a recognized priority")
         items.append(
             MappedItem(
                 key=key,
@@ -359,7 +367,7 @@ def map_work_items(
                 type=_cell(row, indexes["type"]),
                 summary=_cell(row, indexes["summary"]),
                 status=status,
-                priority=_priority(_cell(row, indexes["priority"])),
+                priority=priority,
                 assignee=_assignee(_cell(row, indexes["assignee"])),
                 story_points=points,
                 percent_complete=percent,

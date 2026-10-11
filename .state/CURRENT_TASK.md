@@ -1,5 +1,21 @@
 # Current task
 
+The public-export trial is in the checker. A file that cannot support the rules is not called on track. Blocker and Major count. The product repository is https://github.com/AlexTouvras/delivery-signal
+
+## Verify
+
+`python3 delivery-signal/tests/test_pipeline.py` exits 0. Northline result id remains `e53f514aa6`. A Blocker export leads with the unassigned count. A file with no priority and no due date is Not checked, on the HTML.
+
+## Done
+
+- Jira Blocker is Highest and Major is High
+- Unassigned items of one priority are reported as a count from three upward
+- Overdue and stale items are raised without a notes file
+- Empty due date, story points, and parent fall through to target end, story point estimate, and epic link
+- Install links point at `AlexTouvras/delivery-signal`
+
+# Previous task
+
 A connected Jira or Azure DevOps project is fetched. The configuration page does not ask that customer for a CSV. A CSV remains for another tracker, for `run issues.csv`, and for the phone page.
 
 ## Verify

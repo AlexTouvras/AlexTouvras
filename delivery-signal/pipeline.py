@@ -24,10 +24,14 @@ from pathlib import Path
 import extract
 
 
-RULES_VERSION = "2026-10-10"
+RULES_VERSION = "2026-10-11"
 DONE = {"done", "closed", "resolved"}
 ACTIVE = {"in progress", "blocked", "waiting"}
+KNOWN_STATUS = {"done", "in progress", "to do", "blocked", "waiting"}
+KNOWN_PRIORITY = {"highest", "high", "medium", "low"}
 HIGH = {"highest", "high"}
+PRIORITY_RANK = {"highest": 0, "high": 1, "medium": 2, "low": 3}
+GROUP_AT = 3
 OPTIMISTIC = re.compile(r"\b(green|on track|no risks?|no blockers?)\b", re.I)
 ONLY_OPEN = re.compile(r"\bonly open\b", re.I)
 
@@ -371,6 +375,94 @@ def _related_notes(data: dict, project: str, tokens: list[str]) -> list[dict]:
     return found
 
 
+def _priority_label(finding: Finding) -> str:
+    match = re.search(r"\b([A-Za-z]+) priority\b", finding.title)
+    return match.group(1) if match else ""
+
+
+def _collapse_unassigned(findings: list[Finding]) -> list[Finding]:
+    grouped: dict[tuple[str, str], list[Finding]] = {}
+    rest: list[Finding] = []
+    for finding in findings:
+        if finding.kind != "unassigned":
+            rest.append(finding)
+            continue
+        grouped.setdefault((finding.project, _priority_label(finding)), []).append(finding)
+    collapsed: list[Finding] = []
+    for (project, label), items in grouped.items():
+        if len(items) < GROUP_AT or not label:
+            collapsed.extend(items)
+            continue
+        ordered = sorted(items, key=lambda finding: (-finding.severity, finding.id))
+        keys = [finding.id.split(":", 1)[1] for finding in ordered]
+        shown = ", ".join(keys[:8])
+        extra = f" and {len(keys) - 8} more" if len(keys) > 8 else ""
+        evidence: list[Evidence] = []
+        for finding in ordered:
+            evidence.extend(finding.evidence)
+        collapsed.append(
+            Finding(
+                id=f"unassigned-count:{project}:{label}",
+                kind="unassigned_count",
+                severity=ordered[0].severity,
+                confidence="fact",
+                project=project,
+                title=f"{len(items)} {label} priority items have no assignee.",
+                summary=(
+                    f"{len(items)} open items are {label} priority and the assignee cell is empty: "
+                    f"{shown}{extra}."
+                ),
+                blocks_delivery=False,
+                suggested_question=f"Who owns the {len(items)} unassigned {label} priority items?",
+                evidence=evidence,
+            )
+        )
+    return rest + collapsed
+
+
+def _file_limits(items: list[WorkItem]) -> list[str]:
+    open_items = [item for item in items if not _is_done(item.status)]
+    if not open_items:
+        return []
+    limits = []
+    if not any(item.due for item in open_items):
+        limits.append("no due dates, so lateness is left out")
+    unknown_priority = []
+    seen: set[str] = set()
+    for item in open_items:
+        label = item.priority.strip()
+        token = label.casefold()
+        if label and token not in KNOWN_PRIORITY and token not in seen:
+            seen.add(token)
+            unknown_priority.append(label)
+    if unknown_priority:
+        limits.append("unrecognized priority: " + ", ".join(unknown_priority[:6]))
+    elif not any(item.priority.strip() for item in open_items):
+        limits.append("no priority")
+    counts: dict[str, int] = {}
+    for item in open_items:
+        if item.status.strip().lower() not in KNOWN_STATUS:
+            counts[item.status] = counts.get(item.status, 0) + 1
+    if counts:
+        parts = [
+            f"{count} {name}"
+            for name, count in sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))[:4]
+        ]
+        limits.append("unrecognized status: " + ", ".join(parts))
+    if not any(item.story_points is not None for item in items):
+        limits.append("no story points")
+    return limits
+
+
+def _rules_could_not_run(items: list[WorkItem], project: str) -> bool:
+    open_items = [item for item in items if item.project == project and not _is_done(item.status)]
+    if not open_items:
+        return False
+    ranked = any(item.priority.strip().casefold() in KNOWN_PRIORITY for item in open_items)
+    dated = any(item.due for item in open_items)
+    return not ranked and not dated
+
+
 def _optimistic_notes(data: dict, project: str) -> list[dict]:
     return [
         note
@@ -495,6 +587,64 @@ def analyse(data: dict) -> dict:
             )
         )
         covered.add(item.key)
+
+    for project in names:
+        if _optimistic_notes(data, project):
+            continue
+        for item in data["items"]:
+            if item.project != project or item.key in covered or _is_done(item.status):
+                continue
+            if item.type.strip().lower() in {"decision", "epic"} or _status(item) == "waiting":
+                continue
+            overdue = _overdue(item, as_of)
+            stale = item.updated is not None and _stale(item, as_of, data["stale_days"])
+            if not overdue and not stale:
+                continue
+            if overdue:
+                findings.append(
+                    Finding(
+                        id=f"overdue:{item.key}",
+                        kind="overdue",
+                        severity=64,
+                        confidence="fact",
+                        project=item.project,
+                        title=f"{item.key} is overdue and still {item.status}.",
+                        summary=(
+                            f"{item.key} ({item.summary}) is {item.status}, due {_fmt_date(item.due)}, "
+                            f"and the assignee is {item.assignee or 'blank'}."
+                        ),
+                        blocks_delivery=False,
+                        suggested_question=f"What is keeping {item.key} ({item.summary}) open past {_fmt_date(item.due)}?",
+                        evidence=[
+                            _item_evidence(item, "status"),
+                            _item_evidence(item, "due"),
+                            _item_evidence(item, "assignee"),
+                        ],
+                    )
+                )
+            else:
+                findings.append(
+                    Finding(
+                        id=f"stale:{item.key}",
+                        kind="stale",
+                        severity=58,
+                        confidence="fact",
+                        project=item.project,
+                        title=f"{item.key} is {item.status} and has not been updated since {_fmt_date(item.updated)}.",
+                        summary=(
+                            f"{item.key} ({item.summary}) is {item.status}. "
+                            f"The newest update is {_fmt_date(item.updated)}."
+                        ),
+                        blocks_delivery=False,
+                        suggested_question=f"What moved on {item.key} ({item.summary}) since {_fmt_date(item.updated)}?",
+                        evidence=[
+                            _item_evidence(item, "status"),
+                            _item_evidence(item, "updated"),
+                            _item_evidence(item, "assignee"),
+                        ],
+                    )
+                )
+            covered.add(item.key)
 
     for item in data["items"]:
         if _status(item) != "blocked" or _is_done(item.status):
@@ -806,13 +956,17 @@ def analyse(data: dict) -> dict:
             kept_aside.append(finding)
         else:
             dropped += 1
-    findings = kept_findings
+    findings = _collapse_unassigned(kept_findings)
     set_aside = kept_aside
 
     min_severity = data["min_severity"]
     ranked = sorted(
         [finding for finding in findings if finding.severity >= min_severity],
-        key=lambda finding: (-finding.severity, finding.id),
+        key=lambda finding: (
+            -finding.severity,
+            PRIORITY_RANK.get(_priority_label(finding).casefold(), 9),
+            finding.id,
+        ),
     )
     top = ranked[: data["top_n"]]
     also = [finding for finding in ranked if finding not in top]
@@ -829,18 +983,33 @@ def analyse(data: dict) -> dict:
             state = "blocked"
         elif project in severe_projects:
             state = "needs_attention"
+        elif _rules_could_not_run(data["items"], project):
+            state = "unchecked"
         else:
             state = "on_track"
         projects.append({"id": project, "name": names[project], "state": state})
 
+    limits = _file_limits(data["items"])
     on_track = [row["name"] for row in projects if row["state"] == "on_track"]
-    lead = (
-        f"As of {_fmt_date(as_of)}, {len(on_track)} of {len(projects)} projects "
-        f"{'is' if len(on_track) == 1 else 'are'} on track"
-        + (f" ({', '.join(on_track)})" if on_track else "")
-        + ". "
-        "This brief cites rows in the approved export. It does not forecast that a future date will be missed."
-    )
+    disclaimer = "This brief cites rows in the approved export. It does not forecast that a future date will be missed."
+    count = next((finding for finding in top if finding.kind == "unassigned_count"), None)
+    unchecked = [row["name"] for row in projects if row["state"] == "unchecked"]
+    if count is not None:
+        gap = " Lateness is left out because the file has no due dates." if any(
+            item.startswith("no due dates") for item in limits
+        ) else ""
+        lead = f"As of {_fmt_date(as_of)}, {count.title}{gap} {disclaimer}"
+    elif unchecked and not severe_projects:
+        gap = "; ".join(limits) if limits else "the export does not support the rules"
+        lead = f"As of {_fmt_date(as_of)}, {', '.join(unchecked)} cannot be called on track. {gap}. {disclaimer}"
+    else:
+        lead = (
+            f"As of {_fmt_date(as_of)}, {len(on_track)} of {len(projects)} projects "
+            f"{'is' if len(on_track) == 1 else 'are'} on track"
+            + (f" ({', '.join(on_track)})" if on_track else "")
+            + ". "
+            + disclaimer
+        )
 
     questions = []
     for finding in top:
@@ -897,6 +1066,7 @@ def analyse(data: dict) -> dict:
         "rules_version": RULES_VERSION,
         "result_id": result_id,
         "lead": lead,
+        "limits": limits,
         "pulse": projects,
         "top_risks": [finding.to_dict() for finding in top],
         "also_noted": [finding.to_dict() for finding in also],
@@ -974,7 +1144,12 @@ def render_markdown(brief: dict) -> str:
         "| Project | State |",
         "| --- | --- |",
     ]
-    labels = {"on_track": "On track", "needs_attention": "Needs attention", "blocked": "Blocked"}
+    labels = {
+        "on_track": "On track",
+        "needs_attention": "Needs attention",
+        "blocked": "Blocked",
+        "unchecked": "Not checked",
+    }
     for row in brief["pulse"]:
         lines.append(f"| {row['name']} | {labels[row['state']]} |")
     lines.extend(["", "## Top risks", ""])
@@ -1035,11 +1210,18 @@ def render_markdown(brief: dict) -> str:
             f"- Stale means an In Progress, Blocked, or Waiting item with no update in {rules['stale_days']} days.",
             f"- A completion figure is treated as misleading when an epic reports at least {rules['completion_reported_at_least']}% and at most half of its child story points are Done.",
             "- An overdue predecessor is set aside when its successor is already Done.",
+            "- Jira Blocker counts as Highest and Major counts as High. Three or more unassigned items of one priority are reported as a count.",
+            "- Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.",
             "- Optimistic notes are an inference. The dates and statuses they are compared with are facts.",
             "- These thresholds are operating rules for the sample, not a validated predictor of delay.",
             "",
         ]
     )
+    if brief.get("limits"):
+        lines.extend(["", "## What this file does not support", ""])
+        for item in brief["limits"]:
+            lines.append(f"- {item}")
+        lines.append("")
     if brief["data_quality"]:
         lines.extend(["## Data quality", ""])
         for issue in brief["data_quality"]:
@@ -1070,7 +1252,12 @@ def _profile_label(profile: str) -> str:
 
 
 def render_html(brief: dict) -> str:
-    labels = {"on_track": "On track", "needs_attention": "Needs attention", "blocked": "Blocked"}
+    labels = {
+        "on_track": "On track",
+        "needs_attention": "Needs attention",
+        "blocked": "Blocked",
+        "unchecked": "Not checked",
+    }
     pulse = "".join(
         "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span></li>".format(
             html.escape(row["state"]),
@@ -1134,6 +1321,19 @@ def render_html(brief: dict) -> str:
     questions = "".join(f"<li>{html.escape(question)}</li>" for question in brief["questions"])
     stamp = "Synthetic sample · pending approval" if brief["synthetic"] else "Pending approval"
     profile = _profile_label(str(brief.get("source_profile", "canonical")))
+    limit_items = "".join(f"<li>{html.escape(item)}</li>" for item in brief.get("limits") or [])
+    limits_html = f"<h2>What this file does not support</h2><ul>{limit_items}</ul>" if limit_items else ""
+    quality_rows = brief.get("data_quality") or []
+    if quality_rows:
+        shown = "".join(f"<li>{html.escape(issue)}</li>" for issue in quality_rows[:40])
+        more = ""
+        if len(quality_rows) > 40:
+            more = f"<li>{len(quality_rows) - 40} more lines are in the Markdown brief.</li>"
+        quality_html = (
+            f"<details><summary>Data quality, {len(quality_rows)} lines</summary><ul>{shown}{more}</ul></details>"
+        )
+    else:
+        quality_html = ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1158,6 +1358,7 @@ def render_html(brief: dict) -> str:
     .on_track {{ color: #166534; }}
     .needs_attention {{ color: #a16207; }}
     .blocked {{ color: #9a3412; }}
+    .unchecked {{ color: #57534e; }}
     .kicker {{ margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #57534e; }}
     article {{ margin: 0.45rem 0; }}
     details {{ margin-top: 0.35rem; }}
@@ -1179,6 +1380,8 @@ def render_html(brief: dict) -> str:
       <p class="meta">{html.escape(brief['as_of'])} · {html.escape(brief['audience'])} · {html.escape(profile)} · {brief.get('item_count', 0)} work items · rules {html.escape(str(brief.get('rules_version', '')))} · result {html.escape(str(brief.get('result_id', '')))}</p>
     </header>
     <p class="lede">{html.escape(brief['lead'])}</p>
+    {limits_html}
+    {quality_html}
     <h2>Delivery pulse</h2>
     <ul class="pulse">{pulse}</ul>
     <h2>What changed</h2>

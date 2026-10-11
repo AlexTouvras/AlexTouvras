@@ -7,8 +7,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$Page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html"
-$Base = "https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
+$Page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html"
+$Base = "https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal"
 
 $Root = $PSScriptRoot
 if (-not $Root -or -not (Test-Path (Join-Path $Root "pipeline.py")) -or -not (Test-Path (Join-Path $Root "link.py"))) {

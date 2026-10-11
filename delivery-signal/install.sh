@@ -3,8 +3,8 @@
 # Uses python3 or python when one is already on PATH. Does not install a runtime.
 set -euo pipefail
 
-PAGE="https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html"
-BASE="https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
+PAGE="https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html"
+BASE="https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal"
 DEST="${DELIVERY_SIGNAL_HOME:-$HOME/.delivery-signal}"
 FILES="pipeline.py extract.py link.py run run.ps1 run.cmd"
 

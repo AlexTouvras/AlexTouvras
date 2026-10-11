@@ -2,7 +2,7 @@
 
 Weekly delivery brief · 2026-10-10 · Audience: Delivery director
 
-Source: jira · 25 work items · rules 2026-10-10 · result e53f514aa6
+Source: jira · 25 work items · rules 2026-10-11 · result e53f514aa6
 
 **Approval: pending.** A person still has to check this brief before it goes to a customer.
 
@@ -95,6 +95,8 @@ The questions above are the proposed actions. Nothing has been sent, and nothing
 - Stale means an In Progress, Blocked, or Waiting item with no update in 14 days.
 - A completion figure is treated as misleading when an epic reports at least 70% and at most half of its child story points are Done.
 - An overdue predecessor is set aside when its successor is already Done.
+- Jira Blocker counts as Highest and Major counts as High. Three or more unassigned items of one priority are reported as a count.
+- Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.
 - Optimistic notes are an inference. The dates and statuses they are compared with are facts.
 - These thresholds are operating rules for the sample, not a validated predictor of delay.
 

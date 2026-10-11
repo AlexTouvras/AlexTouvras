@@ -15,13 +15,13 @@ Apps is this page on a phone or a computer. Add it to the Home Screen, or instal
 One-liner, macOS and Linux:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh | bash
 ```
 
 One-liner, Windows:
 
 ```powershell
-powershell -c "irm https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.ps1 | iex"
+powershell -c "irm https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.ps1 | iex"
 ```
 
 That puts `delivery-signal` on macOS and Linux, and `run` on Windows. It uses Python when Python is already there. Run the same command again to update.
@@ -29,7 +29,7 @@ That puts `delivery-signal` on macOS and Linux, and `run` on Windows. It uses Py
 npm, when Node and Python are already on the machine:
 
 ```bash
-npm install -g github:AlexTouvras/AlexTouvras#cursor/delivery-signal-mvp-b09f
+npm install -g github:AlexTouvras/delivery-signal
 delivery-signal
 ```
 
@@ -39,11 +39,11 @@ Hackable, from the checkout: `./run` on macOS and Linux, and `run` on Windows, i
 
 Open the page from this repo:
 
-https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html
+https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html
 
 Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
 
-The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/AlexTouvras/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages. It could not be turned on from this change.
+The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/delivery-signal/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages. It could not be turned on from this change.
 
 ## From your own terminal
 

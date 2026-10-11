@@ -53,6 +53,7 @@ class NorthlineSampleTests(unittest.TestCase):
         cls.brief = pipeline.build(SAMPLE)
 
     def test_planted_traps_are_the_top_risks(self) -> None:
+        self.assertEqual(self.brief["result_id"], "e53f514aa6")
         ids = [finding["id"] for finding in self.brief["top_risks"]]
         self.assertEqual(
             ids,
@@ -357,6 +358,73 @@ class ProfileTests(unittest.TestCase):
             (directory / "work_items.csv").write_text("Foo,Bar\nA,B\n", encoding="utf-8")
             with self.assertRaises(pipeline.InputError):
                 pipeline.build(directory)
+
+
+class LearnedExportTests(unittest.TestCase):
+    def test_blocker_and_major_are_counted_ahead_of_a_false_green(self) -> None:
+        rows = ["Issue key,Project key,Project name,Issue Type,Summary,Status,Priority,Assignee,Updated"]
+        for number in range(1, 9):
+            rows.append(
+                f"PHP-{number},PHP,phpBB,Bug,Open blocker {number},To Do,Blocker,,2025-11-01"
+            )
+        rows.append("PHP-20,PHP,phpBB,Bug,A major,To Do,Major,,2025-11-01")
+        rows.append("PHP-21,PHP,phpBB,Bug,Another major,To Do,Major,Ada,2025-11-01")
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "issues.csv"
+            path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+            brief = pipeline.brief_from_csv(path, "phpBB", "2025-11-05")
+        self.assertEqual(brief["top_risks"][0]["id"], "unassigned-count:PHP:Highest")
+        self.assertIn("8 Highest priority items have no assignee", brief["lead"])
+        self.assertNotIn("are on track", brief["lead"])
+        self.assertEqual(brief["pulse"][0]["state"], "needs_attention")
+        page = pipeline.render_html(brief)
+        self.assertIn("no due dates", page)
+        self.assertIn("What this file does not support", page)
+        self.assertIn("PHP-1", brief["top_risks"][0]["summary"])
+
+    def test_missing_facts_are_not_called_on_track(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "issues.csv"
+            path.write_text(
+                "ID,Work Item Type,Title,Assigned To,State\n10,Bug,Login,Ada,Active\n",
+                encoding="utf-8",
+            )
+            brief = pipeline.brief_from_csv(path, "Board", "2026-10-11", profile="azure_devops")
+        self.assertEqual(brief["top_risks"], [])
+        self.assertEqual(brief["pulse"][0]["state"], "unchecked")
+        self.assertIn("cannot be called on track", brief["lead"])
+        self.assertIn("no due dates", brief["lead"])
+        self.assertIn("Not checked", pipeline.render_html(brief))
+
+    def test_overdue_without_a_notes_file_is_a_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "issues.csv"
+            path.write_text(
+                "key,summary,status,priority,assignee,due\n"
+                "T-2,Review patch,In Review,Medium,Ada,2024-10-02\n",
+                encoding="utf-8",
+            )
+            brief = pipeline.brief_from_csv(path, "Tutorial", "2026-10-11")
+        self.assertEqual(brief["top_risks"][0]["id"], "overdue:T-2")
+        self.assertEqual(brief["pulse"][0]["state"], "needs_attention")
+        self.assertIn("In Review", " ".join(brief["data_quality"]))
+        self.assertIn("Data quality", pipeline.render_html(brief))
+
+    def test_target_end_fills_an_empty_due_date(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "issues.csv"
+            path.write_text(
+                "Issue key,Summary,Status,Priority,Assignee,Due date,Custom field (Target end),"
+                "Custom field (Story point estimate),Parent,Custom field (Epic Link)\n"
+                "PT-1,First,To Do,Highest,, ,2026-10-01,5,,EPIC-1\n",
+                encoding="utf-8",
+            )
+            brief = pipeline.brief_from_csv(path, "Cloud", "2026-10-11")
+        finding = brief["top_risks"][0]
+        self.assertEqual(finding["id"], "unassigned:PT-1")
+        self.assertIn("1 Oct 2026", finding["summary"])
+        due = next(item for item in finding["evidence"] if item["field"] == "due")
+        self.assertEqual(due["value"], "2026-10-01")
 
 
 if __name__ == "__main__":

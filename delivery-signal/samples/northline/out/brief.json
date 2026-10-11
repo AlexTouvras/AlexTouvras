@@ -7,9 +7,10 @@
   "synthetic": true,
   "source_profile": "canonical",
   "item_count": 25,
-  "rules_version": "2026-10-10",
+  "rules_version": "2026-10-11",
   "result_id": "e53f514aa6",
   "lead": "As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR \u2014 Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.",
+  "limits": [],
   "pulse": [
     {
       "id": "ASTER",
