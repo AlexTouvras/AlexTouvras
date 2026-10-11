@@ -1,8 +1,8 @@
 # One-liner for Windows. Puts run on this machine.
 # Uses python3, python, or py when one is already on PATH. Does not install a runtime.
 $ErrorActionPreference = "Stop"
-$Page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html"
-$Base = "https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal"
+$Page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html"
+$Base = "https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
 $Dest = if ($env:DELIVERY_SIGNAL_HOME) { $env:DELIVERY_SIGNAL_HOME } else { Join-Path $env:USERPROFILE ".delivery-signal" }
 $Names = @("pipeline.py", "extract.py", "link.py", "run", "run.ps1", "run.cmd")
 

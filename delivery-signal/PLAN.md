@@ -31,7 +31,7 @@ The first screen is the pulse, what changed, the open decision, and the question
 
 ## How a team tests it
 
-The page a phone or another computer opens from this repo is the [`docs/`](../docs) folder, through [the HTML preview of `docs/index.html`](https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html). Choose the CSV there. The export is read in that browser. The brief can be shared or downloaded as one HTML file. Android can share a CSV into the page once it is installed from its own address, and Chrome or Edge on a computer can open a CSV with it. That address is https://alextouvras.github.io/delivery-signal/ after Pages is set to `main` and `/docs`. The repository setting could not be changed from here.
+The page a phone or another computer opens from this repo is the [`docs/`](../docs) folder, through [the HTML preview of `docs/index.html`](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html). Choose the CSV there. The export is read in that browser. The brief can be shared or downloaded as one HTML file. Android can share a CSV into the page once it is installed from its own address, and Chrome or Edge on a computer can open a CSV with it. That address is https://alextouvras.github.io/AlexTouvras/ after Pages is set to `main` and `/docs`. The repository setting could not be changed from here.
 
 That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account.
 

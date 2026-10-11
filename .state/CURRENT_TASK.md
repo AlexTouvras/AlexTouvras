@@ -12,7 +12,7 @@ The public-export trial is in the checker. A file that cannot support the rules 
 - Unassigned items of one priority are reported as a count from three upward
 - Overdue and stale items are raised without a notes file
 - Empty due date, story points, and parent fall through to target end, story point estimate, and epic link
-- Install links point at `AlexTouvras/delivery-signal`
+- Install links stay on this branch. A push to `AlexTouvras/delivery-signal` was refused
 
 # Previous task
 

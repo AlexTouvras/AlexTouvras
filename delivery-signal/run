@@ -5,8 +5,8 @@
 # Does not install a runtime, a package, or a server.
 set -euo pipefail
 
-PAGE="https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html"
-BASE="https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal"
+PAGE="https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html"
+BASE="https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal"
 
 source_path="${BASH_SOURCE[0]:-}"
 root=""

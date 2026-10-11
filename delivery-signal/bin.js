@@ -5,7 +5,7 @@ const { spawn } = require("child_process");
 const path = require("path");
 
 const script = path.join(__dirname, "pipeline.py");
-const page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html";
+const page = "https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html";
 const extra = process.argv.slice(2);
 const attempts = process.platform === "win32"
   ? [["py", ["-3", script].concat(extra)], ["python", [script].concat(extra)], ["python3", [script].concat(extra)]]
