@@ -1,5 +1,19 @@
 # Current task
 
+`run` opens a configuration page on this computer. The person chooses Jira, Azure DevOps, or another tracker, imports a CSV or enters a token for one read, and the report opens on that page. The token stays out of the project file.
+
+## Verify
+
+`python3 delivery-signal/tests/test_link.py` exits 0. The page at `/` is the configuration form. A posted CSV builds the brief. A posted Jira token is absent from `project.json`. `run issues.csv` still writes a brief.
+
+## Done
+
+- `run` and `run connect` open http://127.0.0.1:8767
+- The form saves the site and the project key, then shows the brief
+- A token typed on the page is used for that read and left out of the project file
+
+# Previous task
+
 In the person's own terminal: connect the folder with `run`, connect a Jira, Azure DevOps, or other project or import a CSV, then `run report`.
 
 ## Verify

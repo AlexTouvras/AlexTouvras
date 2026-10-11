@@ -18,11 +18,15 @@ The files live in [`docs/`](../docs). A durable address a phone can keep on the 
 
 ## From your own terminal
 
-Three steps, in the terminal you already have, from `delivery-signal`.
+In `delivery-signal`, `run` opens the configuration page on this computer.
 
-1. Connect this folder. Command Prompt: `run`. PowerShell: `.\run`. bash: `./run`.
-2. Connect a project, or import a CSV.
-3. Get the report with `run report`.
+Command Prompt: `run`. PowerShell: `.\run`. bash: `./run`.
+
+On that page, choose Jira, Azure DevOps, or another tracker, enter the project, and import a CSV or a token for one read. The report opens on the page. The token is used for that read and is left out of the project file. The project file keeps the site and the project key. The page stays at http://127.0.0.1:8767 until you stop it with Ctrl+C.
+
+`run report` writes the brief again from the saved import. A second import becomes last week's file.
+
+A script can send the same connection without the page:
 
 ```bat
 run connect jira --site https://acme.atlassian.net --project FORGE
@@ -32,7 +36,7 @@ run import issues.csv
 run report
 ```
 
-`run import` with no file reads the connected Jira or Azure DevOps project. Jira uses `JIRA_EMAIL` and `JIRA_API_TOKEN`. Azure DevOps uses `ADO_PAT`. The token stays in the environment. The project file records the site and the project key only. A second import becomes last week's file for the change list. `other` is import only.
+Jira reads `JIRA_EMAIL` and `JIRA_API_TOKEN` when the page's token field is empty. Azure DevOps reads `ADO_PAT`.
 
 A single CSV is still one command: `run issues.csv`, `.\run issues.csv`, or `./run issues.csv`. Add `--previous issues-last-week.csv` when last week's export is there. The name defaults to the file name. The date defaults to today. The CSV stays on the machine. An agent in this repo uses that same command in the terminal it already has.
 
@@ -40,7 +44,7 @@ If Python is not already on the machine, the command prints the page link instea
 
 ## On this computer
 
-A local page is still there for a browser on the same machine:
+`run` is the configuration page. A second local page is still there for a browser on the same machine:
 
 ```bash
 python3 delivery-signal/connect.py

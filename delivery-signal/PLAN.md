@@ -35,7 +35,7 @@ The page a phone or another computer opens from this repo is the [`docs/`](../do
 
 That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account.
 
-In the person's own terminal, from `delivery-signal`, the three steps are the `run` command, then a project connection or a CSV import, then the report. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. An agent in this repo uses that same command. It does not install a runtime.
+In the person's own terminal, from `delivery-signal`, `run` opens the configuration page on this computer. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. On that page they choose Jira, Azure DevOps, or another tracker, then import a CSV or enter a token for one read. The report opens on the page. An agent in this repo uses that same command. It does not install a runtime.
 
 ```bat
 run connect jira --site https://acme.atlassian.net --project FORGE
@@ -43,7 +43,7 @@ run import issues.csv
 run report
 ```
 
-`run import` with no file reads the connected project. The token stays in `JIRA_EMAIL` and `JIRA_API_TOKEN`, or in `ADO_PAT`. It is not stored in the project file. A tracker that is not Jira or Azure DevOps is `run connect other`, then a CSV import. A single file is still `run issues.csv --previous issues-last-week.csv`.
+Those commands are the same connection without the page. The token stays in the page for that read, or in `JIRA_EMAIL` and `JIRA_API_TOKEN`, or in `ADO_PAT`. It is not stored in the project file. A single file is still `run issues.csv --previous issues-last-week.csv`.
 
 Send the HTML file in `out/`. That is the whole handoff.
 

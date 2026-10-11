@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# In your own shell: ./run, then ./run import issues.csv, then ./run report.
+# In your own shell: ./run opens the configuration page.
 # A single CSV still works: ./run issues.csv
 # Uses python3, python, or py when one of them is already on PATH.
 # Does not install a runtime, a package, or a server.

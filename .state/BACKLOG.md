@@ -14,6 +14,7 @@
 - [x] Published page a phone or a computer can install and open a CSV with
 - [x] One shell command, or the agent CLI already running, with no separate install
 - [x] Connect a Jira, Azure DevOps, or other project from that command, or import a CSV, then write the report
+- [x] Open a configuration page from `run` for that connection
 - [ ] Publish `/studio/directives` on AlexTouvras/Orbit (local commit `149120d`; this agent cannot push)
 - [ ] Scan other private repositories
 - [ ] Publish an archive edit back to the source repo

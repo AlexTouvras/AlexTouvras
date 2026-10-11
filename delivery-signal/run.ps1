@@ -1,4 +1,4 @@
-# In your own PowerShell: .\run, then .\run import issues.csv, then .\run report.
+# In your own PowerShell: .\run opens the configuration page.
 # A single CSV still works: .\run issues.csv
 # Does not install a runtime, a package, or a server.
 param(

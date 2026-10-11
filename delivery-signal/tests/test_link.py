@@ -5,7 +5,9 @@ import io
 import json
 import os
 import tempfile
+import threading
 import unittest
+import urllib.request
 from pathlib import Path
 from unittest import mock
 
@@ -18,6 +20,25 @@ import pipeline  # noqa: E402
 
 
 CSV = "key,summary,status,priority,assignee,due\nT-1,Rotate keys,To Do,Highest,,2026-10-01\n"
+
+
+def _multipart(fields: list[tuple[str, str, bytes | None, str]]) -> tuple[bytes, str]:
+    boundary = "deliverytestboundary"
+    chunks: list[bytes] = []
+    for name, filename, payload, text in fields:
+        chunks.append(f"--{boundary}\r\n".encode())
+        if filename:
+            chunks.append(
+                f'Content-Disposition: form-data; name="{name}"; filename="{filename}"\r\n'.encode()
+            )
+            chunks.append(b"Content-Type: text/csv\r\n\r\n")
+            chunks.append(payload or b"")
+        else:
+            chunks.append(f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode())
+            chunks.append(text.encode())
+        chunks.append(b"\r\n")
+    chunks.append(f"--{boundary}--\r\n".encode())
+    return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
 
 
 class LinkTests(unittest.TestCase):
@@ -164,15 +185,129 @@ class LinkTests(unittest.TestCase):
                 code = link.main(["--home", str(home), "import"])
             self.assertEqual(code, 1)
 
-    def test_bare_run_prints_the_three_steps(self) -> None:
+    def test_help_prints_the_three_steps(self) -> None:
         stdout = io.StringIO()
         with mock.patch("sys.stdout", stdout):
-            code = pipeline.main([])
+            code = pipeline.main(["help"])
         text = stdout.getvalue()
         self.assertEqual(code, 0)
+        self.assertIn("configuration page", text)
         self.assertIn("run connect jira", text)
         self.assertIn("run import issues.csv", text)
         self.assertIn("run report", text)
+
+    def test_bare_run_opens_the_configuration_page(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(link, "open_config", return_value=0) as opened:
+                code = pipeline.main([])
+                self.assertEqual(link.main(["--home", tmp, "connect"]), 0)
+            self.assertEqual(code, 0)
+            self.assertEqual(opened.call_count, 2)
+
+    def test_configuration_page_saves_the_project_and_builds_the_report(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            httpd = link.start_config(home)
+            thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+            thread.start()
+            try:
+                port = httpd.server_address[1]
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/") as response:
+                    page = response.read().decode()
+                self.assertIn("Configure the project", page)
+                self.assertIn("this computer only", page.lower())
+                self.assertIn('action="/configure"', page)
+                body, content_type = _multipart(
+                    [
+                        ("tracker", "", None, "other"),
+                        ("project", "", None, "WEB"),
+                        ("name", "", None, "Board"),
+                        ("token", "", None, "page-secret"),
+                        ("email", "", None, "ada@example.com"),
+                        ("as_of", "", None, "2026-10-10"),
+                        ("export", "issues.csv", CSV.encode(), ""),
+                    ]
+                )
+                request = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/configure",
+                    data=body,
+                    headers={"Content-Type": content_type},
+                )
+                with urllib.request.urlopen(request) as response:
+                    brief_html = response.read().decode()
+                self.assertIn("Board", brief_html)
+                self.assertIn("T-1", brief_html)
+                saved = json.loads((home / ".delivery-signal" / "project.json").read_text(encoding="utf-8"))
+                stored = json.dumps(saved)
+                self.assertEqual(saved["tracker"], "other")
+                self.assertEqual(saved["name"], "Board")
+                self.assertNotIn("page-secret", stored)
+                self.assertNotIn("ada@example.com", stored)
+                self.assertNotIn("token", stored.lower())
+                disk = (home / "out" / "brief.json").read_text(encoding="utf-8")
+                self.assertNotIn("page-secret", disk)
+                brief = json.loads(disk)
+                self.assertEqual(brief["top_risks"][0]["id"], "unassigned:T-1")
+            finally:
+                httpd.shutdown()
+                httpd.server_close()
+
+    def test_configuration_page_reads_jira_without_storing_the_token(self) -> None:
+        def transport(method, url, headers, body):
+            self.assertNotIn("page-secret", url)
+            return {
+                "issues": [
+                    {
+                        "key": "FOR-12",
+                        "fields": {
+                            "summary": "Carrier cutover",
+                            "status": {"name": "In Progress"},
+                            "issuetype": {"name": "Story"},
+                            "priority": {"name": "Highest"},
+                            "assignee": None,
+                            "project": {"key": "FORGE", "name": "Forge"},
+                            "created": "2026-08-01",
+                            "updated": "2026-08-02",
+                            "duedate": "2026-10-01",
+                        },
+                    }
+                ]
+            }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            httpd = link.start_config(home)
+            thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+            thread.start()
+            try:
+                port = httpd.server_address[1]
+                body, content_type = _multipart(
+                    [
+                        ("tracker", "", None, "jira"),
+                        ("project", "", None, "FORGE"),
+                        ("name", "", None, "Forge"),
+                        ("site", "", None, "https://acme.atlassian.net"),
+                        ("email", "", None, "ada@example.com"),
+                        ("token", "", None, "page-secret"),
+                        ("as_of", "", None, "2026-10-10"),
+                    ]
+                )
+                request = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/configure",
+                    data=body,
+                    headers={"Content-Type": content_type},
+                )
+                with mock.patch.object(link, "default_transport", transport):
+                    with urllib.request.urlopen(request) as response:
+                        brief_html = response.read().decode()
+                self.assertIn("FOR-12", brief_html)
+                stored = (home / ".delivery-signal" / "project.json").read_text(encoding="utf-8")
+                self.assertNotIn("page-secret", stored)
+                self.assertNotIn("ada@example.com", stored)
+                self.assertIn("https://acme.atlassian.net", stored)
+            finally:
+                httpd.shutdown()
+                httpd.server_close()
 
     def test_pipeline_connect_writes_the_project_file_in_the_working_directory(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

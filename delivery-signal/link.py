@@ -8,13 +8,21 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import json
 import os
 import shutil
+import sys
+import tempfile
+import threading
 import urllib.error
 import urllib.parse
 import urllib.request
+import webbrowser
 from base64 import b64encode
+from email import policy
+from email.parser import BytesParser
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import extract
@@ -27,6 +35,8 @@ class LinkError(Exception):
 
 TRACKERS = ("jira", "ado", "other")
 MAX_ITEMS = 500
+MAX_BYTES = 8 * 1024 * 1024
+CONFIG_PORT = 8767
 JIRA_FIELDS = [
     "summary",
     "status",
@@ -59,12 +69,16 @@ USAGE = """1. Connect this folder to your terminal. The command is run.
    Command Prompt: run
    PowerShell: .\\run
    bash: ./run
-2. Connect a project, or import a CSV.
+   That opens the configuration page on this computer.
+2. On that page, choose Jira, Azure DevOps, or another tracker, and the project.
+   Or import a CSV there.
+   run connect
+   run import issues.csv
+   A script can send the same connection:
    run connect jira --site https://acme.atlassian.net --project FORGE
    run connect ado --org https://dev.azure.com/contoso --project Fabrikam
    run connect other --name "Board" --project WEB
-   run import issues.csv
-3. Get the report.
+3. Get the report. It opens on that page.
    run report
 """
 
@@ -115,12 +129,12 @@ def connect(home: Path, tracker: str, project_key: str, name: str, site: str, or
     if tracker == "jira":
         if not site:
             raise LinkError("A Jira connection needs --site https://your-site.atlassian.net.")
-        record["site"] = _https(site, "Jira --site")
+        record["site"] = _https(site, "The Jira site")
         record.pop("org", None)
     elif tracker == "ado":
         if not org:
             raise LinkError("An Azure DevOps connection needs --org https://dev.azure.com/your-org.")
-        record["org"] = _https(org, "Azure DevOps --org")
+        record["org"] = _https(org, "The Azure DevOps organization")
         record.pop("site", None)
     else:
         record.pop("site", None)
@@ -351,7 +365,7 @@ ADO_HEADERS = [
 ]
 
 
-def pull(home: Path, transport=None) -> Path:
+def pull(home: Path, transport=None, email: str | None = None, token: str | None = None) -> Path:
     transport = default_transport if transport is None else transport
     record = load_project(home)
     tracker = record.get("tracker")
@@ -359,14 +373,20 @@ def pull(home: Path, transport=None) -> Path:
     directory.mkdir(parents=True, exist_ok=True)
     dest = directory / "incoming.csv"
     if tracker == "jira":
-        email = os.environ.get("JIRA_EMAIL", "").strip()
-        token = os.environ.get("JIRA_API_TOKEN", "").strip()
+        if email is None:
+            email = os.environ.get("JIRA_EMAIL", "")
+        if token is None:
+            token = os.environ.get("JIRA_API_TOKEN", "")
+        email = email.strip()
+        token = token.strip()
         if not email or not token:
             raise LinkError("Set JIRA_EMAIL and JIRA_API_TOKEN, or run import with a CSV. The token is not stored.")
         rows = fetch_jira(record["site"], record["project"], email, token, transport)
         headers = JIRA_HEADERS
     elif tracker == "ado":
-        token = (os.environ.get("ADO_PAT") or os.environ.get("AZURE_DEVOPS_EXT_PAT") or "").strip()
+        if token is None:
+            token = os.environ.get("ADO_PAT") or os.environ.get("AZURE_DEVOPS_EXT_PAT") or ""
+        token = token.strip()
         if not token:
             raise LinkError("Set ADO_PAT, or run import with a CSV. The token is not stored.")
         rows = fetch_ado(record["org"], record["project"], token, transport)
@@ -389,16 +409,280 @@ def report(home: Path, as_of: str | None, output: Path | None) -> dict:
     profile = record.get("profile") or None
     if profile not in extract.PROFILES:
         profile = None
+    columns = state_dir(home) / "columns.json"
     brief = pipeline.brief_from_csv(
         source,
         record.get("name") or record.get("project") or "Portfolio",
         as_of or pipeline.date.today().isoformat(),
         previous,
         profile,
-        None,
+        columns if columns.is_file() else None,
     )
     pipeline.write_brief(brief, output or (home / "out"))
     return brief
+
+
+def _field_text(fields: dict[str, tuple[str, bytes]], name: str) -> str:
+    found = fields.get(name)
+    if not found:
+        return ""
+    return found[1].decode("utf-8-sig").strip()
+
+
+def _parse_form(content_type: str, body: bytes) -> dict[str, tuple[str, bytes]]:
+    if "multipart/form-data" not in content_type.lower():
+        raise LinkError("Submit the form as multipart data.")
+    header = f"Content-Type: {content_type}\r\nMIME-Version: 1.0\r\n\r\n".encode()
+    message = BytesParser(policy=policy.default).parsebytes(header + body)
+    fields: dict[str, tuple[str, bytes]] = {}
+    if not message.is_multipart():
+        raise LinkError("The form did not include any fields.")
+    for part in message.iter_parts():
+        disposition = part.get("Content-Disposition", "")
+        if "form-data" not in disposition:
+            continue
+        name = part.get_param("name", header="content-disposition")
+        if not name:
+            continue
+        filename = part.get_filename() or ""
+        payload = part.get_payload(decode=True)
+        fields[name] = (filename, payload if isinstance(payload, bytes) else b"")
+    return fields
+
+
+def _attr(value: object) -> str:
+    return html.escape("" if value is None else str(value), quote=True)
+
+
+def config_page(home: Path) -> str:
+    record: dict = {}
+    if project_path(home).is_file():
+        try:
+            record = load_project(home)
+        except (OSError, json.JSONDecodeError):
+            record = {}
+    tracker = record.get("tracker") if record.get("tracker") in TRACKERS else "jira"
+    options = "\n".join(
+        f'<option value="{value}"{" selected" if value == tracker else ""}>{label}</option>'
+        for value, label in (("jira", "Jira"), ("ado", "Azure DevOps"), ("other", "Other tracker"))
+    )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configure the project</title>
+  <style>
+    :root {{ color-scheme: light; }}
+    body {{ margin: 0; background: #f4f1ea; color: #1c1917; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }}
+    main {{ max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }}
+    header {{ border-top: 6px solid #1c1917; padding-top: 0.8rem; }}
+    .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }}
+    h1 {{ font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }}
+    .meta {{ color: #57534e; }}
+    form {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.9rem 1rem; }}
+    label {{ display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }}
+    input, select {{ width: 100%; max-width: 28rem; font: inherit; padding: 0.4rem 0.5rem; box-sizing: border-box; }}
+    button {{ font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.5rem 0.8rem; }}
+    .hint {{ color: #57534e; margin: 0.25rem 0 0; }}
+    iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #fff; margin-top: 1rem; }}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="stamp">Configuration · this computer only</p>
+      <h1>Configure the project</h1>
+      <p class="meta">Choose Jira, Azure DevOps, or another tracker. Import a CSV, or enter a token for one read. The report opens below.</p>
+    </header>
+    <form action="/configure" method="post" enctype="multipart/form-data" target="result">
+      <label for="tracker">Tracker</label>
+      <select id="tracker" name="tracker">{options}</select>
+      <label for="project">Project key</label>
+      <input id="project" name="project" required value="{_attr(record.get("project"))}" placeholder="FORGE" autocomplete="off">
+      <label for="name">Name on the report</label>
+      <input id="name" name="name" value="{_attr(record.get("name"))}" placeholder="Forge" autocomplete="organization">
+      <div id="site-field">
+        <label for="site">Jira site</label>
+        <input id="site" name="site" value="{_attr(record.get("site"))}" placeholder="https://acme.atlassian.net" inputmode="url" autocomplete="off">
+      </div>
+      <div id="org-field">
+        <label for="org">Azure DevOps organization</label>
+        <input id="org" name="org" value="{_attr(record.get("org"))}" placeholder="https://dev.azure.com/contoso" inputmode="url" autocomplete="off">
+      </div>
+      <div id="email-field">
+        <label for="email">Jira email</label>
+        <input id="email" name="email" type="email" autocomplete="off" placeholder="ada@example.com">
+        <p class="hint">Used for this read. The project file keeps the site and the project key.</p>
+      </div>
+      <div id="token-field">
+        <label for="token">API token</label>
+        <input id="token" name="token" type="password" autocomplete="off">
+        <p class="hint">Used for this read. It is left out of the project file.</p>
+      </div>
+      <label for="as_of">Report date</label>
+      <input id="as_of" name="as_of" required type="date" value="{pipeline.date.today().isoformat()}">
+      <label for="export">This week's CSV</label>
+      <input id="export" name="export" type="file" accept=".csv,text/csv">
+      <label for="previous">Last week's CSV, optional</label>
+      <input id="previous" name="previous" type="file" accept=".csv,text/csv">
+      <p><button type="submit">Save and build the report</button></p>
+    </form>
+    <iframe name="result" title="Delivery brief" src="/waiting"></iframe>
+  </main>
+  <script>
+    function syncTracker() {{
+      const tracker = document.getElementById("tracker").value;
+      document.getElementById("site-field").hidden = tracker !== "jira";
+      document.getElementById("org-field").hidden = tracker !== "ado";
+      document.getElementById("email-field").hidden = tracker !== "jira";
+      document.getElementById("token-field").hidden = tracker === "other";
+    }}
+    document.getElementById("tracker").addEventListener("change", syncTracker);
+    syncTracker();
+  </script>
+</body>
+</html>
+"""
+
+
+def _waiting_page() -> str:
+    return """<!DOCTYPE html>
+<html lang="en"><body style="font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; color: #57534e; margin: 1rem;">
+<p>The report opens here after you save the project.</p>
+</body></html>
+"""
+
+
+def _error_page(message: str) -> bytes:
+    body = f"""<!DOCTYPE html>
+<html lang="en"><body style="font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; margin: 1rem;">
+<p>{html.escape(message)}</p>
+<p>Change the form and save again.</p>
+</body></html>
+"""
+    return body.encode()
+
+
+def apply_config(home: Path, fields: dict[str, tuple[str, bytes]]) -> tuple[bytes, int]:
+    tracker = _field_text(fields, "tracker") or "jira"
+    project = _field_text(fields, "project")
+    name = _field_text(fields, "name")
+    email = _field_text(fields, "email")
+    token = _field_text(fields, "token")
+    as_of = _field_text(fields, "as_of") or None
+    try:
+        connect(
+            home,
+            tracker,
+            project,
+            name,
+            _field_text(fields, "site") if tracker == "jira" else "",
+            _field_text(fields, "org") if tracker == "ado" else "",
+        )
+        export = fields.get("export")
+        previous = fields.get("previous")
+        saved = state_dir(home) / "work_items.csv"
+        if export and export[1].strip():
+            staging = Path(tempfile.mkdtemp(prefix="delivery-config-"))
+            try:
+                source = staging / "issues.csv"
+                source.write_bytes(export[1])
+                previous_path = None
+                if previous and previous[1].strip():
+                    previous_path = staging / "previous.csv"
+                    previous_path.write_bytes(previous[1])
+                remember_import(home, source, previous_path, name or None)
+            finally:
+                shutil.rmtree(staging, ignore_errors=True)
+        elif tracker in {"jira", "ado"} and (token or email or not saved.is_file()):
+            incoming = pull(home, email=email or None, token=token or None)
+            remember_import(home, incoming, None, name or None)
+        if not saved.is_file():
+            raise LinkError("Add this week's CSV, or a token for Jira or Azure DevOps.")
+        brief = report(home, as_of, None)
+    except (LinkError, pipeline.InputError, json.JSONDecodeError, OSError, UnicodeError, ValueError) as exc:
+        return _error_page(str(exc)), 400
+    if not brief["quality"]["traceable"]:
+        return _error_page("The brief had a finding without evidence."), 400
+    return pipeline.render_html(brief).encode(), 200
+
+
+def make_config_handler(home: Path):
+    folder = home
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self) -> None:  # noqa: N802
+            path = self.path.split("?", 1)[0]
+            if path in ("/", ""):
+                self._send(200, config_page(folder).encode())
+            elif path == "/waiting":
+                self._send(200, _waiting_page().encode())
+            else:
+                self._send(404, _error_page("That page is not part of the configuration."))
+
+        def do_POST(self) -> None:  # noqa: N802
+            path = self.path.split("?", 1)[0]
+            if path != "/configure":
+                self._send(404, _error_page("Send the configuration to /configure."))
+                return
+            length = int(self.headers.get("Content-Length", "0") or "0")
+            if length > MAX_BYTES:
+                self._send(413, _error_page("That export is larger than 8 MB."))
+                return
+            raw = self.rfile.read(length)
+            try:
+                fields = _parse_form(self.headers.get("Content-Type", ""), raw)
+            except LinkError as exc:
+                self._send(400, _error_page(str(exc)))
+                return
+            body, status = apply_config(folder, fields)
+            self._send(status, body)
+
+        def _send(self, status: int, body: bytes) -> None:
+            self.send_response(status)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, fmt: str, *args) -> None:
+            return
+
+    return Handler
+
+
+def start_config(home: Path, port: int = 0) -> ThreadingHTTPServer:
+    return ThreadingHTTPServer(("127.0.0.1", port), make_config_handler(home))
+
+
+def open_config(home: Path, port: int = CONFIG_PORT, opener=None) -> int:
+    try:
+        httpd = start_config(home, port)
+    except OSError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    url = f"http://127.0.0.1:{httpd.server_address[1]}/"
+    print(f"Configuration page: {url}")
+    print("It stays on this computer. Stop it with Ctrl+C.")
+    if opener is None:
+        opener = webbrowser.open
+
+    def _open() -> None:
+        try:
+            opener(url)
+        except Exception:
+            return
+
+    threading.Thread(target=_open, daemon=True).start()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopped.")
+    finally:
+        httpd.server_close()
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -407,10 +691,10 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command")
 
     connect_parser = sub.add_parser("connect")
-    connect_parser.add_argument("tracker", choices=TRACKERS)
+    connect_parser.add_argument("tracker", nargs="?", choices=TRACKERS)
     connect_parser.add_argument("--site", default="")
     connect_parser.add_argument("--org", default="")
-    connect_parser.add_argument("--project", required=True)
+    connect_parser.add_argument("--project", default="")
     connect_parser.add_argument("--name", default="")
 
     import_parser = sub.add_parser("import")
@@ -425,10 +709,14 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     home = args.home
     try:
-        if args.command in {None, "help"}:
+        if args.command == "help":
             print(USAGE, end="")
             return 0
+        if args.command is None or (args.command == "connect" and not args.tracker):
+            return open_config(home)
         if args.command == "connect":
+            if not args.project.strip():
+                raise LinkError("A project key is required.")
             record = connect(home, args.tracker, args.project, args.name, args.site, args.org)
             print(f"Connected {record['tracker']} project {record['project']}.")
             if record["tracker"] == "other":

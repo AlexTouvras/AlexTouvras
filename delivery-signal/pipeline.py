@@ -1267,7 +1267,7 @@ def main(argv: list[str] | None = None) -> int:
     if not argv_list or (argv_list[0] in {"connect", "import", "report", "help"} and not Path(argv_list[0]).exists()):
         import link
 
-        return link.main(argv_list or ["help"])
+        return link.main(argv_list)
     parser = argparse.ArgumentParser(description="Build an evidence-linked delivery brief.")
     parser.add_argument("portfolio", type=Path, help="Portfolio directory, or one CSV export")
     parser.add_argument("--out", type=Path, help="Output directory (default: <portfolio>/out)")
