@@ -21,7 +21,7 @@ run issues.csv
 
 PowerShell: `.\run issues.csv`. bash: `./run issues.csv`. Add `--previous last-week.csv` when that file exists. The name defaults to the file name. The date defaults to today.
 
-When they ask for a brief and the CSV is already on disk, run `run issues.csv` in the shell they already have. When they want to connect a tracker, run `run` so the configuration page opens. Do not install Python, Node, a venv, or a package. Do not start a different server. Do not send them to another product's CLI.
+When they ask for a brief and the CSV is already on disk, run `run issues.csv` in the shell they already have. When they want to connect a tracker, run `run` so the configuration page opens. When they ask how to install it, the page offers Apps, One-liner, npm, and Hackable, for macOS & Linux or Windows. Do not install Python, Node, a venv, or a package for them. Do not start a different server. Do not send them to another product's CLI.
 
 The command writes an HTML file under `out/` and prints a result id. Reply with that id and the HTML path. The CSV stays on this machine.
 

@@ -2,6 +2,7 @@
 """One shell command runs the brief. It does not ask for a second install."""
 
 import json
+import os
 import stat
 import subprocess
 import tempfile
@@ -53,6 +54,49 @@ class CommandTests(unittest.TestCase):
             self.assertEqual(brief["portfolio"], "Northwind")
             self.assertEqual(brief["as_of"], "2026-10-10")
             self.assertTrue(brief["result_id"])
+
+    def test_install_scripts_do_not_fetch_a_runtime(self) -> None:
+        for name in ("install.sh", "install.ps1", "bin.js"):
+            text = (ROOT / name).read_text(encoding="utf-8").lower()
+            self.assertNotIn("pip install", text, name)
+            self.assertNotIn("npm install", text, name)
+            self.assertNotIn("openclaw", text, name)
+        page = (ROOT.parents[0] / "docs" / "index.html").read_text(encoding="utf-8")
+        for label in ("Apps", "One-liner", "npm", "Hackable", "macOS", "Windows"):
+            self.assertIn(label, page)
+        self.assertIn("install.sh | bash", page)
+        self.assertIn("install.ps1 | iex", page)
+
+    def test_install_sh_puts_the_command_on_the_machine(self) -> None:
+        script = ROOT / "install.sh"
+        self.assertTrue(script.stat().st_mode & stat.S_IXUSR)
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            env = os.environ.copy()
+            env["HOME"] = str(home)
+            env["DELIVERY_SIGNAL_HOME"] = str(home / "app")
+            completed = subprocess.run(
+                ["bash", str(script)],
+                check=False,
+                text=True,
+                capture_output=True,
+                env=env,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            launcher = home / ".local" / "bin" / "delivery-signal"
+            self.assertTrue(launcher.is_file())
+            csv_path = home / "Northwind.csv"
+            csv_path.write_text("key,summary,status\nT-1,Rotate keys,To Do\n", encoding="utf-8")
+            ran = subprocess.run(
+                ["bash", str(launcher), str(csv_path), "--as-of", "2026-10-10", "--out", str(home / "out")],
+                check=False,
+                text=True,
+                capture_output=True,
+                env=env,
+            )
+            self.assertEqual(ran.returncode, 0, ran.stderr)
+            brief = json.loads((home / "out" / "brief.json").read_text(encoding="utf-8"))
+            self.assertEqual(brief["portfolio"], "Northwind")
 
 
 if __name__ == "__main__":

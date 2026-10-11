@@ -41,6 +41,10 @@ class PublishedFilesTests(unittest.TestCase):
         self.assertIn('type="file"', page)
         self.assertIn("Add to Home Screen", page)
         self.assertIn("Open the Northline sample", page)
+        for label in ("Apps", "One-liner", "npm", "Hackable"):
+            self.assertIn(label, page)
+        self.assertIn("install.sh | bash", page)
+        self.assertIn("install.ps1 | iex", page)
         manifest = json.loads((DOCS / "manifest.webmanifest").read_text(encoding="utf-8"))
         self.assertEqual(manifest["share_target"]["action"], "./share")
         self.assertEqual(manifest["share_target"]["params"]["files"][0]["name"], "export")
@@ -75,6 +79,43 @@ class PageTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.server.shutdown()
         shutil.rmtree(cls.root, ignore_errors=True)
+
+    def test_install_options_switch_by_platform_and_method(self):
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError as exc:
+            self.fail(f"playwright is required to verify the published page: {exc}")
+
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(channel="chrome", headless=True)
+            context = browser.new_context(
+                viewport={"width": 390, "height": 844},
+                permissions=["clipboard-read", "clipboard-write"],
+            )
+            page = context.new_page()
+            page.goto(f"http://127.0.0.1:{self.port}/", wait_until="domcontentloaded")
+            page.get_by_role("tab", name="One-liner").wait_for()
+            self.assertIn("install.sh | bash", page.locator("body").inner_text())
+            page.get_by_role("tab", name="Windows beta").click()
+            self.assertIn("install.ps1 | iex", page.locator("body").inner_text())
+            page.screenshot(path="/opt/cursor/artifacts/install_oneliner_phone.png", full_page=True)
+            page.get_by_role("tab", name="npm").click()
+            self.assertIn("npm install -g", page.locator("body").inner_text())
+            page.screenshot(path="/opt/cursor/artifacts/install_npm_phone.png", full_page=False)
+            page.get_by_role("tab", name="Hackable").click()
+            self.assertIn("git clone", page.locator("body").inner_text())
+            self.assertIn("delivery-signal", page.locator("body").inner_text())
+            page.get_by_role("tab", name="macOS & Linux").click()
+            self.assertIn("./run", page.locator("body").inner_text())
+            page.get_by_role("tab", name="Apps").click()
+            self.assertIn("Add to Home Screen", page.locator("body").inner_text())
+            page.screenshot(path="/opt/cursor/artifacts/install_apps_phone.png", full_page=False)
+            page.get_by_role("tab", name="One-liner").click()
+            page.get_by_role("button", name="Copy").click()
+            page.get_by_role("button", name="Copied").wait_for()
+            copied = page.evaluate("() => navigator.clipboard.readText()")
+            self.assertIn("install.sh | bash", copied)
+            browser.close()
 
     def test_sample_and_upload_match_python(self):
         try:

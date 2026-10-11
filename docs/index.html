@@ -26,6 +26,18 @@
     label { display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }
     input, select { width: 100%; max-width: 28rem; font: inherit; padding: 0.45rem 0.5rem; box-sizing: border-box; }
     button, .button { font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.55rem 0.85rem; cursor: pointer; }
+    .install-top { display: flex; justify-content: space-between; gap: 0.75rem; align-items: end; flex-wrap: wrap; }
+    .platforms, .methods { display: flex; gap: 0.85rem; }
+    .methods { border-bottom: 1px solid #e7e0d4; margin: 0.35rem 0 0.8rem; overflow-x: auto; }
+    .platforms button, .methods button, button.copy {
+      background: transparent; color: #57534e; border: 0; border-bottom: 2px solid transparent;
+      border-radius: 0; padding: 0.35rem 0.05rem; font-weight: 650; width: auto;
+    }
+    .platforms button[aria-selected="true"], .methods button[aria-selected="true"] { color: #9a3412; border-bottom-color: #9a3412; }
+    .beta { margin-left: 0.3rem; border: 1px solid #9a3412; color: #9a3412; border-radius: 999px; padding: 0.05rem 0.35rem; font-size: 0.68rem; letter-spacing: 0.04em; }
+    .command-box { position: relative; }
+    .command-box pre { margin: 0; padding-right: 4.2rem; }
+    button.copy { position: absolute; top: 0.45rem; right: 0.55rem; border-bottom: 0; color: #f4f1ea; }
     button.secondary, a.secondary { background: #fffdf8; color: #1c1917; border: 1px solid #1c1917; }
     a.button { display: inline-block; text-decoration: none; }
     .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.6rem 0; }
@@ -38,6 +50,7 @@
       h1 { font-size: 1.45rem; }
       input, select { max-width: none; font-size: 16px; }
       button, .button { width: 100%; text-align: center; box-sizing: border-box; }
+      .platforms button, .methods button, button.copy { width: auto; text-align: left; }
       .row { align-items: stretch; }
     }
   </style>
@@ -50,14 +63,73 @@
       <p class="meta">A weekly brief from a Jira, Azure DevOps, or canonical CSV. Add this page to a phone or install it on a computer, then choose the export. The file is read here. It is not sent to GitHub or written back to the project tool.</p>
     </header>
 
-    <h2>Add it to this device</h2>
-    <div class="card">
-      <p><strong>Phone.</strong> Open this page in the browser, then add it to the Home Screen. On an iPhone that is Share, then Add to Home Screen. On Android, choose Install or Add to Home screen. Open the icon and choose the CSV. Android can also share a CSV into Delivery Signal.</p>
-      <p><strong>Computer.</strong> Install the page from the button or the browser menu. Chrome and Edge can then open a CSV with Delivery Signal. Choosing the file below works either way.</p>
-      <p class="row">
-        <button type="button" id="install" hidden>Install on this device</button>
-      </p>
-      <p class="hint" id="install-hint"></p>
+    <h2>Install</h2>
+    <div class="card" id="install-options">
+      <div class="install-top">
+        <p class="stamp">All install options</p>
+        <div class="platforms" role="tablist" aria-label="Platform">
+          <button type="button" role="tab" data-platform="unix" aria-selected="true">macOS &amp; Linux</button>
+          <button type="button" role="tab" data-platform="windows" aria-selected="false">Windows <span class="beta">beta</span></button>
+        </div>
+      </div>
+      <div class="methods" role="tablist" aria-label="Install method">
+        <button type="button" role="tab" data-method="apps" aria-selected="false">Apps</button>
+        <button type="button" role="tab" data-method="oneliner" aria-selected="true">One-liner</button>
+        <button type="button" role="tab" data-method="npm" aria-selected="false">npm</button>
+        <button type="button" role="tab" data-method="hackable" aria-selected="false">Hackable</button>
+      </div>
+
+      <div class="install-panel" data-method-panel="apps" hidden>
+        <p><strong>Phone.</strong> Open this page in the browser, then add it to the Home Screen. On an iPhone that is Share, then Add to Home Screen. On Android, choose Install or Add to Home screen. Open the icon and choose the CSV. Android can also share a CSV into Delivery Signal.</p>
+        <p><strong>Computer.</strong> Install the page from the button or the browser menu. Chrome and Edge can then open a CSV with Delivery Signal. Choosing the file below works either way.</p>
+        <p class="row"><button type="button" id="install" hidden>Install on this device</button></p>
+        <p class="hint" id="install-hint"></p>
+      </div>
+
+      <div class="install-panel" data-method-panel="oneliner" data-platform-panel="unix">
+        <div class="command-box">
+          <pre><code># Puts the command on this machine.
+$ curl -fsSL https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.sh | bash</code></pre>
+          <button type="button" class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.sh | bash">Copy</button>
+        </div>
+      </div>
+      <div class="install-panel" data-method-panel="oneliner" data-platform-panel="windows" hidden>
+        <div class="command-box">
+          <pre><code># Puts the command on this machine.
+$ powershell -c "irm https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.ps1 | iex"</code></pre>
+          <button type="button" class="copy" data-copy="powershell -c &quot;irm https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.ps1 | iex&quot;">Copy</button>
+        </div>
+      </div>
+
+      <div class="install-panel" data-method-panel="npm" hidden>
+        <div class="command-box">
+          <pre><code># For a machine that already has Node and Python.
+$ npm install -g github:AlexTouvras/AlexTouvras#cursor/delivery-signal-mvp-b09f
+$ delivery-signal</code></pre>
+          <button type="button" class="copy" data-copy="npm install -g github:AlexTouvras/AlexTouvras#cursor/delivery-signal-mvp-b09f">Copy</button>
+        </div>
+      </div>
+
+      <div class="install-panel" data-method-panel="hackable" data-platform-panel="unix" hidden>
+        <div class="command-box">
+          <pre><code># The checkout is the product.
+$ git clone https://github.com/AlexTouvras/AlexTouvras.git
+$ cd AlexTouvras/delivery-signal
+$ ./run</code></pre>
+          <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/AlexTouvras.git">Copy</button>
+        </div>
+      </div>
+      <div class="install-panel" data-method-panel="hackable" data-platform-panel="windows" hidden>
+        <div class="command-box">
+          <pre><code># The checkout is the product.
+$ git clone https://github.com/AlexTouvras/AlexTouvras.git
+$ cd AlexTouvras\delivery-signal
+$ run</code></pre>
+          <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/AlexTouvras.git">Copy</button>
+        </div>
+      </div>
+
+      <p class="hint" id="install-blurb">Works on macOS, Linux, and Windows. The one-liner puts the command on this machine and uses Python when Python is already there. Run the same command again to update.</p>
     </div>
 
     <h2>Try the sample</h2>

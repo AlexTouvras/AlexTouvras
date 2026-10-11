@@ -1,5 +1,19 @@
 # Current task
 
+The page offers four install options, Apps, One-liner, npm, and Hackable, for macOS & Linux and for Windows. The one-liner puts the command on the machine and uses Python when it is already there.
+
+## Verify
+
+`python3 delivery-signal/tests/test_command.py` exits 0. `install.sh` writes `delivery-signal` and that command writes a brief. The page switches platform and method, and the Windows one-liner is the PowerShell command.
+
+## Done
+
+- Apps, One-liner, npm, and Hackable on the published page
+- `install.sh` and `install.ps1`
+- `npm install -g` from this repo runs `delivery-signal`
+
+# Previous task
+
 `run` opens a configuration page on this computer. The person chooses Jira, Azure DevOps, or another tracker, imports a CSV or enters a token for one read, and the report opens on that page. The token stays out of the project file.
 
 ## Verify

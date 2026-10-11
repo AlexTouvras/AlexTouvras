@@ -4,7 +4,7 @@
 
 ## Delivery Signal
 
-A weekly delivery brief from a Jira, Azure DevOps, or other work-item export. In your own terminal, from [`delivery-signal/`](delivery-signal/), `run` opens the configuration page. A single CSV is still `run` plus the file. On a phone, open the [page in this repo](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html). Details are in [`delivery-signal/README.md`](delivery-signal/README.md).
+A weekly delivery brief from a Jira, Azure DevOps, or other work-item export. Install it from the [page in this repo](https://htmlpreview.github.io/?https://github.com/AlexTouvras/AlexTouvras/blob/cursor/delivery-signal-mvp-b09f/docs/index.html): Apps, a one-liner, npm, or the checkout. In your own terminal, from [`delivery-signal/`](delivery-signal/), `run` opens the configuration page. A single CSV is still `run` plus the file. Details are in [`delivery-signal/README.md`](delivery-signal/README.md).
 
 ## Directive archive
 

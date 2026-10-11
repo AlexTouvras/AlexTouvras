@@ -6,6 +6,35 @@ Send the HTML file. The recipient does not need an account or the original expor
 
 The reason to pay for that, and what is deliberately not built yet, is in [PLAN.md](PLAN.md). Nobody has paid. The page does not take orders.
 
+## Install
+
+The page has four options: Apps, One-liner, npm, and Hackable. Switch between macOS & Linux and Windows.
+
+Apps is this page on a phone or a computer. Add it to the Home Screen, or install it from the browser.
+
+One-liner, macOS and Linux:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.sh | bash
+```
+
+One-liner, Windows:
+
+```powershell
+powershell -c "irm https://raw.githubusercontent.com/AlexTouvras/AlexTouvras/cursor/delivery-signal-mvp-b09f/delivery-signal/install.ps1 | iex"
+```
+
+That puts `delivery-signal` on macOS and Linux, and `run` on Windows. It uses Python when Python is already there. Run the same command again to update.
+
+npm, when Node and Python are already on the machine:
+
+```bash
+npm install -g github:AlexTouvras/AlexTouvras#cursor/delivery-signal-mvp-b09f
+delivery-signal
+```
+
+Hackable, from the checkout: `./run` on macOS and Linux, and `run` on Windows, inside `delivery-signal`.
+
 ## On a phone or a computer
 
 Open the page from this repo:

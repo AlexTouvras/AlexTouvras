@@ -247,6 +247,63 @@ shareButton.addEventListener("click", async () => {
   }
 });
 
+const installBlurbs = {
+  apps: "The page is the app. The export stays in this browser.",
+  oneliner: "Works on macOS, Linux, and Windows. The one-liner puts the command on this machine and uses Python when Python is already there. Run the same command again to update.",
+  npm: "For a machine that already has Node and Python. Then run delivery-signal.",
+  hackable: "The checkout is the product. ./run on macOS and Linux, and run on Windows, opens the configuration page.",
+};
+
+function syncInstall() {
+  const platformButton = document.querySelector(".platforms button[aria-selected='true']");
+  const methodButton = document.querySelector(".methods button[aria-selected='true']");
+  const platform = platformButton ? platformButton.dataset.platform : "unix";
+  const method = methodButton ? methodButton.dataset.method : "oneliner";
+  document.querySelectorAll(".install-panel").forEach((panel) => {
+    const methodOk = panel.dataset.methodPanel === method;
+    const platformOk = !panel.dataset.platformPanel || panel.dataset.platformPanel === platform;
+    panel.hidden = !(methodOk && platformOk);
+  });
+  const blurb = document.querySelector("#install-blurb");
+  if (blurb) {
+    blurb.textContent = installBlurbs[method] || "";
+  }
+}
+
+document.querySelectorAll(".platforms button, .methods button").forEach((button) => {
+  button.addEventListener("click", () => {
+    const group = button.closest("[role='tablist']");
+    group.querySelectorAll("button").forEach((item) => {
+      item.setAttribute("aria-selected", item === button ? "true" : "false");
+    });
+    syncInstall();
+  });
+});
+
+document.querySelectorAll("button.copy").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const text = button.dataset.copy || "";
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Copied";
+    } catch (error) {
+      button.textContent = "Copy";
+    }
+    setTimeout(() => {
+      button.textContent = "Copy";
+    }, 1600);
+  });
+});
+
+if (/Windows/i.test(navigator.userAgent)) {
+  const windows = document.querySelector(".platforms button[data-platform='windows']");
+  if (windows) {
+    windows.click();
+  }
+} else {
+  syncInstall();
+}
+
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   installEvent = event;
